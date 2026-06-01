@@ -133,3 +133,35 @@ Registo de uso de IA no desenvolvimento do projecto DailyNest.
 - [x] Nome da tarefa com strikethrough + cor muted quando concluída
 - [x] Botão Delete com `confirm()` nativo e chamada `DELETE /tasks/{id}` (já existia, mantido)
 - [x] `updateStatCards()` chamado após ambas as acções para reflectir os contadores
+
+---
+
+## Task #05 — Agenda Calendar: Month View
+
+**Data:** 1 de junho de 2026  
+**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
+**Sessão:** Agente autónomo
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/agenda.js` | Ficheiro criado de raiz; array `EVENTS` com 8 eventos de exemplo para junho 2026; função `buildMonthGrid()` que gera dinamicamente a grelha do mês actual (offset Monday-based, células de outros meses, marcação do dia de hoje, dots coloridos por evento); função `selectDay(dateStr, date)` que selecciona um dia, re-renderiza a grelha com highlight e popula o painel lateral com os eventos do dia; funções `prevMonth()` / `nextMonth()` para navegação entre meses (com reset da selecção); `resetDayPanel()` para limpar o painel; `setView(btn)` redefinida para gerir a troca entre Week View e Month View (mostra/esconde `#week-view`, `#month-view`, `#mini-cal-card`, `#upcoming-panel`, `#day-events-panel`) |
+| `frontend/agenda.html` | Week header + week grid envolvidos em `<div id="week-view">`; adicionado `<div id="month-view">` com nav interna (prev/next + título `#month-nav-title`), row de nomes dos dias e `<div id="month-grid-body">`; adicionado `<div id="day-events-panel">` no sidebar com `.day-events-title` e `.day-events-list`; IDs `mini-cal-card` e `upcoming-panel` adicionados aos painéis existentes do sidebar; bloco `<script>` inline com `setView` removido (função movida para `agenda.js`) |
+| `frontend/css/modules/agenda.css` | Adicionadas classes: `.month-nav`, `.month-nav-title`, `.month-weekdays`, `.month-grid-body`, `.month-day-cell`, `.month-day-cell.other-month`, `.month-day-cell.is-today`, `.month-day-cell.is-selected`, `.month-day-num`, `.month-day-dots`, `.event-dot` (`.blue`, `.yellow`, `.green`, `.purple`), `.day-events-title`, `.no-events-msg`, `.day-event-item` |
+
+### Critérios cumpridos (Task #05)
+
+- [x] Grelha de calendário mensal gerada dinamicamente em vanilla JS a partir do mês actual
+- [x] Offset Monday-based correcto (primeiros dias do mês alinhados ao dia da semana certo)
+- [x] Dias de outros meses renderizados com cor muted
+- [x] Dia de hoje marcado com círculo preto
+- [x] Dots coloridos em dias com eventos (máx. 3 dots por dia)
+- [x] Click num dia destaca-o (`.is-selected`) e popula o painel lateral com os eventos desse dia
+- [x] Painel lateral mostra título do dia seleccionado + lista de eventos com dot colorido e hora
+- [x] Mensagem "No events for this day." quando o dia não tem eventos
+- [x] Navegação prev/next mês com reset da selecção e reconstrução da grelha
+- [x] Botão "Month" no view-toggle activa a Month View; "Week"/"Day" retorna à Week View
+- [x] Week View e Month View mutuamente exclusivos (show/hide via JS)
+- [x] Mini calendário e painel Upcoming ocultados na Month View
+

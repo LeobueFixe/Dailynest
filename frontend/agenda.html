@@ -132,8 +132,11 @@
     <!-- Calendar + Mini calendar -->
     <div class="agenda-layout">
 
-      <!-- Weekly calendar -->
+      <!-- Weekly calendar / Month view -->
       <div class="calendar-wrap">
+
+        <!-- ── WEEK VIEW ── -->
+        <div id="week-view">
 
         <!-- Week header: days -->
         <div class="week-header">
@@ -293,14 +296,40 @@
         </div>
         <!-- /week-grid -->
 
+        </div>
+        <!-- /week-view -->
+
+        <!-- ── MONTH VIEW ── -->
+        <div id="month-view" style="display:none;">
+          <div class="month-nav">
+            <button class="nav-arrow" onclick="prevMonth()" aria-label="Previous month">&#8249;</button>
+            <span id="month-nav-title" class="month-nav-title"></span>
+            <button class="nav-arrow" onclick="nextMonth()" aria-label="Next month">&#8250;</button>
+          </div>
+          <div class="month-weekdays">
+            <div>Mon</div><div>Tue</div><div>Wed</div>
+            <div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+          </div>
+          <div id="month-grid-body" class="month-grid-body"></div>
+        </div>
+        <!-- /month-view -->
+
       </div>
       <!-- /calendar-wrap -->
 
       <!-- Right sidebar: mini calendar + upcoming -->
       <div class="mini-calendar">
 
+        <!-- Day events panel (shown in month view) -->
+        <div id="day-events-panel" class="mini-cal-card" style="display:none;">
+          <div class="day-events-title">Select a day</div>
+          <div class="day-events-list">
+            <p class="no-events-msg">Click on a day to see its events.</p>
+          </div>
+        </div>
+
         <!-- Mini month calendar -->
-        <div class="mini-cal-card">
+        <div id="mini-cal-card" class="mini-cal-card">
           <div class="mini-cal-header">
             <span class="mini-cal-title">May 2026</span>
             <div style="display:flex; gap:4px;">
@@ -361,7 +390,7 @@
         </div>
 
         <!-- Upcoming events -->
-        <div class="mini-cal-card upcoming-section">
+        <div id="upcoming-panel" class="mini-cal-card upcoming-section">
           <div class="section-label">Upcoming</div>
 
           <div class="upcoming-event">
@@ -459,13 +488,5 @@
 
 <script src="js/router.js"></script>
 <script src="js/modules/agenda.js"></script>
-<script>
-  function setView(btn) {
-    var parent = btn.closest('.view-toggle');
-    if (!parent) return;
-    parent.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-  }
-</script>
 </body>
 </html>
