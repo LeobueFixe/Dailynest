@@ -84,9 +84,21 @@ function updateStatCards() {
   if (countEl) countEl.textContent = 'Showing ' + total + ' of ' + total + ' task' + (total !== 1 ? 's' : '');
 }
 
+/* ── Filter state ────────────────────────────────────────── */
+var filterSearch = '';   // current text search query
+var filterStatus = '';   // '' | 'pending' | 'done'
+
+function onSearchInput(value) {
+  filterSearch = value;
+  filterTasks();
+}
+
+function onStatusFilterChange(value) {
+  filterStatus = value;
+  filterTasks();
+}
+
 function filterTasks() {
-  var searchVal   = (document.getElementById('searchInput')    || {}).value || '';
-  var statusVal   = (document.getElementById('statusFilter')   || {}).value || '';
   var priorityVal = (document.getElementById('priorityFilter') || {}).value || '';
   var tbody = document.getElementById('taskTableBody');
   if (!tbody) return;
@@ -99,8 +111,19 @@ function filterTasks() {
     var status   = row.getAttribute('data-status')   || '';
     var priority = row.getAttribute('data-priority') || '';
 
-    var matchSearch   = !searchVal   || name.toLowerCase().includes(searchVal.toLowerCase());
-    var matchStatus   = !statusVal   || status === statusVal;
+    var matchSearch   = !filterSearch || name.toLowerCase().includes(filterSearch.toLowerCase());
+
+    var matchStatus;
+    if (!filterStatus) {
+      matchStatus = true;
+    } else if (filterStatus === 'pending') {
+      matchStatus = status === 'not-started' || status === 'in-progress';
+    } else if (filterStatus === 'done') {
+      matchStatus = status === 'completed';
+    } else {
+      matchStatus = true;
+    }
+
     var matchPriority = !priorityVal || priority === priorityVal;
 
     var show = matchSearch && matchStatus && matchPriority;
