@@ -204,6 +204,7 @@
       <table class="task-table">
         <thead>
           <tr>
+            <th></th>
             <th>Task Name</th>
             <th>Status</th>
             <th>Due Date</th>
@@ -213,6 +214,7 @@
         </thead>
         <tbody id="taskTableBody">
           <tr data-id="local-0" data-status="not-started" data-priority="medium" data-name="New Task" data-due="" data-desc="">
+            <td class="task-check-cell"><input type="checkbox" class="task-check" onchange="markComplete(this)" title="Mark as complete"></td>
             <td><span class="task-name">New Task</span></td>
             <td>
               <span class="status-badge not-started">

@@ -23,6 +23,17 @@ function apiPut(path, body) {
   });
 }
 
+function apiPatch(path, body) {
+  return fetch(API_BASE + path, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
 function apiDelete(path) {
   return fetch(API_BASE + path, { method: 'DELETE' }).then(function (r) {
     if (!r.ok) throw new Error('HTTP ' + r.status);

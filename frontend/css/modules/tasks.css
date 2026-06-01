@@ -121,6 +121,20 @@
 
 .created-at { font-size: 0.875rem; color: var(--color-text-muted); }
 
+/* Completion checkbox */
+td.task-check-cell {
+  width: 40px;
+  padding-right: 0;
+  text-align: center;
+}
+.task-check {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #111;
+  flex-shrink: 0;
+}
+
 /* Row action buttons */
 td.task-actions {
   width: 80px;

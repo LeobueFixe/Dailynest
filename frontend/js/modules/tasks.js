@@ -29,6 +29,7 @@ function buildRow(task) {
   var label   = statusMap[task.status] || 'Not started';
   var dateStr = task.dueDate ? formatDate(task.dueDate) : 'No date';
   var id      = task.id || ('local-' + _taskIdCounter++);
+  var isDone  = task.status === 'completed';
 
   return '<tr'
     + ' data-id="'       + id                                   + '"'
@@ -37,7 +38,10 @@ function buildRow(task) {
     + ' data-name="'     + escapeHtml(task.name)                + '"'
     + ' data-due="'      + escapeHtml(task.dueDate      || '')  + '"'
     + ' data-desc="'     + escapeHtml(task.description  || '')  + '">'
-    + '<td><span class="task-name">' + escapeHtml(task.name) + '</span></td>'
+    + '<td class="task-check-cell"><input type="checkbox" class="task-check"'
+    + (isDone ? ' checked' : '')
+    + ' onchange="markComplete(this)" title="Mark as complete"></td>'
+    + '<td><span class="task-name"' + (isDone ? ' style="text-decoration:line-through;color:var(--color-text-muted)"' : '') + '>' + escapeHtml(task.name) + '</span></td>'
     + '<td><span class="status-badge ' + task.status + '"><span class="dot"></span>' + label + '</span></td>'
     + '<td><span class="due-date">'
     + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
@@ -168,6 +172,34 @@ function openEditModal(btn) {
   document.getElementById('taskDescription').value = row.getAttribute('data-desc')    || '';
 
   openModal('createTask');
+}
+
+function markComplete(cb) {
+  var row = cb.closest('tr');
+  if (!row) return;
+  var id        = row.getAttribute('data-id');
+  var newStatus = cb.checked ? 'completed' : 'not-started';
+
+  if (id && !String(id).startsWith('local-')) {
+    apiPatch('/tasks/' + id, { status: newStatus }).catch(function () { /* update locally only */ });
+  }
+
+  row.setAttribute('data-status', newStatus);
+
+  var label = statusMap[newStatus] || 'Not started';
+  var badge = row.querySelector('.status-badge');
+  if (badge) {
+    badge.className = 'status-badge ' + newStatus;
+    badge.innerHTML = '<span class="dot"></span>' + label;
+  }
+
+  var taskName = row.querySelector('.task-name');
+  if (taskName) {
+    taskName.style.textDecoration = cb.checked ? 'line-through' : '';
+    taskName.style.color = cb.checked ? 'var(--color-text-muted)' : '';
+  }
+
+  updateStatCards();
 }
 
 function deleteTask(btn) {
