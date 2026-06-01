@@ -18,8 +18,8 @@ const EVENTS = [
 let monthViewDate = new Date();
 monthViewDate.setDate(1);
 let selectedDay   = null;
-let currentView   = 'week';
-
+let currentView   = 'week';let weekViewDate  = new Date(); // Monday of the displayed week
+let dayViewDate   = new Date(); // The displayed day
 /* ── View toggle ────────────────────────────────────────── */
 function setView(btn) {
   var parent = btn.closest('.view-toggle');
@@ -158,6 +158,7 @@ function prevMonth() {
   selectedDay = null;
   buildMonthGrid();
   resetDayPanel();
+  updateDateRangeLabel();
 }
 
 function nextMonth() {
@@ -165,6 +166,7 @@ function nextMonth() {
   selectedDay = null;
   buildMonthGrid();
   resetDayPanel();
+  updateDateRangeLabel();
 }
 
 function resetDayPanel() {
@@ -175,3 +177,166 @@ function resetDayPanel() {
   if (titleEl) titleEl.textContent = 'Select a day';
   if (listEl)  listEl.innerHTML    = '<p class="no-events-msg">Click on a day to see its events.</p>';
 }
+
+/* ── Update date range label ─────────────────────────── */
+function updateDateRangeLabel() {
+  var el = document.getElementById('agenda-date-range-text');
+  if (!el) return;
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  if (currentView === 'week') {
+    var end = new Date(weekViewDate);
+    end.setDate(weekViewDate.getDate() + 6);
+    if (weekViewDate.getMonth() === end.getMonth()) {
+      el.textContent = weekViewDate.getDate() + ' – ' + end.getDate() + ' ' +
+        MONTHS[end.getMonth()] + ' ' + end.getFullYear();
+    } else {
+      el.textContent = weekViewDate.getDate() + ' ' + MONTHS[weekViewDate.getMonth()] +
+        ' – ' + end.getDate() + ' ' + MONTHS[end.getMonth()] + ' ' + end.getFullYear();
+    }
+  } else if (currentView === 'day') {
+    el.textContent = dayViewDate.toLocaleDateString('en-US', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+  } else {
+    el.textContent = monthViewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+}
+
+/* ── Build week view ─────────────────────────────────── */
+function buildWeekView() {
+  var HOURS    = [7,8,9,10,11,12,13,14,15,16,17];
+  var DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+
+  // Dates for each column
+  var weekDates = [];
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(weekViewDate);
+    d.setDate(weekViewDate.getDate() + i);
+    weekDates.push(d);
+  }
+
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Header
+  var headerEl = document.getElementById('week-header');
+  if (headerEl) {
+    var headerHtml = '<div class="time-spacer"></div>';
+    weekDates.forEach(function (d, i) {
+      var isToday = d.toDateString() === today.toDateString();
+      headerHtml +=
+        '<div class="day-col">' +
+          '<div class="day-name">' + DAY_NAMES[i] + '</div>' +
+          '<div class="day-number' + (isToday ? ' today' : '') + '">' + d.getDate() + '</div>' +
+        '</div>';
+    });
+    headerEl.innerHTML = headerHtml;
+  }
+
+  // Grid
+  var gridEl = document.getElementById('week-grid');
+  if (!gridEl) return;
+
+  var gridHtml = '';
+  HOURS.forEach(function (h) {
+    gridHtml += '<div class="time-label">' + h + ':00</div>';
+    weekDates.forEach(function (d) {
+      var dateStr = d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
+      var cellEvents = EVENTS.filter(function (e) {
+        return e.date === dateStr && parseInt(e.time.split(':')[0], 10) === h;
+      });
+      gridHtml += '<div class="day-cell">';
+      cellEvents.forEach(function (e) {
+        gridHtml += '<div class="calendar-event ' + e.color + '">' +
+          e.title + '<br/>' + e.time + '</div>';
+      });
+      gridHtml += '</div>';
+    });
+  });
+  gridEl.innerHTML = gridHtml;
+}
+
+/* ── Build day view ───────────────────────────────────── */
+function buildDayView() {
+  var dateStr = dayViewDate.getFullYear() + '-' +
+    String(dayViewDate.getMonth() + 1).padStart(2, '0') + '-' +
+    String(dayViewDate.getDate()).padStart(2, '0');
+
+  var titleEl = document.getElementById('day-view-title');
+  if (titleEl) {
+    titleEl.textContent = dayViewDate.toLocaleDateString('en-US', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+
+  var listEl = document.getElementById('day-view-list');
+  if (!listEl) return;
+
+  var dayEvents = EVENTS.filter(function (e) { return e.date === dateStr; });
+  dayEvents.sort(function (a, b) {
+    return parseInt(a.time.split(':')[0], 10) - parseInt(b.time.split(':')[0], 10);
+  });
+
+  if (dayEvents.length === 0) {
+    listEl.innerHTML = '<p class="no-events-msg">No events for this day.</p>';
+    return;
+  }
+
+  listEl.innerHTML = dayEvents.map(function (e) {
+    return '<div class="day-view-event">' +
+      '<div class="day-view-event-time">' + e.time + '</div>' +
+      '<div class="day-view-event-body calendar-event ' + e.color + '">' +
+        '<div class="day-view-event-title">' + e.title + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+/* ── Period navigation (toolbar arrows) ──────────────────── */
+function prevPeriod() {
+  if (currentView === 'week') {
+    weekViewDate.setDate(weekViewDate.getDate() - 7);
+    buildWeekView();
+  } else if (currentView === 'day') {
+    dayViewDate.setDate(dayViewDate.getDate() - 1);
+    buildDayView();
+  } else {
+    prevMonth();
+    return;
+  }
+  updateDateRangeLabel();
+}
+
+function nextPeriod() {
+  if (currentView === 'week') {
+    weekViewDate.setDate(weekViewDate.getDate() + 7);
+    buildWeekView();
+  } else if (currentView === 'day') {
+    dayViewDate.setDate(dayViewDate.getDate() + 1);
+    buildDayView();
+  } else {
+    nextMonth();
+    return;
+  }
+  updateDateRangeLabel();
+}
+
+/* ── Initialise ─────────────────────────────────────────── */
+(function init() {
+  var now = new Date();
+  now.setHours(0, 0, 0, 0);
+
+  // Monday of this week
+  var dow  = now.getDay();
+  var diff = dow === 0 ? -6 : 1 - dow;
+  weekViewDate = new Date(now);
+  weekViewDate.setDate(now.getDate() + diff);
+
+  dayViewDate = new Date(now);
+
+  buildWeekView();
+  updateDateRangeLabel();
+}());

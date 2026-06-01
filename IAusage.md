@@ -165,3 +165,34 @@ Registo de uso de IA no desenvolvimento do projecto DailyNest.
 - [x] Week View e Month View mutuamente exclusivos (show/hide via JS)
 - [x] Mini calendário e painel Upcoming ocultados na Month View
 
+---
+
+## Task #06 — Agenda: Day & Week Views + Navigation
+
+**Data:** 1 de junho de 2026  
+**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
+**Sessão:** Agente autónomo
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/agenda.js` | Adicionadas variáveis de estado `weekViewDate` e `dayViewDate`; `setView()` refactorizado para gerir três vistas (day/week/month) com show/hide correcto dos painéis; adicionada `buildWeekView()` que gera dinamicamente o header da semana (Mon–Sun com hoje marcado) e a grelha de horas (7h–17h) com eventos filtrados por data e hora a partir do array `EVENTS`; adicionada `buildDayView()` que renderiza a lista de eventos do dia seleccionado ordenados por hora, com mensagem "No events" quando vazio; adicionada `updateDateRangeLabel()` que actualiza o texto do toolbar consoante a vista activa (range semanal, data única ou mês); adicionadas `prevPeriod()` e `nextPeriod()` que despacham navegação para a função correcta consoante `currentView` (-7/+7 dias na week view, -1/+1 dia na day view, prevMonth/nextMonth na month view); `prevMonth()` e `nextMonth()` actualizados para chamar `updateDateRangeLabel()`; bloco `init()` adicionado no fim do ficheiro que calcula a segunda-feira da semana actual, inicializa `weekViewDate` e `dayViewDate`, e chama `buildWeekView()` + `updateDateRangeLabel()` para renderizar o estado inicial |
+| `frontend/agenda.html` | Botões de navegação do toolbar alterados de estáticos para `onclick="prevPeriod()"` / `onclick="nextPeriod()"`; texto estático da data range substituído por `<span id="agenda-date-range-text"></span>` (populado dinamicamente pelo JS); conteúdo estático do week header (7 colunas de dias fixos) removido e substituído por `<div class="week-header" id="week-header"></div>`; conteúdo estático do week grid (11 linhas horárias hardcoded) removido e substituído por `<div class="week-grid" id="week-grid"></div>`; adicionado `<div id="day-view">` com `#day-view-title` e `#day-view-list` como contentor da Day View |
+| `frontend/css/modules/agenda.css` | Adicionadas classes: `.day-view-header`, `.day-view-title`, `.day-view-list`, `.day-view-event`, `.day-view-event-time`, `.day-view-event-body`, `.day-view-event-title` |
+
+### Critérios cumpridos (Task #06)
+
+- [x] Botão "Day" no view-toggle activa a Day View; "Week" activa a Week View; "Month" activa a Month View
+- [x] Day View mostra lista de eventos do dia seleccionado, ordenados por hora, com badge colorido
+- [x] Day View mostra mensagem "No events for this day." quando não há eventos
+- [x] Week View renderizada dinamicamente (7 colunas Mon–Sun) a partir do `weekViewDate`
+- [x] Week View marca o dia de hoje com círculo da brand color no header
+- [x] Week View coloca eventos na célula da hora certa (parse do `time` do evento)
+- [x] Setas `‹` / `›` do toolbar chamam `prevPeriod()` / `nextPeriod()`
+- [x] Na Week View, as setas deslocam o período em ±7 dias e re-renderizam
+- [x] Na Day View, as setas deslocam o período em ±1 dia e re-renderizam
+- [x] Na Month View, as setas delegam em `prevMonth()` / `nextMonth()` (comportamento anterior mantido)
+- [x] Label da data range no toolbar actualizada dinamicamente para cada vista e período
+- [x] Inicialização automática no carregamento da página (semana actual com Monday-offset)
+
