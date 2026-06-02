@@ -95,79 +95,98 @@
   <!-- /SIDEBAR -->
 
   <!-- ========== MAIN CONTENT ========== -->
-  <main class="main-content">
+  <main class="main-content notepad-main">
 
     <!-- Page header -->
     <div class="page-header">
       <div>
         <h1>Notepad</h1>
-        <div class="notepad-meta-row">
-          <span>
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            Not saved yet
-          </span>
-          <span id="saveStatus">
-            <span class="unsaved-dot"></span> Unsaved changes
-          </span>
-        </div>
       </div>
       <div class="page-header-actions">
-        <button class="btn btn-ghost" id="clearNoteBtn">
+        <button class="btn btn-primary" onclick="newNote()">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-            <path d="M10 11v6M14 11v6"/>
-            <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
-          Clear
-        </button>
-        <button class="btn btn-primary" id="saveNoteBtn">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-            <polyline points="17 21 17 13 7 13 7 21"/>
-            <polyline points="7 3 7 8 15 8"/>
-          </svg>
-          Save Note
+          New Note
         </button>
       </div>
     </div>
 
-    <!-- Stats bar -->
-    <div class="notepad-stats">
-      <span>
-        <strong>T</strong>&nbsp;
-        <span id="wordCount">0</span> words
-      </span>
-      <span>
-        <strong>≡</strong>&nbsp;
-        <span id="charCount">0</span> characters
-      </span>
-      <span>
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>&nbsp;
-        <span id="readTime">0</span> min read
-      </span>
-    </div>
+    <!-- Two-panel layout -->
+    <div class="notepad-layout">
 
-    <!-- Editor -->
-    <div class="notepad-editor">
-      <input
-        type="text"
-        class="note-title-input"
-        id="noteTitle"
-        placeholder="Untitled Note"
-        autocomplete="off"
-      />
-      <hr class="note-divider" />
-      <textarea
-        class="note-body-input"
-        id="noteBody"
-        placeholder="Start writing your thoughts..."
-      ></textarea>
+      <!-- LEFT: Note list -->
+      <aside class="notes-list-panel">
+        <div class="notes-list-header">
+          <span class="notes-list-count"><span id="notesCount">0</span> notes</span>
+        </div>
+        <div class="notes-list-items" id="notesList">
+          <!-- populated by JS -->
+        </div>
+      </aside>
+
+      <!-- RIGHT: Editor -->
+      <section class="notes-editor-panel" id="editorPanel">
+
+        <!-- Empty state -->
+        <div class="editor-empty-state" id="editorEmptyState">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          <p>Select a note or create a new one</p>
+        </div>
+
+        <!-- Editor content (hidden until a note is selected) -->
+        <div class="editor-content" id="editorContent" style="display:none;">
+          <div class="editor-toolbar">
+            <div class="editor-status" id="saveStatus">
+              <span class="unsaved-dot"></span> Unsaved changes
+            </div>
+            <div class="editor-actions">
+              <span class="editor-wordcount"><span id="wordCount">0</span> words</span>
+              <button class="btn btn-ghost btn-sm" id="deleteNoteBtn" onclick="deleteNote()">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                  <path d="M10 11v6M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                </svg>
+                Delete
+              </button>
+              <button class="btn btn-primary btn-sm" id="saveNoteBtn" onclick="saveNote()">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                Save
+              </button>
+            </div>
+          </div>
+
+          <div class="notepad-editor">
+            <input
+              type="text"
+              class="note-title-input"
+              id="noteTitle"
+              placeholder="Untitled Note"
+              autocomplete="off"
+              oninput="onEditorInput()"
+            />
+            <hr class="note-divider" />
+            <textarea
+              class="note-body-input"
+              id="noteBody"
+              placeholder="Start writing your thoughts..."
+              oninput="onEditorInput()"
+            ></textarea>
+          </div>
+        </div>
+
+      </section>
+
     </div>
 
   </main>
@@ -175,6 +194,7 @@
 
 </div>
 
+<script src="js/api.js"></script>
 <script src="js/router.js"></script>
 <script src="js/modules/notepad.js"></script>
 </body>

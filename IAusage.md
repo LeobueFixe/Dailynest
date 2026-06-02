@@ -248,3 +248,35 @@ Registo de uso de IA no desenvolvimento do projecto DailyNest.
 - [x] `submitEventForm()` agora aplica a mudança localmente de forma imediata (sem depender de callbacks assíncronos)
 - [x] Day View mostrava o mesmo conteúdo que a Week View — `setView()` nunca activava `#day-view` nem chamava `buildDayView()`
 
+---
+
+## Task #08 — Notepad: Note List & Editor
+
+**Data:** 2 de junho de 2026  
+**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/notepad.html` | Página reestruturada com layout de dois painéis: painel esquerdo (lista de notas com título + preview truncado) e painel direito (editor com toolbar); removidos o bloco de estatísticas (words/chars/read time) e os botões Save/Clear anteriores; adicionado bloco `.notepad-layout` com `aside.notes-list-panel` (header com contador de notas + lista `#notesList`) e `section.notes-editor-panel` (estado vazio `#editorEmptyState` + conteúdo `#editorContent` com toolbar e editor); toolbar do editor contém: indicador de status (`#saveStatus`), contador de palavras (`#wordCount`), botão Delete e botão Save; adicionado `<script src="js/api.js"></script>` antes dos outros scripts |
+| `frontend/js/modules/notepad.js` | Ficheiro reescrito de raiz; variáveis de estado globais: `NOTES` (array), `_selectedNoteId`, `_localIdCounter`, `_isDirty`; `loadNotes()` tenta `GET /notes` e em caso de falha carrega do `localStorage` (com 2 notas de exemplo se estiver vazio); `renderNoteList()` renderiza os items da lista esquerda com título e preview truncado (80 chars), destacando a nota activa; `selectNote(id)` popula o editor e mostra o painel direito; `newNote()` cria nota em branco localmente (com `POST /notes` em background), adiciona-a ao topo da lista e abre-a no editor; `saveNote()` actualiza `NOTES` e `localStorage` imediatamente, depois faz `PUT /notes/{id}` em background; `deleteNote()` com `confirm()` nativo — captura o `id` antes de o nulificar, remove da lista, actualiza `localStorage` e chama `DELETE /notes/{id}` em background; `onEditorInput()` marca `_isDirty = true` e actualiza o contador de palavras em tempo real; `setSaveStatus()` actualiza o indicador com ícone ✓ (saved), "Saving…" ou dot laranja (unsaved); `persistLocal()` e `loadFromLocal()` gerem a persistência em `localStorage` como fallback |
+| `frontend/css/modules/notepad.css` | Ficheiro reescrito: adicionadas classes `.notepad-main` (flex column, min-height calc), `.notepad-layout` (flex row, min-height 560px, border + radius + shadow), `.notes-list-panel` (width 280px, border-right, background surface-alt), `.notes-list-header`, `.notes-list-count`, `.notes-list-items` (overflow-y auto), `.note-list-item` (hover + active state com border-left brand), `.note-item-title`, `.note-item-preview`, `.notes-empty-msg`, `.notes-editor-panel` (flex: 1), `.editor-empty-state` (centered SVG + text), `.editor-content` (flex column), `.editor-toolbar` (space-between), `.editor-status`, `.editor-actions`, `.editor-wordcount`, `.btn-sm`, `.unsaved-dot`; estilos do editor interno mantidos e adaptados para flex |
+
+### Critérios cumpridos (Task #08)
+
+- [x] Layout de dois painéis: lista de notas à esquerda, editor à direita
+- [x] Lista mostra título + preview truncado de cada nota
+- [x] Nota activa destacada com border-left preta + fundo branco
+- [x] Estado vazio (SVG + mensagem) quando nenhuma nota está seleccionada
+- [x] Botão "New Note" no page header cria nota em branco, abre-a no editor e foca o título
+- [x] `POST /notes` chamado na criação (com fallback local)
+- [x] `PUT /notes/{id}` chamado ao guardar (com fallback local)
+- [x] `DELETE /notes/{id}` chamado ao eliminar (com confirm + fallback local)
+- [x] Contador de palavras actualizado em tempo real (`oninput`)
+- [x] Indicador de estado: "Unsaved changes" (dot laranja) → "Saving…" → ✓ Saved
+- [x] Persistência em `localStorage` como fallback quando backend indisponível
+- [x] Responsivo: em mobile os dois painéis empilham verticalmente
+
+
