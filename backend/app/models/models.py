@@ -2,16 +2,16 @@
 
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from .database import Base
+from app.database import Base
 
 
 class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False, index=True)
-    email = Column(String, nullable=False, unique=True, index=True)
-    password = Column(String, nullable=False)
+    name = Column(String(50), nullable=False, index=True)
+    email = Column(String(150), nullable=False, unique=True, index=True)
+    password_hash = Column(String(255), nullable=False)
 
     tasks = relationship("Task", back_populates="user", cascade="all, delete")
     agendas = relationship("Agenda", back_populates="user", cascade="all, delete")
