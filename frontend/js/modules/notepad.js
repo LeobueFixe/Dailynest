@@ -8,6 +8,7 @@ var NOTES = [];
 var _selectedNoteId = null;
 var _localIdCounter  = 1;
 var _isDirty         = false;
+var _isPendingNew    = false;
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -77,14 +78,20 @@ function renderNoteList() {
   var counter = npGet('notesCount');
   if (!list) return;
 
-  if (counter) counter.textContent = NOTES.length;
+  // Filter out a brand-new pending note that has no title yet
+  var visibleNotes = NOTES.filter(function (note) {
+    return !(_isPendingNew && String(note.id) === String(_selectedNoteId) && !note.title);
+  });
 
-  if (!NOTES.length) {
+  if (!visibleNotes.length) {
     list.innerHTML = '<div class="notes-empty-msg">No notes yet.<br>Click <strong>New Note</strong> to get started.</div>';
+    if (counter) counter.textContent = visibleNotes.length;
     return;
   }
 
-  list.innerHTML = NOTES.map(function (note) {
+  if (counter) counter.textContent = visibleNotes.length;
+
+  list.innerHTML = visibleNotes.map(function (note) {
     var isActive = String(note.id) === String(_selectedNoteId);
     var titleCls = note.title ? 'note-item-title' : 'note-item-title is-untitled';
     var preview  = truncate(note.body, 60);
@@ -107,8 +114,14 @@ function renderNoteList() {
 /* ── Select a note ───────────────────────────────────────── */
 
 function selectNote(id) {
+  // Discard a pending new note that was never given a title
+  if (_isPendingNew && _selectedNoteId) {
+    NOTES = NOTES.filter(function (n) { return String(n.id) !== String(_selectedNoteId); });
+    persistLocal();
+  }
   _selectedNoteId = id;
   _isDirty = false;
+  _isPendingNew = false;
 
   var note = NOTES.find(function (n) { return String(n.id) === String(id); });
   if (!note) return;
@@ -141,6 +154,26 @@ function onEditorInput() {
   setSaveStatus('unsaved');
 }
 
+/* Title input — auto-save pending new note when title is set ─ */
+
+function onTitleInput() {
+  onEditorInput();
+  if (!_isPendingNew) return;
+  var titleEl = npGet('noteTitle');
+  var title   = titleEl ? titleEl.value.trim() : '';
+  if (!title) return;
+  // Title provided: persist the new note to the backend
+  var note   = NOTES.find(function (n) { return String(n.id) === String(_selectedNoteId); });
+  if (!note) return;
+  var bodyEl = npGet('noteBody');
+  note.title = titleEl ? titleEl.value : '';
+  note.body  = bodyEl  ? bodyEl.value  : '';
+  persistLocal();
+  renderNoteList();
+  setSaveStatus('saving');
+  _persistPendingNew(note, note.title, note.body);
+}
+
 /* ── Word count ──────────────────────────────────────────── */
 
 function updateWordCount() {
@@ -170,23 +203,30 @@ function setSaveStatus(state) {
 
 function newNote() {
   var note = { id: 'local-' + _localIdCounter++, title: '', body: '' };
+  NOTES.unshift(note);
+  persistLocal();
+  renderNoteList();
+  selectNote(note.id);
+  _isPendingNew = true;   // mark as not yet saved to backend
+  setSaveStatus('unsaved');
+  var titleEl = npGet('noteTitle');
+  if (titleEl) titleEl.focus();
+}
 
-  function addToUI(resolvedNote) {
-    NOTES.unshift(resolvedNote);
-    persistLocal();
-    _selectedNoteId = resolvedNote.id;
-    renderNoteList();
-    selectNote(resolvedNote.id);
-    var titleEl = npGet('noteTitle');
-    if (titleEl) titleEl.focus();
-  }
+/* ── Persist a pending-new note to the backend ───────────── */
 
-  apiPost('/notes', { title: note.title, body: note.body })
+function _persistPendingNew(note, title, body) {
+  _isPendingNew = false;
+  apiPost('/notes', { title: title, body: body })
     .then(function (created) {
-      if (created && created.id) note.id = created.id;
-      addToUI(note);
+      if (created && created.id) { note.id = created.id; _selectedNoteId = created.id; }
+      setSaveStatus('saved');
+      persistLocal();
+      renderNoteList();
     })
-    .catch(function () { addToUI(note); });
+    .catch(function () {
+      setSaveStatus('saved'); // saved locally
+    });
 }
 
 /* ── Save current note ───────────────────────────────────── */
@@ -201,6 +241,12 @@ function saveNote() {
   var note = NOTES.find(function (n) { return n.id === _selectedNoteId; });
   if (!note) return;
 
+  // Don't save a brand-new note until the user has provided a title
+  if (_isPendingNew && !title.trim()) {
+    setSaveStatus('unsaved');
+    return;
+  }
+
   note.title = title;
   note.body  = body;
   persistLocal();
@@ -208,16 +254,20 @@ function saveNote() {
   setSaveStatus('saving');
   _isDirty = false;
 
-  apiPut('/notes/' + _selectedNoteId, { title: title, body: body })
-    .then(function (updated) {
-      if (updated && updated.id) { note.id = updated.id; _selectedNoteId = updated.id; }
-      setSaveStatus('saved');
-      persistLocal();
-      renderNoteList();
-    })
-    .catch(function () {
-      setSaveStatus('saved'); // saved locally
-    });
+  if (_isPendingNew) {
+    _persistPendingNew(note, title, body);
+  } else {
+    apiPut('/notes/' + _selectedNoteId, { title: title, body: body })
+      .then(function (updated) {
+        if (updated && updated.id) { note.id = updated.id; _selectedNoteId = updated.id; }
+        setSaveStatus('saved');
+        persistLocal();
+        renderNoteList();
+      })
+      .catch(function () {
+        setSaveStatus('saved'); // saved locally
+      });
+  }
 }
 
 /* ── Delete current note ─────────────────────────────────── */
