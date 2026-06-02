@@ -15,5 +15,3 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
-
-Base = declarative_base()

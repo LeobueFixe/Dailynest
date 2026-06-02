@@ -8,9 +8,11 @@ def create_user(db, name, email, password):
         email=email,
         password_hash=hash_password(password)
     )
+
     db.add(user)
     db.commit()
     db.refresh(user)
+
     return user
 
 
