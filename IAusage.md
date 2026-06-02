@@ -196,3 +196,33 @@ Registo de uso de IA no desenvolvimento do projecto DailyNest.
 - [x] Label da data range no toolbar actualizada dinamicamente para cada vista e período
 - [x] Inicialização automática no carregamento da página (semana actual com Monday-offset)
 
+---
+
+## Task #07 — Agenda Event Form: Create & Edit
+
+**Data:** 2 de junho de 2026  
+**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/api.js` | Adicionada função `apiGet(path)` que faz `GET` e retorna JSON, usada para carregar eventos do backend |
+| `frontend/agenda.html` | Modal do evento substituído: campos `eventName`/`eventDate`/`eventTime`/`eventColor` removidos; novos campos `eventTitle` (text), `eventDescription` (textarea), `eventStartDate` (datetime-local), `eventEndDate` (datetime-local) e hidden `editingEventId`; `onsubmit` do form aponta para `submitEventForm(event)`; botão de submissão com `id="eventSubmitBtn"` (texto dinâmico: *Create Event* / *Save Changes*); botão "New Event" alterado para `openEventModal('create')`; painel `#upcoming-panel` simplificado para conter apenas `<div id="upcoming-list">` (populado dinamicamente pelo JS) |
+| `frontend/js/modules/agenda.js` | Array `EVENTS` convertido de `const` estático para `var` dinâmico (inicialmente vazio); adicionados helpers `evtColor(id)`, `evtDate(isoStr)`, `evtTime(isoStr)` para converter eventos do formato API; adicionada variável de estado `_editingEventId`; adicionada `loadEvents()` que chama `GET /events` e em caso de falha usa dados de exemplo com `start_date`/`end_date` no formato ISO; adicionada `rebuildViews()` que despacha para a view activa; adicionadas `openEventModal(mode, eventId)` e `closeEventModal()` que gerem o estado create/edit do modal (título, botão de submissão, pré-preenchimento dos campos); adicionada `submitEventForm(e)` que faz `POST /events` (create) ou `PUT /events/{id}` (edit) com fallback local em ambos os casos; adicionada `renderUpcomingPanel()` que filtra eventos futuros, ordena por `start_date` crescente, e renderiza os primeiros 5 no `#upcoming-list`; `buildMonthGrid()`, `selectDay()`, `buildWeekView()` e `buildDayView()` actualizados para usar `evtDate(e.start_date)`, `evtTime(e.start_date)` e `evtColor(e.id)` em vez dos campos `date`, `time`, `color` do modelo antigo; eventos na Week View e Day View recebem `onclick="openEventModal('edit', id)"` para edição directa; eventos no painel lateral da Month View recebem um botão de edição `event-edit-btn`; `init()` actualizado para chamar `loadEvents()` no arranque |
+| `frontend/css/modules/agenda.css` | Adicionadas classes: `.form-textarea` (resize vertical, min-height 72px, font-family inherit); `.event-edit-btn` (botão de edição inline nos event items do painel lateral, com hover na brand color) |
+
+### Critérios cumpridos (Task #07)
+
+- [x] Modal com campos: Title (text), Description (textarea), Start (datetime-local), End (datetime-local)
+- [x] Botão "New Event" abre modal em modo criação (título "New Event", botão "Create Event")
+- [x] Click num evento na Week View / Day View / painel lateral abre modal em modo edição pré-preenchido
+- [x] Modo edição mostra título "Edit Event" e botão "Save Changes"
+- [x] `submitEventForm()` faz `POST /events` no modo criação; `PUT /events/{id}` no modo edição
+- [x] Fallback local se o backend não estiver disponível (cria/actualiza `EVENTS` em memória)
+- [x] `renderUpcomingPanel()` filtra eventos com `start_date >= now`, ordena por `start_date` ascendente, mostra os primeiros 5 no painel "Upcoming"
+- [x] Painel "Upcoming" renderizado dinamicamente (substituiu HTML estático)
+- [x] `loadEvents()` chamado no arranque: tenta `GET /events`; em falha usa dados de exemplo no novo formato
+- [x] Todas as vistas (Week, Day, Month) actualizadas para usar o novo modelo de dados com `start_date`/`end_date`
+
