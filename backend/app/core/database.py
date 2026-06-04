@@ -1,17 +1,20 @@
-#DB setup
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
 import os
+from typing import Annotated
+from dotenv import load_dotenv
+from fastapi import Depends
+from sqlmodel import SQLModel, create_engine, Session
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+load_dotenv()
 
-engine = create_engine(DATABASE_URL)
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///database.db")
+engine = create_engine(DATABASE_URL, echo=True)
 
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-)
+def get_session():
+    with Session(engine) as session:
+        yield session
 
-Base = declarative_base()
+SessionDep = Annotated[Session, Depends(get_session)]
+
+def create_tables():
+    """Create all tables in the database."""
+    SQLModel.metadata.create_all(engine)

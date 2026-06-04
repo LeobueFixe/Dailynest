@@ -1,4 +1,4 @@
-Ai use in database.py, models.py and in the docker compose, help to set the db, configs and all the other stufs, and help to decide between using vscode postgresql extension or pgadmin
+Ai use in core, models, schemas, services, router and in the docker compose, help to set the db, configs and all the other stufs, and help to decide between using vscode postgresql extension or pgadmin, I choose pgadmin, because I was not  working well with the extension, so pgadmin was a better choise for now, I took the idea of how can I work with postgreSQL from a tiktok that I watch and after that I Started changing the code to be able to work with my tables, but the cod that I watch was not good for multiple tables and Relationships, so I used the AI to fix imports, endpoints, some errors in the models and schemas.
 
 AI give me this structure idea 
 
