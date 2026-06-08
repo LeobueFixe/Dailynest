@@ -333,3 +333,73 @@ O `components.css` é carregado depois do `layout.css` no HTML. Por isso a regra
 - [x] Stat cards mostram 2 colunas em tablet (≤1024 px) e 1 coluna em mobile (≤480 px)
 - [x] Cards não ficam cortados em ecrãs iPhone (430 px)
 
+---
+
+## Task #10 — Files Page: Layout, New Panel & Upload Modal
+
+**Data:** 8 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/files.html` | Página criada de raiz: sidebar padrão com Files marcado como activo + badge de contagem; main content com header ("Files" + subtítulo + botão "+ New"); body dividido em dois painéis — `files-content` (toolbar + breadcrumb + tabela + grid view) e `files-new-panel` (campo de nome + 4 type cards + botão Create); modal "Upload File" com dropzone drag-and-drop, campos File Name / Category / Description e botões Cancel / Upload File; menu floating de acções por ficheiro (Rename / Download / Delete) |
+| `frontend/css/modules/files.css` | Ficheiro criado de raiz (~280 linhas): estilos para `.files-body` (flex row), `.files-content` (card com border + shadow), `.files-toolbar` (search + view toggle), `.files-breadcrumb`, `.files-table` (list view com hover), `.file-icon` com variantes de cor por tipo (`fi-folder` laranja, `fi-doc` azul, `fi-sheet` verde, `fi-pdf` vermelho, `fi-code` verde escuro, `fi-image` roxo), `.files-grid` (grid view auto-fill), `.files-new-panel` (painel direito fixo), `.type-card` (seleccionável com borda dupla quando activo), `.upload-dropzone` (dashed border + drag-over state), `.file-actions-menu` (menu floating), `.nav-badge` (badge circular no nav link); breakpoints em 1024 px, 860 px e 600 px |
+| `frontend/js/modules/files.js` | Ficheiro criado de raiz: array `_files` com 8 entradas de exemplo marcadas com `example: true`; `renderFiles()` despacha para `renderListView()` e `renderGridView()`; `setView()` alterna entre list e grid com toggle de botões activos; `filterFiles()` filtra em tempo real por nome; `selectType()` e `onNewNameInput()` gerem o estado do painel New (botão Create desactivado até nome + tipo preenchidos); `createItem()` chama `clearExamples()` na primeira criação e adiciona o novo item ao topo; `uploadFile()` idem, detecta o tipo pelo extension do nome; `openActionsMenu()` posiciona o menu floating junto ao botão "..."; `renameFile()` e `deleteFile()` guardam o `id` antes de chamar `hideActionsMenu()` (evita race com `_activeMenuFileId = null`); dropzone com handlers `onDragOver`, `onDragLeave`, `onDrop`; `updateNavBadge()` actualiza o badge com o total de ficheiros |
+| `frontend/tasks.html` | Link de Files no nav actualizado de `href="#"` para `href="files.html"` |
+| `frontend/agenda.html` | Idem |
+| `frontend/notepad.html` | Idem |
+
+### Critérios cumpridos (Task #10)
+
+- [x] Sidebar com Files activo e badge com contagem de ficheiros
+- [x] List view com colunas Name / Modified / Size e botão "..." por linha
+- [x] Grid view com cards de ficheiro (icon + nome + meta)
+- [x] Toggle list/grid funcional com botão activo destacado
+- [x] Search em tempo real por nome de ficheiro
+- [x] Breadcrumb "All Files › My Files" (clicável para reset)
+- [x] Ícones coloridos por tipo de ficheiro (folder, doc, spreadsheet, pdf, code, image)
+- [x] Painel "New" sempre visível: campo de nome + 4 type cards seleccionáveis + botão Create
+- [x] Botão Create desactivado até nome e tipo estarem preenchidos
+- [x] Modal "Upload File" com dropzone (click + drag-and-drop), campos e botão Upload
+- [x] Upload detecta o tipo do ficheiro pela extensão
+- [x] Menu "..." com Rename (prompt nativo), Download (stub) e Delete (confirm nativo)
+- [x] Responsivo: painel New passa para baixo em ≤860 px; colunas Modified/Size ocultadas em ≤600 px
+- [x] Nav links de Files corrigidos em todas as páginas
+
+---
+
+## Fix #05 — Files: delete e rename não funcionavam
+
+**Data:** 8 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi corrigido
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/files.js` | `deleteFile()` e `renameFile()` agora guardam `_activeMenuFileId` numa variável local `id` **antes** de chamar `hideActionsMenu()`, que zerava a variável global; sem esta correcção, `_files.find(...)` recebia `null` e retornava imediatamente sem executar a acção |
+
+### Bug corrigido
+
+- [x] Delete e Rename no menu "..." passaram a funcionar correctamente após preservar o `id` antes de fechar o menu
+
+---
+
+## Fix #06 — Files: limpar exemplos ao criar o primeiro item real
+
+**Data:** 8 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/files.js` | Todos os ficheiros de exemplo passaram a ter `example: true` no array `_files`; adicionada função `clearExamples()` que filtra `_files` removendo todas as entradas com `example: true`; `createItem()` e `uploadFile()` chamam `clearExamples()` antes de inserir o novo item, garantindo que os exemplos desaparecem no primeiro uso real |
+
+### Comportamento corrigido
+
+- [x] Os ficheiros de exemplo são removidos automaticamente quando o utilizador cria ou faz upload do primeiro ficheiro real
+
