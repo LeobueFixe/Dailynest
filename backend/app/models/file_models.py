@@ -1,8 +1,6 @@
 from typing import Optional, TYPE_CHECKING
 from sqlmodel import Field, SQLModel, Relationship
-
-if TYPE_CHECKING:
-    from app.models.user_models import User
+from app.models.user_models import User
 
 
 class File(SQLModel, table=True):

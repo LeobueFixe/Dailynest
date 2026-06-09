@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 from app.models.user_models import User
 from app.schemas.user_schema import UserUpdate
+from app.services.auth_service import hash_password
 
 
 #Get User by ID
@@ -33,8 +34,7 @@ def update_user(db: Session, data: UserUpdate, current_user):
         user.name = data.name
 
     if data.password is not None:
-        #Hash password
-        user.password = data.password
+        user.password = hash_password(data.password)
 
     db.add(user)
     db.commit()

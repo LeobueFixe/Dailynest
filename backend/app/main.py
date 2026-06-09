@@ -11,10 +11,7 @@ from app.routers.file_router import router as file_router
 # Create tables on startup
 create_tables()
 
-app = FastAPI(
-    title="DailyNest",
-    version="1.0.0"
-)
+app = FastAPI()
 
 # Add CORS middleware
 app.add_middleware(
@@ -28,7 +25,7 @@ app.add_middleware(
 # Health check endpoint
 @app.get("/")
 def read_root():
-    return {"message": "Finaly Working!!!"}
+    return {"message": "Working!!!"}
 
 # Include all routers
 app.include_router(auth_router)
