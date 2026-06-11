@@ -1,0 +1,12 @@
+2026-06-11 18:23:22,209 - INFO - Access token created for user 1
+2026-06-11 19:30:02,459 - INFO - Attempting to register user: joaquim@bras.com
+2026-06-11 19:30:02,655 - INFO - User registered successfully: joaquim@bras.com
+2026-06-11 19:30:02,827 - INFO - Access token created for user 1
+2026-06-11 19:30:02,828 - INFO - Token generated for new user: joaquim@bras.com
+2026-06-11 19:30:43,658 - INFO - Loggin attempt for user: joaquim@bras.com
+2026-06-11 19:30:43,841 - INFO - Access token created for user 1
+2026-06-11 19:30:43,841 - INFO - User logged in successfully: joaquim@bras.com
+2026-06-11 20:11:14,398 - INFO - Attempting to register user: string
+2026-06-11 20:11:14,596 - INFO - User registered successfully: string
+2026-06-11 20:11:14,765 - INFO - Access token created for user 1
+2026-06-11 20:11:14,765 - INFO - Token generated for new user: string
