@@ -8,6 +8,7 @@ from app.models.user_models import User
 from app.schemas.user_schema import UserCreate, Token, TokenData
 from app.core.config import settings
 from app.core.database import get_session
+from app.core.logging import logger
 
 #Password Hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -26,6 +27,7 @@ def create_access_token(data: dict, expires_minutes: int = settings.ACCESS_TOKEN
     expire = datetime.utcnow() + timedelta(minutes=expires_minutes)
     to_encode.update({"exp": expire})
 
+    logger.info("Access token created for user %s", data.get("sub"))
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 #Create Account
@@ -33,6 +35,7 @@ def register_user(db: Session, data: UserCreate):
     # Check if email exists
     existing = db.exec(select(User).where(User.email == data.email)).first()
     if existing:
+        logger.warning("Attempt to register with existing email %s", data.email)
         raise HTTPException(status_code=400, detail="Email already registered")
 
     user = User(
