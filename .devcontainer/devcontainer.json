@@ -13,17 +13,21 @@
 		},
 		"ghcr.io/itsmechlark/features/postgresql:1": {},
 		"ghcr.io/devcontainer-community/devcontainer-features/astral.sh-uv:1": {}
+	},
+
+	"forwardPorts": [8000, 5433, 5050],
+	"portsAttributes": {
+		"8000": {
+			"label": "FastAPI",
+			"onAutoForward": "notify"
+		},
+		"5433": {
+			"label": "PostgreSQL",
+			"onAutoForward": "silent"
+		},
+		"5050": {
+			"label": "pgAdmin",
+			"onAutoForward": "notify"
+		}
 	}
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "docker --version",
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
 }
