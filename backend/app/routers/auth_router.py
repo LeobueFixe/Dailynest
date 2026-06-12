@@ -24,7 +24,7 @@ def register_route(
 
         return token_data
 
-    except Exceptions as exc:
+    except Exception as exc:
         logger.exception("Unexpected error occurred while creating a new account")
         raise exc
 

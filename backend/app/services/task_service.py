@@ -1,7 +1,8 @@
-from fastapi import HTTPException, status
 from sqlmodel import Session, select
 from app.models.task_models import Task
 from app.schemas.task_schema import TaskCreate, TaskUpdate
+from app.core.logging import logger
+from app.core.exceptions import NotFoundError, ValidationError
 
 
 #Create Task
@@ -16,24 +17,37 @@ def create_task(db: Session, data: TaskCreate, current_user):
     db.add(task)
     db.commit()
     db.refresh(task)
+
+    logger.info("Task %s created for user %s", task.id, current_user.id)
     return task
+
 
 #Get Task by ID
 def get_task_by_id(db: Session, task_id: int, current_user):
     task = db.get(Task, task_id)
 
     if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
-    
+        logger.warning("Task %s not found", task_id)
+        raise NotFoundError("Task not found")
+
     if task.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not allowed")
-    
+        logger.error(
+            "User %s attempted to access task %s owned by user %s",
+            current_user.id, task_id, task.user_id
+        )
+        raise ValidationError("Not allowed")
+
     return task
+
 
 #Get all Tasks
 def get_tasks(db: Session, current_user):
     query = select(Task).where(Task.user_id == current_user.id)
-    return db.exec(query).all()
+    tasks = db.exec(query).all()
+
+    logger.info("User %s fetched %s tasks", current_user.id, len(tasks))
+    return tasks
+
 
 #Update Task
 def update_task(db: Session, task_id: int, data: TaskUpdate, current_user):
@@ -47,11 +61,14 @@ def update_task(db: Session, task_id: int, data: TaskUpdate, current_user):
 
     if data.category is not None:
         task.category = data.category
-    
+
     db.add(task)
     db.commit()
     db.refresh(task)
+
+    logger.info("Task %s updated for user %s", task_id, current_user.id)
     return task
+
 
 #Delete Task
 def delete_task(db: Session, task_id: int, current_user):
@@ -59,4 +76,6 @@ def delete_task(db: Session, task_id: int, current_user):
 
     db.delete(task)
     db.commit()
+
+    logger.info("Task %s deleted for user %s", task_id, current_user.id)
     return {"detail": "Task deleted successfully"}
