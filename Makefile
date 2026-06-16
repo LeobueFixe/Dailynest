@@ -9,3 +9,4 @@ stop:
 
 clean: stop
 	docker system prune -fa
+

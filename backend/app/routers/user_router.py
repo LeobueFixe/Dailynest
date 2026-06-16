@@ -8,7 +8,6 @@ from app.core.logging import logger
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-
 @router.get("/profile", response_model=UserPublic)
 def get_profile_route(
     db: Session = Depends(get_session),

@@ -8,7 +8,6 @@ from app.core.logging import logger
 
 router = APIRouter(prefix="/agendas", tags=["Agendas"])
 
-
 @router.post("/", response_model=AgendaPublic)
 def create_agenda_route(
     data: AgendaCreate,
