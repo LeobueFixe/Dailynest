@@ -11,7 +11,8 @@ class Task(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(index=True, max_length=100)
     description: Optional[str] = None
-    category: str = Field(default="Personal", max_length=50)
+    category: str = Field(default="Personal", max_length=20)
+    status: str = Field(default="Not-Started", max_length=20)
     
     user_id: int = Field(foreign_key="users.id", nullable=False)
     user: Optional["User"] = Relationship(back_populates="tasks")
