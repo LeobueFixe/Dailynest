@@ -15,8 +15,12 @@
 		"ghcr.io/devcontainer-community/devcontainer-features/astral.sh-uv:1": {}
 	},
 
-	"forwardPorts": [8000, 5433, 5050],
+	"forwardPorts": [8080, 8000, 5433, 5050],
 	"portsAttributes": {
+		"8080": {
+			"lavel": "Frontend",
+			"onAutoForward": "openBrowser"
+		},
 		"8000": {
 			"label": "FastAPI",
 			"onAutoForward": "notify"

@@ -1,11 +1,14 @@
+COMPOSE = docker compose --env-file .env.example
+
 build:
-	docker compose build
+	$(COMPOSE) build
 
 start: build
-	docker compose up -d
+	$(COMPOSE) up -d
+	@until curl -sf htpp://localhost:8080 > /dev/null 2>&1; do sleep 1; done
 
 stop:
-	docker compose down
+	$(COMPOSE) down
 
 clean: stop
 	docker system prune -fa
