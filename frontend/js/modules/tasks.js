@@ -1,3 +1,20 @@
+/* ── Status conversion helpers ──────────────────────────── */
+var statusMap = {
+  'not-started': 'Not started',
+  'in-progress':  'In progress',
+  'completed':    'Completed'
+};
+
+function dbToFrontend(s) {
+  var map = { 'Not-Started': 'not-started', 'In-Progress': 'in-progress', 'Completed': 'completed' };
+  return map[s] || 'not-started';
+}
+
+function frontendToDb(s) {
+  var map = { 'not-started': 'Not-Started', 'in-progress': 'In-Progress', 'completed': 'Completed' };
+  return map[s] || 'Not-Started';
+}
+
 /* ── Load tasks from API ────────────────────────────────── */
 (function loadTasks() {
   apiGet('/tasks/').then(function (tasks) {
@@ -6,19 +23,12 @@
     tbody.innerHTML = '';
     tasks.forEach(function (t) {
       tbody.insertAdjacentHTML('beforeend',
-        buildRow({ id: t.id, name: t.title, status: 'not-started',
+        buildRow({ id: t.id, name: t.title, status: dbToFrontend(t.status),
                    priority: 'medium', dueDate: null, description: t.description }));
     });
     updateStatCards();
   }).catch(function () { /* backend unavailable — start with empty list */ });
 }());
-
-/* ── Task helpers ───────────────────────────────────────── */
-var statusMap = {
-  'not-started': 'Not started',
-  'in-progress':  'In progress',
-  'completed':    'Completed'
-};
 
 // Internal counter for local row IDs
 var _taskIdCounter = 1;
@@ -196,7 +206,7 @@ function markComplete(cb) {
   var newStatus = cb.checked ? 'completed' : 'not-started';
 
   if (id && !String(id).startsWith('local-')) {
-    apiPatch('/tasks/' + id, { status: newStatus }).catch(function () { /* update locally only */ });
+    apiPatch('/tasks/' + id, { status: frontendToDb(newStatus) }).catch(function () { /* update locally only */ });
   }
 
   row.setAttribute('data-status', newStatus);
@@ -246,7 +256,8 @@ function submitCreateTask(e) {
   var payload = {
     title:       name,
     description: description || null,
-    category:    'Personal'
+    category:    'Personal',
+    status:      frontendToDb(status)
   };
 
   if (_editingRow) {
@@ -255,7 +266,7 @@ function submitCreateTask(e) {
     var row = _editingRow;
 
     if (id && !String(id).startsWith('local-')) {
-      apiPatch('/tasks/' + id, { title: payload.title, description: payload.description, category: payload.category }).catch(function () { /* fallback: update locally only */ });
+      apiPatch('/tasks/' + id, { title: payload.title, description: payload.description, category: payload.category, status: payload.status }).catch(function () { /* fallback: update locally only */ });
     }
 
     // Update row attributes and cells locally
