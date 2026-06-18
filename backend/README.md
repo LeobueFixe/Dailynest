@@ -24,3 +24,8 @@ AI give me this structure idea
 
 correct progression
     router → schema(validation) -> service(queries) → model(structure) → database
+
+
+
+Based in this stackoverflow to config dockerfiles
+https://stackoverflow.com/questions/27409761/docker-multiple-dockerfiles-in-project
