@@ -19,6 +19,8 @@ var currentView   = 'week';
 var weekViewDate  = new Date(); // Monday of the displayed week
 var dayViewDate   = new Date(); // The displayed day
 var _editingEventId = null;
+var miniCalDate   = new Date();
+miniCalDate.setDate(1);
 /* ── View toggle ────────────────────────────────────────── */
 function setView(btn) {
   var parent = btn.closest('.view-toggle');
@@ -345,6 +347,7 @@ function rebuildViews() {
   if (currentView === 'week')       buildWeekView();
   else if (currentView === 'day')   buildDayView();
   else                              buildMonthGrid();
+  buildMiniCal();
 }
 
 /* ── Map backend agenda to frontend event format ─────────── */
@@ -363,6 +366,7 @@ function loadEvents() {
   apiGet('/agendas/').then(function (data) {
     EVENTS = Array.isArray(data) ? data.map(agendaToEvent) : [];
     rebuildViews();
+    buildMiniCal();
     renderUpcomingPanel();
   }).catch(function () {
     // Fallback when the backend is not running
@@ -377,6 +381,7 @@ function loadEvents() {
       { id: 8, title: 'Release Demo',    start_date: '2026-06-28T15:00:00', end_date: '2026-06-28T16:00:00', description: '' },
     ];
     rebuildViews();
+    buildMiniCal();
     renderUpcomingPanel();
   });
 }
@@ -503,6 +508,101 @@ function renderUpcomingPanel() {
   }).join('');
 }
 
+/* ── Mini calendar ───────────────────────────────────────── */
+function buildMiniCal() {
+  var year  = miniCalDate.getFullYear();
+  var month = miniCalDate.getMonth();
+
+  var titleEl = document.getElementById('mini-cal-title');
+  if (titleEl) {
+    titleEl.textContent = miniCalDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  var grid = document.getElementById('mini-cal-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  ['M','T','W','T','F','S','S'].forEach(function (d) {
+    var el = document.createElement('div');
+    el.className   = 'day-name';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  var today    = new Date(); today.setHours(0, 0, 0, 0);
+  var firstDay = new Date(year, month, 1);
+  var lastDate = new Date(year, month + 1, 0).getDate();
+  var startDow = firstDay.getDay();
+  startDow = startDow === 0 ? 6 : startDow - 1;
+
+  var totalCells = Math.ceil((startDow + lastDate) / 7) * 7;
+
+  for (var i = 0; i < totalCells; i++) {
+    var cellDate  = new Date(year, month, 1 + (i - startDow));
+    var cellMonth = cellDate.getMonth();
+    var cellDay   = cellDate.getDate();
+    var dateStr   = cellDate.getFullYear() + '-' +
+                    String(cellMonth + 1).padStart(2, '0') + '-' +
+                    String(cellDay).padStart(2, '0');
+
+    var isToday    = cellDate.toDateString() === today.toDateString();
+    var isCurrent  = cellMonth === month;
+    var hasEvents  = EVENTS.some(function (e) { return evtDate(e.start_date) === dateStr; });
+
+    var isSelected = false;
+    if (currentView === 'day') {
+      isSelected = cellDate.toDateString() === dayViewDate.toDateString();
+    } else if (currentView === 'week') {
+      var weekEnd = new Date(weekViewDate);
+      weekEnd.setDate(weekViewDate.getDate() + 6);
+      weekEnd.setHours(23, 59, 59, 999);
+      var cellMid = new Date(cellDate); cellMid.setHours(12, 0, 0, 0);
+      isSelected = cellMid >= weekViewDate && cellMid <= weekEnd;
+    }
+
+    var el = document.createElement('div');
+    el.className = 'day-num' +
+      (!isCurrent  ? ' other-month' : '') +
+      (isToday     ? ' today'       : '') +
+      (isSelected  ? ' selected'    : '') +
+      (hasEvents   ? ' has-event'   : '');
+    el.textContent = cellDay;
+
+    (function (cd) {
+      el.addEventListener('click', function () { miniCalSelectDay(cd); });
+    }(new Date(cellDate)));
+
+    grid.appendChild(el);
+  }
+}
+
+function miniCalSelectDay(date) {
+  if (currentView === 'day') {
+    dayViewDate = new Date(date);
+    buildDayView();
+    updateDateRangeLabel();
+  } else if (currentView === 'week') {
+    var dow  = date.getDay();
+    var diff = dow === 0 ? -6 : 1 - dow;
+    weekViewDate = new Date(date);
+    weekViewDate.setDate(date.getDate() + diff);
+    weekViewDate.setHours(0, 0, 0, 0);
+    buildWeekView();
+    updateDateRangeLabel();
+  }
+  buildMiniCal();
+}
+
+function miniCalPrev() {
+  miniCalDate.setMonth(miniCalDate.getMonth() - 1);
+  buildMiniCal();
+}
+
+function miniCalNext() {
+  miniCalDate.setMonth(miniCalDate.getMonth() + 1);
+  buildMiniCal();
+}
+
 /* ── Initialise ─────────────────────────────────────────── */
 (function init() {
   var now = new Date();
@@ -517,6 +617,7 @@ function renderUpcomingPanel() {
   dayViewDate = new Date(now);
 
   buildWeekView();
+  buildMiniCal();
   updateDateRangeLabel();
   loadEvents();
 }());

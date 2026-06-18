@@ -202,6 +202,8 @@
 .mini-cal-grid .day-num.today { background: var(--color-brand); color: #fff; font-weight: 700; }
 .mini-cal-grid .day-num.other-month { color: #d1d5db; }
 .mini-cal-grid .day-num.has-event { font-weight: 600; color: var(--color-text); }
+.mini-cal-grid .day-num.selected { background: var(--color-brand-light, #eff6ff); color: var(--color-brand); font-weight: 600; }
+.mini-cal-grid .day-num.today.selected { background: var(--color-brand); color: #fff; }
 
 .upcoming-section { }
 .upcoming-section .section-label {
