@@ -1,4 +1,4 @@
-COMPOSE = docker compose --env-file .env.example
+COMPOSE = docker compose --env-file .env
 
 build:
 	$(COMPOSE) build
