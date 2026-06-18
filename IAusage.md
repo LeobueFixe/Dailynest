@@ -403,3 +403,138 @@ O `components.css` é carregado depois do `layout.css` no HTML. Por isso a regra
 
 - [x] Os ficheiros de exemplo são removidos automaticamente quando o utilizador cria ou faz upload do primeiro ficheiro real
 
+---
+
+## Task #11 — Autenticação: Guard & "Remember Me"
+
+**Data:** 18 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/auth.js` | Ficheiro reescrito de raiz (estava vazio): `checkAuth()` redireciona para `login.html` se não houver token em `localStorage`; `logout()` limpa `dn_token` e `dn_user_id` e redireciona para login; `getInitials(name)` gera as iniciais a partir do nome; `loadSidebarUser()` faz `GET /users/profile`, preenche `#sidebarAvatar`, `#sidebarName`, `#sidebarEmail` com os dados reais do utilizador e chama `logout()` em caso de erro (token inválido/expirado); `checkAuth()` e `loadSidebarUser()` correm automaticamente ao carregar qualquer página de app |
+| `frontend/login.html` | Adicionado redirect para `tasks.html` se já existir token (evita duplo login); adicionada IIFE `loadRemembered()` que preenche email + password e activa o checkbox "Remember me" se houver dados guardados; `handleLogin()` actualizado para guardar/limpar `dn_remember_email` e `dn_remember_pwd` no `localStorage` consoante o estado do checkbox |
+| `frontend/register.html` | Adicionado redirect para `tasks.html` se já existir token |
+| `frontend/tasks.html` | Sidebar footer substituído: avatar `RD` hardcoded → `<a href="profile.html">` com `#sidebarAvatar / #sidebarName / #sidebarEmail` dinâmicos; adicionado botão de logout com ícone SVG e `onclick="logout()"`; adicionado `<script src="js/auth.js"></script>` |
+| `frontend/agenda.html` | Idem |
+| `frontend/files.html` | Idem |
+| `frontend/notepad.html` | Idem |
+| `frontend/css/layout.css` | `.sidebar-footer` com `gap: 6px` e `padding: 12px 16px`; adicionados `.sidebar-user-link` (flex, hover, link sem underline para profile), `.sidebar-user-meta` (min-width 0 para truncar texto longo), `.sidebar-logout-btn` (32×32 px, ghost, hover vermelho) |
+
+### Critérios cumpridos (Task #11)
+
+- [x] Todas as páginas de app verificam token no arranque — sem token redireccionam para login
+- [x] Login e Register redirecionam para tasks.html se já houver sessão activa
+- [x] "Remember me" guarda email + password e pré-preenche o formulário na próxima visita
+- [x] Sidebar mostra nome, email e iniciais reais carregados da API
+- [x] Token inválido/expirado → `loadSidebarUser()` chama `logout()` automaticamente
+- [x] Botão de logout no footer do sidebar em todas as páginas de app
+
+---
+
+## Fix #07 — Tasks: sincronização de status entre frontend e backend
+
+**Data:** 18 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi corrigido
+
+| Ficheiro | Alteração |
+|---|---|
+| `backend/app/services/task_service.py` | `create_task()` passou a incluir `status=data.status` ao criar o modelo — o campo era ignorado e a tarefa era sempre criada sem status; `update_task()` passou a aplicar `task.status = data.status` se `data.status is not None` — actualizações de status via `PUT` não tinham efeito |
+| `frontend/js/modules/tasks.js` | `statusMap` movido para o topo do ficheiro; adicionadas `dbToFrontend(s)` (converte `'Not-Started'` → `'not-started'`, etc.) e `frontendToDb(s)` (conversão inversa); `loadTasks()` usa `dbToFrontend(t.status)` ao construir cada linha — as tarefas carregadas da API mostravam sempre `not-started`; `markComplete()` passa `frontendToDb(newStatus)` ao `apiPatch` — o backend recebia `'completed'` em vez de `'Completed'` e rejeitava; `submitCreateTask()` inclui `status: frontendToDb(status)` no payload do `POST` e do `PATCH` de edição |
+
+### Bugs corrigidos
+
+- [x] Tarefas criadas com status específico ficavam sempre como `not-started` no backend
+- [x] Marcar tarefa como concluída enviava `'completed'` (formato frontend) em vez de `'Completed'` (formato backend)
+- [x] Editar tarefa não persistia alterações de status
+- [x] Ao recarregar a página, todas as tarefas apareciam como `not-started` independentemente do status guardado
+
+---
+
+## Task #12 — Agenda: Mini Calendário Dinâmico
+
+**Data:** 18 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/agenda.js` | Adicionada variável de estado `miniCalDate` (inicializada ao dia 1 do mês actual); adicionada `buildMiniCal()` que gera dinamicamente o mini calendário no sidebar: título do mês/ano, 7 colunas de nomes de dias (M–S), grelha com offset Monday-based, marcação de dias de outros meses (`.other-month`), hoje (`.today`), dias com eventos (`.has-event`) e dias seleccionados/na semana activa (`.selected`); click num dia chama `miniCalSelectDay(date)` que navega a week/day view para o período correspondente e recstrói o calendário; adicionadas `miniCalPrev()` e `miniCalNext()` para navegar o mini calendário de forma independente das vistas principais; `buildMiniCal()` chamado em `rebuildViews()`, `loadEvents()` (após load e fallback) e `init()` |
+| `frontend/agenda.html` | `<span class="mini-cal-title">May 2026</span>` substituído por `<span id="mini-cal-title"></span>` (populado pelo JS); botões prev/next do mini calendário com `onclick="miniCalPrev()"` e `onclick="miniCalNext()"`; bloco estático de 35 `<div class="day-num">` removido e substituído por `<div class="mini-cal-grid" id="mini-cal-grid"></div>` |
+
+### Critérios cumpridos (Task #12)
+
+- [x] Mini calendário gerado dinamicamente a partir do mês actual (não hardcoded para maio 2026)
+- [x] Título do mês/ano actualizado automaticamente
+- [x] Dias com eventos marcados com `.has-event`
+- [x] Dia de hoje marcado com `.today`
+- [x] Semana activa (week view) / dia activo (day view) marcado com `.selected`
+- [x] Click num dia do mini calendário navega a vista principal para esse dia/semana
+- [x] Setas do mini calendário navegam o seu mês de forma independente das vistas principais
+- [x] Mini calendário reconstruído sempre que os eventos são carregados ou as vistas são alteradas
+
+---
+
+## Task #13 — Página de Perfil / Account Settings
+
+**Data:** 18 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/profile.html` | Página criada de raiz: sidebar padrão com link de perfil e logout; main content com três cards — **Profile** (avatar com iniciais + form nome/email), **Change Password** (form nova password + confirmação com toggle de visibilidade), **Danger Zone** (botão delete account); modal de confirmação de eliminação de conta; carrega `auth.js` e `profile.js` |
+| `frontend/js/modules/profile.js` | Ficheiro criado de raiz: IIFE `init()` faz `GET /users/profile` e preenche o form + header + sidebar, chamando `logout()` em caso de falha; `getInitials(name)` para o avatar; `updateProfileHeader()` e `updateSidebarMeta()` actualizam os elementos visuais; `submitProfile(e)` faz `PATCH /users/profile` com `{name, email}` e mostra mensagem de sucesso/erro; `submitPassword(e)` valida comprimento mínimo (6 chars) e correspondência antes de fazer `PATCH /users/profile` com `{password}`; `confirmDeleteAccount()` faz `DELETE /users/profile` e chama `logout()` em caso de sucesso |
+| `frontend/css/components.css` | Adicionados estilos da página de perfil: `.settings-content` (max-width 640px), `.settings-card` (card com border + shadow), `.settings-danger` (border e título vermelhos), `.profile-avatar-row` (flex com gap), `.avatar-lg` (56×56 px), `.profile-avatar-name`, `.profile-avatar-email`, `.btn-danger` (vermelho), `.form-msg` com variantes `.success` (verde) e `.error` (vermelho) |
+
+### Critérios cumpridos (Task #13)
+
+- [x] Página `profile.html` acessível a partir do avatar no sidebar footer (link em todas as páginas)
+- [x] Avatar, nome e email carregados da API (`GET /users/profile`) no arranque
+- [x] Form de perfil pré-preenchido com dados actuais; `PATCH /users/profile` ao submeter
+- [x] Mensagem de sucesso/erro inline em cada formulário
+- [x] Alteração de password com validação (mínimo 6 chars, confirmação igual)
+- [x] Danger Zone com modal de confirmação antes de eliminar a conta
+- [x] Eliminação de conta chama `DELETE /users/profile` e faz logout automático
+- [x] Sidebar mostra dados reais do utilizador em vez de `RD` / `Rodrigo Dias` hardcoded
+
+---
+
+## Task #14 — Tasks: Campo de Prioridade
+
+**Data:** 18 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `backend/app/models/task_models.py` | Adicionado campo `priority: str = Field(default="medium", max_length=20)` ao modelo `Task` |
+| `backend/app/schemas/task_schema.py` | Campo `priority: str = "medium"` adicionado a `TaskBase`; campo `priority: Optional[str] = None` adicionado a `TaskUpdate`; `TaskPublic` herda automaticamente de `TaskBase` |
+| `backend/app/services/task_service.py` | `create_task()` passa `priority=data.priority` ao construir o modelo; `update_task()` aplica `task.priority = data.priority` se `data.priority is not None` |
+| Base de dados (PostgreSQL) | Coluna `priority VARCHAR(20) NOT NULL DEFAULT 'medium'` adicionada à tabela `tasks` via `ALTER TABLE` |
+| `frontend/tasks.html` | Cabeçalho `<th>Priority</th>` adicionado à tabela (entre Status e Due Date); linha de exemplo estática actualizada com `<td><span class="priority-badge medium">Medium</span></td>` |
+| `frontend/js/modules/tasks.js` | Adicionado `var priorityLabel` com mapeamento `{high, medium, low}`; `buildRow()` gera `<span class="priority-badge {priority}">` na coluna de prioridade; `loadTasks()` passa `priority: t.priority || 'medium'` ao construir cada linha (em vez de hardcoded `'medium'`); `submitCreateTask()` inclui `priority` no payload de `POST` e de `PATCH`; modo edição actualiza a célula `.priority-badge` da linha após guardar |
+| `frontend/css/modules/tasks.css` | Adicionadas classes `.priority-badge` com variantes de cor: `.high` (fundo vermelho claro / texto vermelho), `.medium` (fundo amarelo claro / texto âmbar), `.low` (fundo verde claro / texto verde); layout mobile actualizado — prioridade ocupa a linha 3 do card; "Due Date" ocultada em mobile para manter o layout compacto |
+
+### Critérios cumpridos (Task #14)
+
+- [x] Campo `priority` persistido na base de dados com default `"medium"`
+- [x] API aceita `priority` na criação (`POST /tasks/`) e na edição (`PATCH /tasks/{id}`)
+- [x] Coluna "Priority" visível na tabela entre Status e Due Date
+- [x] Badge colorido por nível: vermelho (High), âmbar (Medium), verde (Low)
+- [x] Modal de criação e edição enviava já o campo; agora é efectivamente guardado no backend
+- [x] Filtro "All priorities / High / Medium / Low" no toolbar já existia e funciona com os dados reais
+- [x] Ao editar uma tarefa, o badge na linha é actualizado imediatamente sem reload
+- [x] Responsivo: em mobile o badge de prioridade aparece na linha 3 do card
+
