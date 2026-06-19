@@ -617,3 +617,54 @@ O toggle Work/Personal no sidebar apenas alterava o estilo visual dos pills (cla
 - [x] Estado do pill (Work/Personal) persiste entre navegações via `localStorage`
 - [x] Backend: todos os endpoints de listagem aceitam `?category=` como filtro opcional (retrocompatível — sem parâmetro retorna todos os itens do utilizador)
 
+---
+
+## Fix #09 — Remover dados de exemplo para novos utilizadores
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/agenda.js` | Fallback do `.catch()` da `loadEvents()` alterado: array de 8 eventos de exemplo (Team Meeting, Project Review, Lunch Break, etc.) substituído por `EVENTS = []`; a agenda arranca agora vazia quando o backend está indisponível |
+| `frontend/js/modules/files.js` | Array `_files` com 8 entradas de exemplo hardcoded (Work Projects, Design Assets, Meeting Notes.doc, Q2 Report.xlsx, Brand Guidelines.pdf, index.tsx, Screenshots, App Mockup.png) substituído por `var _files = []`; comentário no `.catch()` de `loadFiles()` actualizado para remover menção de "keep example data" |
+| `frontend/js/modules/notepad.js` | Bloco no fallback do `.catch()` de `loadNotes()` que criava 2 notas de exemplo ("Welcome to Notepad" e "Meeting notes") quando `NOTES` estava vazio foi removido; o notepad arranca agora com lista vazia |
+
+### Comportamento corrigido
+
+- [x] Utilizadores novos vêem todos os módulos completamente vazios (sem dados pré-preenchidos)
+- [x] Agenda não mostra eventos fictícios quando o backend está offline
+- [x] Files não mostra ficheiros e pastas fictícias ao abrir a página
+- [x] Notepad não cria notas de boas-vindas automaticamente
+
+---
+
+## Task #16 — Files: Cloud Storage com limites de tamanho
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/files.html` | Botão "New" (chamava `openUploadModal`) renomeado para "Upload" com ícone de cloud upload (SVG); subtítulo alterado de "Manage your documents and folders" para "Your cloud storage"; adicionada barra de armazenamento no page header (`storage-bar-wrap` com track + fill + label "X used of 10 GB"); painel lateral direito `aside.files-new-panel` completamente removido (continha campo de nome, 4 type-cards e botão Create); modal de upload simplificado — campos Category e Description removidos, hint da dropzone alterado para "Max 1 GB per file" |
+| `frontend/js/modules/files.js` | Ficheiro reescrito: adicionadas constantes `MAX_FILE_BYTES = 1 GB` e `MAX_TOTAL_BYTES = 10 GB`; adicionadas variáveis `_pendingFile` (referência ao File object seleccionado) e `_usedBytes` (total de bytes usados em sessão); `applyDroppedFile(file)` valida `file.size > MAX_FILE_BYTES` antes de aceitar — mostra `toast.error` e cancela se exceder; `uploadFile()` valida `_usedBytes + file.size > MAX_TOTAL_BYTES` antes de guardar; ao confirmar, soma `file.size` a `_usedBytes` e chama `updateStorageBar()`; `deleteFile()` subtrai `f.sizeBytes` de `_usedBytes` e actualiza a barra; `openUploadModal()` chama `resetUploadModal()` para limpar estado pendente; adicionadas funções `formatBytes(bytes)` (formata B/KB/MB/GB com 1 casa decimal), `guessType(name)` (detecta tipo pelo extension), `updateStorageBar()` (calcula percentagem e actualiza o DOM), `resetUploadModal()` (limpa `_pendingFile`, input e dropzone text); removidas todas as funções do fluxo "New" anterior (`selectType`, `onNewNameInput`, `updateCreateBtn`, `clearExamples`, `createItem`); `loadFiles()` actualizado para ler `f.size_bytes` da API, converter com `formatBytes()` e recalcular `_usedBytes` após carregar |
+| `frontend/css/modules/files.css` | Removidos todos os estilos do painel New (`.files-new-panel`, `.new-panel-header`, `.new-panel-title`, `.new-panel-subtitle`, `.new-panel-body`, `.new-panel-field`, `.new-panel-label`, `.type-cards`, `.type-card`, `.type-card-icon`, `.icon-doc`, `.icon-sheet`, `.icon-folder`, `.icon-code`, `.type-card-text`, `.type-card-name`, `.type-card-desc`, `.new-panel-footer`, `.new-create-btn`); adicionados estilos da barra de armazenamento: `.storage-bar-wrap` (flex row + gap), `.storage-bar-track` (200 px, 6 px de altura, border-radius), `.storage-bar-fill` (background brand color, transição suave de largura), `.storage-label` (texto muted, nowrap); breakpoints responsive actualizados — removidas referências ao painel New; `.storage-bar-track` reduzida para 120 px em `≤600 px` |
+
+### Critérios cumpridos (Task #16)
+
+- [x] Botão "Upload" no header abre modal de upload (sem painel "New" lateral)
+- [x] Barra de armazenamento visível no cabeçalho: "X used of 10 GB"
+- [x] Validação de ficheiro individual: rejeita ficheiros > 1 GB com `toast.error`
+- [x] Validação de armazenamento total: rejeita upload se total ultrapassar 10 GB
+- [x] `_usedBytes` actualizado ao fazer upload e ao eliminar ficheiros
+- [x] `formatBytes()` formata o tamanho em B, KB, MB ou GB com 1 casa decimal
+- [x] Tamanho do ficheiro exibido no dropzone após selecção ("nome.ext (X.X MB)")
+- [x] Coluna "Size" na tabela preenchida com tamanho real do ficheiro após upload
+- [x] Painel "New" com type-cards completamente removido do HTML e CSS
+- [x] Modal simplificado: apenas dropzone + campo de nome (sem Category/Description)
+
