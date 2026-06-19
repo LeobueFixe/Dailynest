@@ -363,3 +363,175 @@
 .form-msg.success { color: #16a34a; }
 .form-msg.error   { color: #dc2626; }
 
+
+/* ============================================================
+   Toast Notifications
+   ============================================================ */
+#dn-toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 360px;
+  width: calc(100vw - 48px);
+}
+
+.dn-toast {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
+  padding: 14px 14px 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: all;
+  overflow: hidden;
+  position: relative;
+  transform: translateX(calc(100% + 24px));
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.28s ease;
+}
+
+.dn-toast.dn-toast-show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.dn-toast.dn-toast-hide {
+  transform: translateX(calc(100% + 24px));
+  opacity: 0;
+  transition: transform 0.22s ease-in, opacity 0.22s ease-in;
+}
+
+.dn-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+}
+
+.dn-toast-msg {
+  flex: 1;
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.dn-toast-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  margin-top: 1px;
+  transition: color 0.15s, background 0.15s;
+}
+.dn-toast-close:hover {
+  color: var(--color-text);
+  background: var(--color-surface-alt);
+}
+
+.dn-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  animation: dn-progress linear forwards;
+  animation-play-state: paused;
+}
+
+@keyframes dn-progress {
+  from { width: 100%; }
+  to   { width: 0; }
+}
+
+/* Type accent colours */
+.dn-toast-success { border-left: 3px solid #16a34a; }
+.dn-toast-success .dn-toast-icon     { color: #16a34a; }
+.dn-toast-success .dn-toast-progress { background: #16a34a; }
+
+.dn-toast-error { border-left: 3px solid #dc2626; }
+.dn-toast-error .dn-toast-icon     { color: #dc2626; }
+.dn-toast-error .dn-toast-progress { background: #dc2626; }
+
+.dn-toast-warning { border-left: 3px solid #ea580c; }
+.dn-toast-warning .dn-toast-icon     { color: #ea580c; }
+.dn-toast-warning .dn-toast-progress { background: #ea580c; }
+
+.dn-toast-info { border-left: 3px solid #3b82f6; }
+.dn-toast-info .dn-toast-icon     { color: #3b82f6; }
+.dn-toast-info .dn-toast-progress { background: #3b82f6; }
+
+@media (max-width: 480px) {
+  #dn-toast-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    width: auto;
+  }
+}
+
+/* ============================================================
+   Confirm Dialog
+   ============================================================ */
+.dn-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.dn-confirm-overlay.dn-confirm-show { opacity: 1; }
+.dn-confirm-overlay.dn-confirm-hide { opacity: 0; pointer-events: none; }
+
+.dn-confirm-box {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+  transform: scale(0.94);
+  transition: transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.dn-confirm-overlay.dn-confirm-show .dn-confirm-box { transform: scale(1); }
+.dn-confirm-overlay.dn-confirm-hide .dn-confirm-box { transform: scale(0.94); }
+
+.dn-confirm-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.dn-confirm-msg {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.dn-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+

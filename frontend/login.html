@@ -99,6 +99,7 @@
 
 </div>
 
+<script src="js/toast.js"></script>
 <script src="js/router.js"></script>
 <script src="js/api.js"></script>
 <script>
@@ -140,7 +141,7 @@
         window.location.href = 'tasks.html';
       })
       .catch(function () {
-        alert('Login failed. Check your credentials and try again.');
+        toast.error('Login failed. Check your credentials and try again.');
       });
   }
 </script>

@@ -538,3 +538,42 @@ O `components.css` é carregado depois do `layout.css` no HTML. Por isso a regra
 - [x] Ao editar uma tarefa, o badge na linha é actualizado imediatamente sem reload
 - [x] Responsivo: em mobile o badge de prioridade aparece na linha 3 do card
 
+---
+
+## Task #15 — Toast Notifications: Sistema Global de Popups
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/toast.js` | Ficheiro criado de raiz: módulo `toast` (IIFE) com quatro métodos públicos — `toast.success()`, `toast.error()`, `toast.warning()`, `toast.info()`; o contentor `#dn-toast-container` é criado dinamicamente no `<body>` na primeira chamada; cada toast é um `<div>` com ícone SVG, mensagem e botão ✕; barra de progresso animada (`@keyframes dn-progress`) com duração configurável (default 4 s); hover pausa o timer e a animação; `transitionend` remove o elemento do DOM após a animação de saída; mensagem escapada via `createTextNode` para evitar XSS |
+| `frontend/css/components.css` | Adicionada secção "Toast Notifications": `#dn-toast-container` fixo no canto inferior direito com `z-index: 9999`, empilhamento vertical com `gap: 10px` e `pointer-events: none` (passa cliques ao fundo); `.dn-toast` com slide-in via `transform: translateX(calc(100% + 24px))` → `translateX(0)` + `opacity` (cubic-bezier com overshoot); `.dn-toast-hide` inverte a animação; borda esquerda colorida + cor do ícone + cor da barra de progresso por tipo (`success` verde, `error` vermelho, `warning` laranja, `info` azul); breakpoint 480 px — toast ocupa a largura total do ecrã |
+| `frontend/login.html` | Adicionado `<script src="js/toast.js"></script>` (primeiro script); `alert('Login failed…')` substituído por `toast.error(…)` |
+| `frontend/register.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/tasks.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/agenda.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/notepad.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/files.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/profile.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/js/modules/validations.js` | Dois `alert()` substituídos por `toast.error()`: erro de validação do formulário de registo e falha de registo via API |
+| `frontend/js/modules/profile.js` | `alert('Failed to delete account…')` substituído por `toast.error(…)`; adicionados `toast.success()` em `submitProfile()` (update de perfil bem-sucedido) e `submitPassword()` (password actualizada); adicionados `toast.error()` nos respectivos `.catch()` |
+| `frontend/js/modules/tasks.js` | Adicionados `toast.success('Task created.')` após criação com sucesso e após fallback local; adicionado `toast.success('Task updated.')` após edição no modo edit |
+
+### Critérios cumpridos (Task #15)
+
+- [x] Sistema global disponível em todas as páginas da app via `window.toast`
+- [x] Quatro tipos: `success` (verde), `error` (vermelho), `warning` (laranja), `info` (azul)
+- [x] Ícone SVG por tipo, borda esquerda colorida e barra de progresso animada
+- [x] Auto-dismiss após 4 s (configurável por chamada)
+- [x] Hover pausa o timer e a animação de progresso; ao sair retoma o tempo restante
+- [x] Botão ✕ fecha o toast imediatamente
+- [x] Vários toasts empilhados verticalmente, sem bloquear a UI (`pointer-events: none` no contentor)
+- [x] Animação de entrada com overshoot suave (cubic-bezier); saída rápida (ease-in)
+- [x] Nenhum `alert()` restante em todo o frontend
+- [x] Mensagem escapada para prevenir XSS
+- [x] Responsivo: ocupa largura total do ecrã em mobile (≤ 480 px)
+
