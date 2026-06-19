@@ -362,24 +362,19 @@ function agendaToEvent(a) {
 }
 
 /* ── Load events from API (with fallback sample data) ────── */
+function reloadWorkspace() {
+  loadEvents();
+}
+
 function loadEvents() {
-  apiGet('/agendas/').then(function (data) {
+  var ws = typeof getWorkspace === 'function' ? getWorkspace() : 'Work';
+  apiGet('/agendas/?category=' + encodeURIComponent(ws)).then(function (data) {
     EVENTS = Array.isArray(data) ? data.map(agendaToEvent) : [];
     rebuildViews();
     buildMiniCal();
     renderUpcomingPanel();
   }).catch(function () {
-    // Fallback when the backend is not running
-    EVENTS = [
-      { id: 1, title: 'Team Meeting',    start_date: '2026-06-01T09:00:00', end_date: '2026-06-01T10:00:00', description: '' },
-      { id: 2, title: 'Project Review',  start_date: '2026-06-05T10:00:00', end_date: '2026-06-05T11:00:00', description: '' },
-      { id: 3, title: 'Lunch Break',     start_date: '2026-06-05T12:00:00', end_date: '2026-06-05T13:00:00', description: '' },
-      { id: 4, title: 'Client Call',     start_date: '2026-06-10T14:00:00', end_date: '2026-06-10T15:00:00', description: '' },
-      { id: 5, title: 'Sprint Planning', start_date: '2026-06-15T09:30:00', end_date: '2026-06-15T10:30:00', description: '' },
-      { id: 6, title: 'Design Review',   start_date: '2026-06-20T11:00:00', end_date: '2026-06-20T12:00:00', description: '' },
-      { id: 7, title: '1:1 Meeting',     start_date: '2026-06-22T16:00:00', end_date: '2026-06-22T17:00:00', description: '' },
-      { id: 8, title: 'Release Demo',    start_date: '2026-06-28T15:00:00', end_date: '2026-06-28T16:00:00', description: '' },
-    ];
+    EVENTS = [];
     rebuildViews();
     buildMiniCal();
     renderUpcomingPanel();
@@ -445,6 +440,7 @@ function submitEventForm(e) {
     EVENTS.push({ id: newId, title: title, description: desc, start_date: startDate, end_date: endDate });
   }
 
+  var wasEditing = _editingEventId != null;
   closeEventModal();
   rebuildViews();
   renderUpcomingPanel();
@@ -452,10 +448,11 @@ function submitEventForm(e) {
     var panel = document.getElementById('day-events-panel');
     if (panel && panel.style.display !== 'none') selectDay(selectedDay, new Date(selectedDay));
   }
+  toast.success(wasEditing ? 'Event updated.' : 'Event created.');
 
   // ── Sync to API in background ───────────────────────────
   var dateOnly = startDate ? startDate.slice(0, 10) : '';
-  var apiPayload = { event: title, date: dateOnly, category: 'Personal' };
+  var apiPayload = { event: title, date: dateOnly, category: typeof getWorkspace === 'function' ? getWorkspace() : 'Work' };
   if (_editingEventId != null) {
     apiPatch('/agendas/' + _editingEventId, apiPayload).catch(function () {});
   } else {

@@ -538,3 +538,244 @@ O `components.css` é carregado depois do `layout.css` no HTML. Por isso a regra
 - [x] Ao editar uma tarefa, o badge na linha é actualizado imediatamente sem reload
 - [x] Responsivo: em mobile o badge de prioridade aparece na linha 3 do card
 
+---
+
+## Task #15 — Toast Notifications: Sistema Global de Popups
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/toast.js` | Ficheiro criado de raiz: módulo `toast` (IIFE) com quatro métodos públicos — `toast.success()`, `toast.error()`, `toast.warning()`, `toast.info()`; o contentor `#dn-toast-container` é criado dinamicamente no `<body>` na primeira chamada; cada toast é um `<div>` com ícone SVG, mensagem e botão ✕; barra de progresso animada (`@keyframes dn-progress`) com duração configurável (default 4 s); hover pausa o timer e a animação; `transitionend` remove o elemento do DOM após a animação de saída; mensagem escapada via `createTextNode` para evitar XSS |
+| `frontend/css/components.css` | Adicionada secção "Toast Notifications": `#dn-toast-container` fixo no canto inferior direito com `z-index: 9999`, empilhamento vertical com `gap: 10px` e `pointer-events: none` (passa cliques ao fundo); `.dn-toast` com slide-in via `transform: translateX(calc(100% + 24px))` → `translateX(0)` + `opacity` (cubic-bezier com overshoot); `.dn-toast-hide` inverte a animação; borda esquerda colorida + cor do ícone + cor da barra de progresso por tipo (`success` verde, `error` vermelho, `warning` laranja, `info` azul); breakpoint 480 px — toast ocupa a largura total do ecrã |
+| `frontend/login.html` | Adicionado `<script src="js/toast.js"></script>` (primeiro script); `alert('Login failed…')` substituído por `toast.error(…)` |
+| `frontend/register.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/tasks.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/agenda.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/notepad.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/files.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/profile.html` | Adicionado `<script src="js/toast.js"></script>` |
+| `frontend/js/modules/validations.js` | Dois `alert()` substituídos por `toast.error()`: erro de validação do formulário de registo e falha de registo via API |
+| `frontend/js/modules/profile.js` | `alert('Failed to delete account…')` substituído por `toast.error(…)`; adicionados `toast.success()` em `submitProfile()` (update de perfil bem-sucedido) e `submitPassword()` (password actualizada); adicionados `toast.error()` nos respectivos `.catch()` |
+| `frontend/js/modules/tasks.js` | Adicionados `toast.success('Task created.')` após criação com sucesso e após fallback local; adicionado `toast.success('Task updated.')` após edição no modo edit |
+
+### Critérios cumpridos (Task #15)
+
+- [x] Sistema global disponível em todas as páginas da app via `window.toast`
+- [x] Quatro tipos: `success` (verde), `error` (vermelho), `warning` (laranja), `info` (azul)
+- [x] Ícone SVG por tipo, borda esquerda colorida e barra de progresso animada
+- [x] Auto-dismiss após 4 s (configurável por chamada)
+- [x] Hover pausa o timer e a animação de progresso; ao sair retoma o tempo restante
+- [x] Botão ✕ fecha o toast imediatamente
+- [x] Vários toasts empilhados verticalmente, sem bloquear a UI (`pointer-events: none` no contentor)
+- [x] Animação de entrada com overshoot suave (cubic-bezier); saída rápida (ease-in)
+- [x] Nenhum `alert()` restante em todo o frontend
+- [x] Mensagem escapada para prevenir XSS
+- [x] Responsivo: ocupa largura total do ecrã em mobile (≤ 480 px)
+
+---
+
+## Fix #08 — Workspace: perfis Work e Personal com dados separados
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi corrigido
+
+| Ficheiro | Alteração |
+|---|---|
+| `backend/app/services/task_service.py` | `get_tasks()` aceita parâmetro opcional `category`; quando fornecido, a query filtra por `Task.category == category` |
+| `backend/app/services/agenda_service.py` | `get_agendas()` idem com `Agenda.category` |
+| `backend/app/services/notepad_service.py` | `get_notepads()` idem com `Notepad.category` |
+| `backend/app/services/file_service.py` | `get_files()` idem com `File.category` |
+| `backend/app/routers/task_router.py` | `GET /tasks/` aceita `?category=` como query param (`Query(None)`); passa-o para `get_tasks()` |
+| `backend/app/routers/agenda_router.py` | `GET /agendas/` idem |
+| `backend/app/routers/notepad_router.py` | `GET /notepads/` idem |
+| `backend/app/routers/file_router.py` | `GET /files/` idem |
+| `frontend/js/router.js` | Adicionada `getWorkspace()` que lê `localStorage.dn_workspace` (default `'Work'`); `toggleWorkspace()` passa a guardar a escolha em `dn_workspace` e a chamar `reloadWorkspace()` (se disponível na página); IIFE `restoreWorkspacePill()` restaura o pill activo a partir do `localStorage` ao carregar a página |
+| `frontend/js/modules/tasks.js` | `loadTasks()` refactorizado para usar `_fetchTasks()` que passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que limpa a tabela e re-carrega as tarefas do workspace activo; `submitCreateTask()` usa `getWorkspace()` como categoria ao criar tarefas (em vez de `'Personal'` hardcoded) |
+| `frontend/js/modules/agenda.js` | `loadEvents()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que chama `loadEvents()`; `submitEventForm()` usa `getWorkspace()` como categoria ao criar/editar eventos |
+| `frontend/js/modules/notepad.js` | `loadNotes()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que limpa o estado da nota seleccionada e re-carrega as notas; `_persistPendingNew()` usa `getWorkspace()` como categoria |
+| `frontend/js/modules/files.js` | `loadFiles()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que chama `loadFiles()`; `createItem()` usa `getWorkspace()` como categoria |
+
+### Bug corrigido
+
+O toggle Work/Personal no sidebar apenas alterava o estilo visual dos pills (classe `active`) mas não tinha qualquer efeito nos dados apresentados — todos os módulos carregavam e criavam itens sem distinção de workspace. A solução implementou um ciclo completo de separação por workspace:
+
+1. O workspace activo é guardado em `localStorage` (`dn_workspace`)
+2. Ao trocar de workspace, `reloadWorkspace()` é chamada, recarregando os dados filtrados do backend
+3. O backend filtra os resultados pelo campo `category` quando o query param é fornecido
+4. Ao criar itens, a categoria corresponde ao workspace activo
+
+- [x] Work e Personal mostram apenas os seus próprios dados (tasks, eventos, notas, ficheiros)
+- [x] Trocar de workspace recarrega imediatamente os dados filtrados sem reload de página
+- [x] Itens criados ficam associados ao workspace activo no momento da criação
+- [x] Estado do pill (Work/Personal) persiste entre navegações via `localStorage`
+- [x] Backend: todos os endpoints de listagem aceitam `?category=` como filtro opcional (retrocompatível — sem parâmetro retorna todos os itens do utilizador)
+
+---
+
+## Fix #09 — Remover dados de exemplo para novos utilizadores
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/js/modules/agenda.js` | Fallback do `.catch()` da `loadEvents()` alterado: array de 8 eventos de exemplo (Team Meeting, Project Review, Lunch Break, etc.) substituído por `EVENTS = []`; a agenda arranca agora vazia quando o backend está indisponível |
+| `frontend/js/modules/files.js` | Array `_files` com 8 entradas de exemplo hardcoded (Work Projects, Design Assets, Meeting Notes.doc, Q2 Report.xlsx, Brand Guidelines.pdf, index.tsx, Screenshots, App Mockup.png) substituído por `var _files = []`; comentário no `.catch()` de `loadFiles()` actualizado para remover menção de "keep example data" |
+| `frontend/js/modules/notepad.js` | Bloco no fallback do `.catch()` de `loadNotes()` que criava 2 notas de exemplo ("Welcome to Notepad" e "Meeting notes") quando `NOTES` estava vazio foi removido; o notepad arranca agora com lista vazia |
+
+### Comportamento corrigido
+
+- [x] Utilizadores novos vêem todos os módulos completamente vazios (sem dados pré-preenchidos)
+- [x] Agenda não mostra eventos fictícios quando o backend está offline
+- [x] Files não mostra ficheiros e pastas fictícias ao abrir a página
+- [x] Notepad não cria notas de boas-vindas automaticamente
+
+---
+
+## Task #16 — Files: Cloud Storage com limites de tamanho
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/files.html` | Botão "New" (chamava `openUploadModal`) renomeado para "Upload" com ícone de cloud upload (SVG); subtítulo alterado de "Manage your documents and folders" para "Your cloud storage"; adicionada barra de armazenamento no page header (`storage-bar-wrap` com track + fill + label "X used of 10 GB"); painel lateral direito `aside.files-new-panel` completamente removido (continha campo de nome, 4 type-cards e botão Create); modal de upload simplificado — campos Category e Description removidos, hint da dropzone alterado para "Max 1 GB per file" |
+| `frontend/js/modules/files.js` | Ficheiro reescrito: adicionadas constantes `MAX_FILE_BYTES = 1 GB` e `MAX_TOTAL_BYTES = 10 GB`; adicionadas variáveis `_pendingFile` (referência ao File object seleccionado) e `_usedBytes` (total de bytes usados em sessão); `applyDroppedFile(file)` valida `file.size > MAX_FILE_BYTES` antes de aceitar — mostra `toast.error` e cancela se exceder; `uploadFile()` valida `_usedBytes + file.size > MAX_TOTAL_BYTES` antes de guardar; ao confirmar, soma `file.size` a `_usedBytes` e chama `updateStorageBar()`; `deleteFile()` subtrai `f.sizeBytes` de `_usedBytes` e actualiza a barra; `openUploadModal()` chama `resetUploadModal()` para limpar estado pendente; adicionadas funções `formatBytes(bytes)` (formata B/KB/MB/GB com 1 casa decimal), `guessType(name)` (detecta tipo pelo extension), `updateStorageBar()` (calcula percentagem e actualiza o DOM), `resetUploadModal()` (limpa `_pendingFile`, input e dropzone text); removidas todas as funções do fluxo "New" anterior (`selectType`, `onNewNameInput`, `updateCreateBtn`, `clearExamples`, `createItem`); `loadFiles()` actualizado para ler `f.size_bytes` da API, converter com `formatBytes()` e recalcular `_usedBytes` após carregar |
+| `frontend/css/modules/files.css` | Removidos todos os estilos do painel New (`.files-new-panel`, `.new-panel-header`, `.new-panel-title`, `.new-panel-subtitle`, `.new-panel-body`, `.new-panel-field`, `.new-panel-label`, `.type-cards`, `.type-card`, `.type-card-icon`, `.icon-doc`, `.icon-sheet`, `.icon-folder`, `.icon-code`, `.type-card-text`, `.type-card-name`, `.type-card-desc`, `.new-panel-footer`, `.new-create-btn`); adicionados estilos da barra de armazenamento: `.storage-bar-wrap` (flex row + gap), `.storage-bar-track` (200 px, 6 px de altura, border-radius), `.storage-bar-fill` (background brand color, transição suave de largura), `.storage-label` (texto muted, nowrap); breakpoints responsive actualizados — removidas referências ao painel New; `.storage-bar-track` reduzida para 120 px em `≤600 px` |
+
+### Critérios cumpridos (Task #16)
+
+- [x] Botão "Upload" no header abre modal de upload (sem painel "New" lateral)
+- [x] Barra de armazenamento visível no cabeçalho: "X used of 10 GB"
+- [x] Validação de ficheiro individual: rejeita ficheiros > 1 GB com `toast.error`
+- [x] Validação de armazenamento total: rejeita upload se total ultrapassar 10 GB
+- [x] `_usedBytes` actualizado ao fazer upload e ao eliminar ficheiros
+- [x] `formatBytes()` formata o tamanho em B, KB, MB ou GB com 1 casa decimal
+- [x] Tamanho do ficheiro exibido no dropzone após selecção ("nome.ext (X.X MB)")
+- [x] Coluna "Size" na tabela preenchida com tamanho real do ficheiro após upload
+- [x] Painel "New" com type-cards completamente removido do HTML e CSS
+- [x] Modal simplificado: apenas dropzone + campo de nome (sem Category/Description)
+
+---
+
+## Task #17 — Animações: Sistema Global com Framer Motion
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/css/animations.css` | Ficheiro criado de raiz (~444 linhas): keyframes `dn-fade-up`, `dn-fade-down`, `dn-fade-left`, `dn-pop-in`, `dn-dot-pulse`, `dn-shimmer`; animações de entrada da landing page (topbar, eyebrow, h1, desc, actions, divider, right panel, stats card, panel); animações de entrada das páginas de auth (topbar, card); override de modal — `display:flex !important` + `visibility:hidden/opacity:0` + transitions para permitir animação de abertura E fecho sem tocar em JS; hover effects para todos os elementos interactivos (btns, nav links, stat cards, settings cards, action btns, workspace pills, avatar, pagination, nav arrows, view toggles, upload dropzone, storage bar, note items, week events, mini cal days, file action items, sidebar logout); estados iniciais ocultos para elementos staggered (`.stats-item`, `#about h2/p`); suporte a `prefers-reduced-motion` |
+| `frontend/js/animations.js` | Ficheiro criado de raiz (ES module): importa `animate`, `inView`, `stagger` de `https://esm.sh/framer-motion@11`; presets de easing (`ease`, `spring`, `springB`); bloco landing page: stagger das stats items, `inView('#about')` para scroll reveal dos parágrafos, press feedback nos botões; bloco auth: stagger dos campos do formulário com `startDelay: 0.3`, press feedback no botão de submit; bloco app pages: sidebar slide x, sidebar-footer y, nav links stagger x, workspace pills scale stagger, page-header y, stat cards stagger y+scale, task section y, agenda layout (toolbar+calendar+mini panels), notepad (list+editor), files (toolbar+content), settings cards stagger, press feedback em todos os `.btn`, workspace toggle bounce `scale:[0.9,1.06,1]`, action buttons spring |
+| `frontend/index.html` | Adicionados `<link>` e `<script type="module">` para `animations.css` e `animations.js` |
+| `frontend/login.html` | Idem |
+| `frontend/register.html` | Idem |
+| `frontend/tasks.html` | Idem |
+| `frontend/agenda.html` | Idem |
+| `frontend/notepad.html` | Idem |
+| `frontend/files.html` | Idem |
+| `frontend/profile.html` | Idem |
+
+### Critérios cumpridos (Task #17)
+
+- [x] Animações de entrada (fade-up/down/left, pop-in) em todas as 8 páginas
+- [x] Stagger em listas: nav links, stat cards, form fields, settings cards, workspace pills
+- [x] Scroll reveal com `inView` na secção "About" da landing page
+- [x] Micro-interacções de hover em todos os elementos interactivos (lift, slide, scale, spring)
+- [x] Press feedback nos botões com spring physics
+- [x] Modal com animação de abertura E fecho via CSS `visibility/opacity` (sem alterar JS)
+- [x] `<script type="module">` executa após scripts clássicos — sem conflito com app.js/auth.js
+- [x] `prefers-reduced-motion` anula todas as durações
+- [x] Framer Motion v11 via CDN ESM (sem npm, sem build step)
+
+---
+
+## Task #18 — Landing Page: Carrossel com 5 Slides e Auto-rotação
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/index.html` | `.landing-panel` reestruturado: conteúdo estático substituído por `<div class="slider-track" id="sliderTrack">` com 5 `<div class="slide">` (Tasks, Agenda, Notepad, Files, Workspaces), cada um com label, `<h3>` e `<p>` descritivos; dots actualizados com atributos `data-index="0"…"4"`; botões com `id="sliderPrev"` e `id="sliderNext"`; adicionada IIFE carousel script com auto-rotação de 5 s, navegação prev/next, click nos dots, pause ao hover |
+| `frontend/css/animations.css` | Adicionados estilos do carrossel: `.slider-track` com `position:relative; min-height:138px; overflow:hidden`; `.slide` absoluto com `opacity:0; pointer-events:none; transform:translateY(10px)`; `.slide.active` visível com transition cubic-bezier; `.slide.leaving` com exit rápido `translateY(-8px)`; `.slider-dot` com `cursor:pointer` e transition de largura/cor |
+
+### Critérios cumpridos (Task #18)
+
+- [x] 5 slides com conteúdo único por módulo da app (Tasks, Agenda, Notepad, Files, Workspaces)
+- [x] Auto-rotação a cada 5 segundos via `setInterval`
+- [x] Setas prev/next funcionais com reset do timer
+- [x] Dots clicáveis com navegação directa para qualquer slide
+- [x] Animação de entrada (fade-up) e saída (fade-up para cima) com CSS classes `.active`/`.leaving`
+- [x] Cleanup da classe `.leaving` após 300 ms via `setTimeout`
+- [x] Pausa automática ao hover no painel; retoma ao `mouseleave`
+- [x] Dot activo com animação de pulse contínua (`dn-dot-pulse`)
+
+---
+
+## Task #19 — Página "See how it works"
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/how-it-works.html` | Página criada de raiz (página de marketing standalone, sem sidebar): topbar sticky com blur backdrop + logo + nav links + CTA buttons; hero com badge "How it works" + H1 + subtítulo + CTAs; secção "3 steps" (criar conta, escolher workspace, começar a organizar) com cards numerados; 5 secções de feature (Tasks, Agenda, Notepad, Files, Workspaces) em layout duas colunas alternadas (`.feature-row` e `.feature-row.flip` com `direction:rtl`); mockups visuais para cada módulo — Tasks (tabela com rows, checkboxes, badges de status e prioridade), Agenda (grelha semanal com eventos coloridos), Notepad (dois painéis: lista + editor), Files (tabela com ícones por tipo + barra de storage), Workspaces (demo card interactivo com pills Work/Personal); secção de stats (12k+ utilizadores, 98% uptime, 4.9★, 0 integrações); secção CTA escura; footer; scroll reveal com IntersectionObserver em 28 elementos `[data-reveal]`; Framer Motion para press feedback nos botões e click animation nos pills do workspace demo; link "See how it works" na `index.html` alterado de `href="#about"` para `href="how-it-works.html"` |
+| `frontend/css/howto.css` | Ficheiro criado de raiz (~420 linhas) após extracção do bloco `<style>` inline: estilos base, scroll-reveal utility, topbar, secções comuns, hero, steps grid, feature rows, mockup windows (tasks, agenda, notepad, files), workspace section (dark), stats grid, CTA section, footer; breakpoints em 960 px e 540 px |
+
+### Critérios cumpridos (Task #19)
+
+- [x] Página standalone acessível em `how-it-works.html` (sem sidebar, sem auth guard)
+- [x] Link "See how it works" na landing page aponta para a nova página
+- [x] Topbar sticky com backdrop blur, logo e botões Login/Sign up
+- [x] 3 steps de onboarding com cards numerados e ícones coloridos
+- [x] 5 secções de feature com texto + mockup visual (layout alternado esquerda/direita)
+- [x] Mockups pixel-perfect para Tasks, Agenda, Notepad, Files e Workspaces
+- [x] Workspace demo card interactivo (pills clicáveis com animação Framer Motion)
+- [x] Scroll reveal suave (`[data-reveal]` + IntersectionObserver + delays por `data-delay`)
+- [x] Press feedback nos CTAs com Framer Motion
+- [x] Secção de stats, CTA escura e footer com links
+- [x] Responsivo a 960 px (colunas empilham) e 540 px (ajustes de fonte e layout)
+- [x] CSS extraído para ficheiro separado `css/howto.css`
+
+---
+
+## Fix #10 — how-it-works.html: extracção do CSS inline para ficheiro separado
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/css/howto.css` | Ficheiro criado com todo o CSS que estava no bloco `<style>` inline de `how-it-works.html` (861 linhas → ficheiro dedicado na pasta `css/`) |
+| `frontend/how-it-works.html` | Bloco `<style>…</style>` (linhas 11–873) removido; substituído por `<link rel="stylesheet" href="css/howto.css" />` no `<head>` |
+
+### Comportamento após fix
+
+- [x] `how-it-works.html` deixou de ter CSS inline — toda a estilização está em `css/howto.css`
+- [x] Sem alterações visuais — o CSS é exactamente o mesmo, apenas movido de ficheiro
+- [x] Permissões do ficheiro corrigidas (o `sed -i` criara o ficheiro com 0400; recriado com 0644 via Python para o Nginx conseguir ler)
+

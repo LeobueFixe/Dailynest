@@ -1,0 +1,443 @@
+/* ============================================================
+   DailyNest — Animations & Transitions
+   ============================================================ */
+
+/* ─── Reduced motion support ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+@keyframes dn-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dn-fade-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dn-fade-left {
+  from { opacity: 0; transform: translateX(22px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes dn-pop-in {
+  from { opacity: 0; transform: scale(0.86); }
+  65%  { transform: scale(1.05); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dn-dot-pulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(0.65); opacity: 0.45; }
+}
+
+@keyframes dn-shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+/* ============================================================
+   LANDING PAGE — entrance animations
+   ============================================================ */
+.landing-topbar {
+  animation: dn-fade-down 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-eyebrow {
+  animation: dn-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+.landing-h1 {
+  animation: dn-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both;
+}
+
+.landing-desc {
+  animation: dn-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+.landing-actions {
+  animation: dn-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.26s both;
+}
+
+.landing-divider {
+  animation: dn-fade-up 0.4s ease 0.32s both;
+}
+
+.landing-right {
+  animation: dn-fade-left 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.stats-card {
+  animation: dn-pop-in 0.6s cubic-bezier(0.34, 1.3, 0.64, 1) 0.3s both;
+}
+
+.landing-panel {
+  animation: dn-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+.slider-dot.active {
+  animation: dn-dot-pulse 2.5s ease-in-out infinite;
+}
+
+/* ============================================================
+   AUTH PAGES — entrance animations
+   ============================================================ */
+.auth-topbar {
+  animation: dn-fade-down 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.auth-card {
+  animation: dn-fade-up 0.55s cubic-bezier(0.34, 1.15, 0.64, 1) 0.08s both;
+}
+
+/* ============================================================
+   MODALS — CSS-driven open / close transitions
+   Override display:none with visibility to allow CSS transitions
+   ============================================================ */
+.modal-overlay {
+  display: flex !important;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, visibility 0.22s;
+}
+
+.modal-overlay.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-overlay .modal {
+  opacity: 0;
+  transform: scale(0.93) translateY(10px);
+  transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.3s  cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.modal-overlay.open .modal {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* ============================================================
+   BUTTONS — micro-interactions
+   ============================================================ */
+.btn {
+  will-change: transform;
+  transform-origin: center;
+  transition: transform 0.1s ease,
+              opacity 0.15s ease,
+              background-color 0.15s ease !important;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.93) !important;
+}
+
+/* ============================================================
+   NAV LINKS — hover slide
+   ============================================================ */
+.nav-link {
+  transition: background-color 0.14s ease,
+              color 0.14s ease,
+              transform 0.18s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.nav-link:hover:not(.active) {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   STAT CARDS — hover lift
+   ============================================================ */
+.stat-card {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================
+   SETTINGS CARDS — hover lift
+   ============================================================ */
+.settings-card {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s ease;
+}
+
+.settings-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================================
+   TABLE ROWS
+   ============================================================ */
+.task-table tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+/* ============================================================
+   ACTION BUTTONS (edit / delete)
+   ============================================================ */
+.action-btn {
+  transition: transform 0.14s ease,
+              background-color 0.14s ease,
+              color 0.14s ease !important;
+  will-change: transform;
+}
+
+.action-btn:hover {
+  transform: scale(1.18);
+}
+
+.action-btn:active {
+  transform: scale(0.88);
+}
+
+/* ============================================================
+   WORKSPACE TOGGLE PILLS
+   ============================================================ */
+.workspace-toggle .pill {
+  transition: background-color 0.18s ease,
+              color 0.18s ease,
+              transform 0.15s cubic-bezier(0.34, 1.3, 0.64, 1) !important;
+}
+
+.workspace-toggle .pill:hover:not(.active) {
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.avatar-circle {
+  transition: transform 0.2s cubic-bezier(0.34, 1.3, 0.64, 1),
+              box-shadow 0.2s ease;
+}
+
+.sidebar-user-link:hover .avatar-circle {
+  transform: scale(1.1);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.14);
+}
+
+/* ============================================================
+   FORM INPUTS — focus ring
+   ============================================================ */
+.form-input,
+.form-select,
+.form-textarea,
+.input-wrap input {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus,
+.input-wrap input:focus {
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.13);
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.pagination button {
+  transition: background-color 0.12s ease,
+              color 0.12s ease,
+              transform 0.12s ease;
+}
+
+.pagination button:hover:not(.active) {
+  transform: scale(1.12);
+}
+
+/* ============================================================
+   NAV ARROWS (agenda)
+   ============================================================ */
+.nav-arrow {
+  transition: background-color 0.14s ease, transform 0.14s ease;
+}
+
+.nav-arrow:hover {
+  transform: scale(1.1);
+}
+
+.nav-arrow:active {
+  transform: scale(0.9);
+}
+
+/* ============================================================
+   VIEW TOGGLE (agenda / files)
+   ============================================================ */
+.view-toggle button,
+.view-btn {
+  transition: background-color 0.15s ease,
+              color 0.15s ease,
+              transform 0.12s ease;
+}
+
+.view-toggle button:hover:not(.active),
+.view-btn:hover:not(.active) {
+  transform: scale(1.07);
+}
+
+/* ============================================================
+   UPLOAD DROPZONE
+   ============================================================ */
+.upload-dropzone {
+  transition: border-color 0.18s ease,
+              background-color 0.18s ease,
+              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.upload-dropzone:hover {
+  transform: scale(1.015);
+}
+
+/* ============================================================
+   STORAGE BAR
+   ============================================================ */
+.storage-bar-fill {
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   NOTE ITEMS
+   ============================================================ */
+.note-item {
+  transition: background-color 0.12s ease,
+              border-color 0.12s ease,
+              transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.note-item:hover:not(.active) {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   AGENDA — week events
+   ============================================================ */
+.week-event {
+  transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.16s ease,
+              filter 0.16s ease;
+}
+
+.week-event:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================================================
+   MINI CALENDAR DAYS
+   ============================================================ */
+.mini-cal-day:not(.other-month) {
+  transition: background-color 0.1s ease, transform 0.12s ease;
+}
+
+.mini-cal-day:not(.other-month):hover {
+  transform: scale(1.2);
+}
+
+/* ============================================================
+   FILE ACTION MENU ITEMS
+   ============================================================ */
+.file-actions-item {
+  transition: background-color 0.12s ease, transform 0.1s ease;
+}
+
+.file-actions-item:hover {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   SIDEBAR LOGOUT BUTTON
+   ============================================================ */
+.sidebar-logout-btn {
+  transition: background-color 0.14s ease,
+              color 0.14s ease,
+              transform 0.14s ease;
+}
+
+.sidebar-logout-btn:hover  { transform: scale(1.1); }
+.sidebar-logout-btn:active { transform: scale(0.9); }
+
+/* ============================================================
+   NAV BADGE (files counter)
+   ============================================================ */
+.nav-badge {
+  transition: transform 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* ============================================================
+   LANDING — stats card items (initial hidden for JS stagger)
+   ============================================================ */
+.stats-item {
+  opacity: 0;
+}
+
+/* ============================================================
+   ABOUT SECTION (initial hidden for scroll reveal)
+   ============================================================ */
+#about h2,
+#about p {
+  opacity: 0;
+}
+
+/* ============================================================
+   CAROUSEL SLIDER
+   ============================================================ */
+.slider-track {
+  position: relative;
+  min-height: 138px;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide.leaving {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.28s ease,
+              transform 0.28s ease;
+}
+
+/* Dot click cursor */
+.slider-dot {
+  cursor: pointer;
+  transition: width 0.3s cubic-bezier(0.34, 1.3, 0.64, 1),
+              background-color 0.3s ease !important;
+}

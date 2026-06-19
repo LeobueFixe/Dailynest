@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How it works — DailyNest</title>
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/howto.css" />
+</head>
+<body>
+
+<!-- ========== TOPBAR ========== -->
+<header class="howto-topbar">
+  <a href="index.html" class="logo-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    <span class="logo-text"><span class="bold">Daily</span><span class="light">nest</span></span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="#features" class="topbar-nav-link">Features</a>
+    <a href="#how" class="topbar-nav-link">How it works</a>
+    <a href="#about" class="topbar-nav-link">About</a>
+  </nav>
+  <div class="topbar-actions">
+    <a href="login.html" class="btn btn-ghost" style="border-radius:9999px; padding:7px 18px; font-size:0.875rem;">Login</a>
+    <a href="register.html" class="btn btn-primary btn-pill" style="font-size:0.875rem;">Sign up free</a>
+  </div>
+</header>
+
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    How it works
+  </div>
+  <h1>One app for everything<br/>you need to get things done.</h1>
+  <p class="hero-sub">
+    DailyNest combines tasks, agenda, notes, and files into a single workspace.
+    No tabs switching, no integrations, no subscriptions per feature.
+  </p>
+  <div class="hero-actions">
+    <a href="register.html" class="btn btn-primary btn-pill" style="font-size:1rem; padding:12px 28px;">
+      Start for free &rarr;
+    </a>
+    <a href="login.html" class="btn-ghost-dark">Already have an account</a>
+  </div>
+</section>
+
+
+<!-- ========== HOW IT WORKS — 3 steps ========== -->
+<section class="section bg-alt" id="how">
+  <div class="section-inner">
+
+    <div class="section-heading" data-reveal>
+      <span class="section-eyebrow" style="color:var(--color-topbar-accent);">Get started</span>
+      <h2>Up and running in minutes.</h2>
+      <p>No setup fees, no training required. Three simple steps to your organized workspace.</p>
+    </div>
+
+    <div class="steps-grid">
+
+      <div class="step-card" data-reveal data-delay="1">
+        <div class="step-num">1</div>
+        <div class="step-icon-wrap" style="background:#eff6ff; color:#3b82f6;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="step-title">Create your account</div>
+        <div class="step-desc">Sign up in under 30 seconds. Name, email, and password is all you need. No credit card required.</div>
+      </div>
+
+      <div class="step-card" data-reveal data-delay="2">
+        <div class="step-num">2</div>
+        <div class="step-icon-wrap" style="background:#f0fdf4; color:#16a34a;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <div class="step-title">Choose your workspace</div>
+        <div class="step-desc">Switch between Work and Personal at any time. Everything stays separated — tasks, notes, events, and files.</div>
+      </div>
+
+      <div class="step-card" data-reveal data-delay="3">
+        <div class="step-num">3</div>
+        <div class="step-icon-wrap" style="background:#fff7ed; color:#ea580c;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="step-title">Start organizing</div>
+        <div class="step-desc">Add your first task, schedule an event, jot down a note, or upload a file. Everything's in the sidebar.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== FEATURE: TASKS ========== -->
+<section class="section" id="features">
+  <div class="feature-row">
+
+    <!-- Text -->
+    <div data-reveal>
+      <span class="section-eyebrow feature-eyebrow" style="color:#3b82f6;">Tasks</span>
+      <h2 class="feature-title">Stay ahead of everything.</h2>
+      <p class="feature-desc">
+        Create tasks, assign priorities, set due dates, and track progress — all from a clean table that gets out of your way.
+      </p>
+      <ul class="feature-bullets">
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#3b82f6;"></span>
+          Three statuses: Not Started, In Progress, and Completed
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#3b82f6;"></span>
+          Filter by status or priority in one click
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#3b82f6;"></span>
+          Search across all tasks instantly
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#3b82f6;"></span>
+          Summary cards show your progress at a glance
+        </li>
+      </ul>
+    </div>
+
+    <!-- Mockup: Tasks -->
+    <div data-reveal data-delay="2">
+      <div class="mockup-window">
+        <div class="mockup-chrome">
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <span class="mockup-chrome-title">Tasks — DailyNest</span>
+        </div>
+        <div class="mockup-body">
+          <div class="tasks-mock-header">
+            <span class="tasks-mock-title">Tasks</span>
+            <span class="tasks-mock-add">
+              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Task
+            </span>
+          </div>
+          <div class="tasks-mock-table-head">
+            <span></span><span>Task Name</span><span>Status</span><span>Priority</span>
+          </div>
+          <div class="tasks-mock-row">
+            <div class="mock-check done"></div>
+            <span class="mock-task-name done">Design landing page</span>
+            <span class="mock-badge completed">Completed</span>
+            <span class="mock-priority high">High</span>
+          </div>
+          <div class="tasks-mock-row">
+            <div class="mock-check"></div>
+            <span class="mock-task-name">Review pull requests</span>
+            <span class="mock-badge in-progress">In progress</span>
+            <span class="mock-priority medium">Medium</span>
+          </div>
+          <div class="tasks-mock-row">
+            <div class="mock-check"></div>
+            <span class="mock-task-name">Update documentation</span>
+            <span class="mock-badge not-started">Not started</span>
+            <span class="mock-priority low">Low</span>
+          </div>
+          <div class="tasks-mock-row">
+            <div class="mock-check"></div>
+            <span class="mock-task-name">Write Q3 report</span>
+            <span class="mock-badge not-started">Not started</span>
+            <span class="mock-priority high">High</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========== FEATURE: AGENDA ========== -->
+<section class="section bg-alt">
+  <div class="feature-row flip">
+
+    <!-- Mockup: Agenda -->
+    <div data-reveal>
+      <div class="mockup-window">
+        <div class="mockup-chrome">
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <span class="mockup-chrome-title">Agenda — DailyNest</span>
+        </div>
+        <div class="mockup-body">
+          <div class="agenda-mock-toolbar">
+            <div class="agenda-mock-toolbar-left">
+              <h4 class="agenda-mock-title" style="font-size:0.9375rem; font-weight:700;">Agenda</h4>
+              <span class="agenda-mock-range">Jun 9 – Jun 13, 2025</span>
+            </div>
+            <span class="tasks-mock-add" style="font-size:0.6375rem;">+ New Event</span>
+          </div>
+          <!-- Week grid -->
+          <div class="agenda-mock-week">
+            <!-- Header row -->
+            <div></div>
+            <div class="agenda-mock-col-head">
+              <div class="day-num">9</div>Mon
+            </div>
+            <div class="agenda-mock-col-head">
+              <div class="day-num">10</div>Tue
+            </div>
+            <div class="agenda-mock-col-head">
+              <div class="day-num today">11</div>Wed
+            </div>
+            <div class="agenda-mock-col-head">
+              <div class="day-num">12</div>Thu
+            </div>
+            <div class="agenda-mock-col-head">
+              <div class="day-num">13</div>Fri
+            </div>
+
+            <!-- 9:00 -->
+            <div class="agenda-mock-time">9:00</div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-blue">Team standup</div>
+            </div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-blue">Team standup</div>
+            </div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-blue">Team standup</div>
+            </div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+
+            <!-- 11:00 -->
+            <div class="agenda-mock-time">11:00</div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-yellow">Design review</div>
+            </div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+
+            <!-- 14:00 -->
+            <div class="agenda-mock-time">14:00</div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-green">Client call</div>
+            </div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-purple">Sprint planning</div>
+            </div>
+            <div class="agenda-mock-slot"></div>
+
+            <!-- 16:00 -->
+            <div class="agenda-mock-time">16:00</div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot"></div>
+            <div class="agenda-mock-slot">
+              <div class="agenda-event-block ev-yellow">1:1 meeting</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div data-reveal data-delay="2">
+      <span class="section-eyebrow feature-eyebrow" style="color:#16a34a;">Agenda</span>
+      <h2 class="feature-title">Never miss what matters.</h2>
+      <p class="feature-desc">
+        A full calendar that keeps your schedule clear. See events in Day, Week, or Month view and know exactly what's coming next.
+      </p>
+      <ul class="feature-bullets">
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#16a34a;"></span>
+          Day, Week, and Month views with smooth switching
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#16a34a;"></span>
+          Color-coded events for instant visual clarity
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#16a34a;"></span>
+          Mini calendar for fast date navigation
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#16a34a;"></span>
+          Upcoming events panel so nothing slips through
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========== FEATURE: NOTEPAD ========== -->
+<section class="section">
+  <div class="feature-row">
+
+    <!-- Text -->
+    <div data-reveal>
+      <span class="section-eyebrow feature-eyebrow" style="color:#ea580c;">Notepad</span>
+      <h2 class="feature-title">Every idea, instantly saved.</h2>
+      <p class="feature-desc">
+        A distraction-free editor that auto-saves as you type. Your notes live alongside everything else — no app switching needed.
+      </p>
+      <ul class="feature-bullets">
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#ea580c;"></span>
+          Auto-saves on every keystroke — no manual save required
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#ea580c;"></span>
+          Two-panel layout: note list on the left, editor on the right
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#ea580c;"></span>
+          Word count shown live as you write
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#ea580c;"></span>
+          Unlimited notes, always organized by date
+        </li>
+      </ul>
+    </div>
+
+    <!-- Mockup: Notepad -->
+    <div data-reveal data-delay="2">
+      <div class="mockup-window">
+        <div class="mockup-chrome">
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <span class="mockup-chrome-title">Notepad — DailyNest</span>
+        </div>
+        <div class="notepad-mock">
+          <!-- Sidebar -->
+          <div class="notepad-mock-sidebar">
+            <div class="notepad-mock-sidebar-header">Notes</div>
+            <div class="notepad-mock-item active">
+              Weekly Goals
+              <span class="notepad-mock-item-date">Today</span>
+            </div>
+            <div class="notepad-mock-item">
+              Meeting Notes
+              <span class="notepad-mock-item-date">Jun 10</span>
+            </div>
+            <div class="notepad-mock-item">
+              Ideas Backlog
+              <span class="notepad-mock-item-date">Jun 8</span>
+            </div>
+            <div class="notepad-mock-item">
+              Reading list
+              <span class="notepad-mock-item-date">Jun 5</span>
+            </div>
+            <div class="notepad-mock-item">
+              Q3 Planning
+              <span class="notepad-mock-item-date">Jun 2</span>
+            </div>
+          </div>
+          <!-- Editor -->
+          <div class="notepad-mock-editor">
+            <div class="notepad-mock-editor-toolbar">
+              <span class="notepad-mock-wordcount">42 words</span>
+              <span class="notepad-mock-save">Saved</span>
+            </div>
+            <div class="notepad-mock-title-input">Weekly Goals</div>
+            <div class="notepad-mock-body">
+              This week I want to focus on:<br><br>
+              — Finish the new dashboard design<br>
+              — Schedule team retrospective<br>
+              — Start the Q3 planning doc<br>
+              — Follow up with the client<br>
+              — Review open pull requests
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========== FEATURE: FILES ========== -->
+<section class="section bg-alt">
+  <div class="feature-row flip">
+
+    <!-- Mockup: Files -->
+    <div data-reveal>
+      <div class="mockup-window">
+        <div class="mockup-chrome">
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <div class="mockup-chrome-dot"></div>
+          <span class="mockup-chrome-title">Files — DailyNest</span>
+        </div>
+        <div class="mockup-body">
+          <div class="files-mock-header">
+            <span class="files-mock-title">Files</span>
+            <span class="files-mock-upload">
+              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/></svg>
+              Upload
+            </span>
+          </div>
+          <!-- Storage bar -->
+          <div style="margin-bottom:14px;">
+            <div style="height:4px; background:var(--color-bg); border-radius:9999px; overflow:hidden;">
+              <div style="height:100%; width:34%; background:var(--color-brand); border-radius:9999px;"></div>
+            </div>
+            <div style="font-size:0.6875rem; color:var(--color-text-muted); margin-top:4px;">3.4 GB used of 10 GB</div>
+          </div>
+          <div class="files-mock-table-head">
+            <span></span><span>Name</span><span>Modified</span><span>Size</span>
+          </div>
+          <div class="files-mock-row">
+            <div class="file-type-icon icon-pdf">📄</div>
+            <span class="files-mock-name">Q3-Report.pdf</span>
+            <span class="files-mock-meta">Jun 11</span>
+            <span class="files-mock-meta">2.4 MB</span>
+          </div>
+          <div class="files-mock-row">
+            <div class="file-type-icon icon-xlsx">📊</div>
+            <span class="files-mock-name">Budget-2025.xlsx</span>
+            <span class="files-mock-meta">Jun 9</span>
+            <span class="files-mock-meta">512 KB</span>
+          </div>
+          <div class="files-mock-row">
+            <div class="file-type-icon icon-zip">🗂</div>
+            <span class="files-mock-name">brand-assets.zip</span>
+            <span class="files-mock-meta">Jun 7</span>
+            <span class="files-mock-meta">18.2 MB</span>
+          </div>
+          <div class="files-mock-row">
+            <div class="file-type-icon icon-docx">📝</div>
+            <span class="files-mock-name">meeting-notes.docx</span>
+            <span class="files-mock-meta">Jun 5</span>
+            <span class="files-mock-meta">84 KB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div data-reveal data-delay="2">
+      <span class="section-eyebrow feature-eyebrow" style="color:#7c3aed;">Files</span>
+      <h2 class="feature-title">Your cloud, always with you.</h2>
+      <p class="feature-desc">
+        Upload any file and access it alongside your tasks and notes. No third-party storage, no integrations — it's all built in.
+      </p>
+      <ul class="feature-bullets">
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#7c3aed;"></span>
+          Up to 10 GB of cloud storage included
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#7c3aed;"></span>
+          Upload files up to 1 GB each
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#7c3aed;"></span>
+          List and grid views with instant search
+        </li>
+        <li class="feature-bullet">
+          <span class="bullet-dot" style="background:#7c3aed;"></span>
+          Rename and download with a right-click menu
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========== FEATURE: WORKSPACES ========== -->
+<section class="section workspace-section">
+  <div class="workspace-inner">
+
+    <!-- Text -->
+    <div data-reveal>
+      <span class="section-eyebrow" style="color:rgba(255,255,255,0.4);">Workspaces</span>
+      <h2 class="workspace-title">Work and life, in balance.</h2>
+      <p class="workspace-desc">
+        One toggle separates your professional and personal world. Tasks, notes, events, and files stay neatly in their lane — automatically.
+      </p>
+      <ul class="workspace-bullets">
+        <li class="workspace-bullet">
+          <span class="bullet-dot" style="background:rgba(255,255,255,0.35);"></span>
+          Switch workspaces with a single click in the sidebar
+        </li>
+        <li class="workspace-bullet">
+          <span class="bullet-dot" style="background:rgba(255,255,255,0.35);"></span>
+          All four modules — tasks, agenda, notes, files — respect the active workspace
+        </li>
+        <li class="workspace-bullet">
+          <span class="bullet-dot" style="background:rgba(255,255,255,0.35);"></span>
+          Your last workspace is remembered between sessions
+        </li>
+        <li class="workspace-bullet">
+          <span class="bullet-dot" style="background:rgba(255,255,255,0.35);"></span>
+          No confusion, no mixing, no clutter
+        </li>
+      </ul>
+    </div>
+
+    <!-- Workspace demo card -->
+    <div data-reveal data-delay="2">
+      <div class="workspace-demo-card">
+        <div class="workspace-demo-label">Workspace</div>
+        <div class="workspace-pills">
+          <div class="workspace-pill active">Work</div>
+          <div class="workspace-pill">Personal</div>
+        </div>
+        <div class="workspace-demo-items">
+          <div class="workspace-demo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+            </svg>
+            3 tasks in progress
+          </div>
+          <div class="workspace-demo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            2 events this week
+          </div>
+          <div class="workspace-demo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            5 notes in Work
+          </div>
+          <hr class="workspace-demo-divider">
+          <div class="workspace-demo-item" style="color:rgba(255,255,255,0.4); font-size:0.75rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+            </svg>
+            12 files — 3.4 GB used
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========== STATS ========== -->
+<section class="section bg-alt" id="about">
+  <div class="section-inner">
+    <div class="section-heading" data-reveal>
+      <span class="section-eyebrow" style="color:var(--color-text-muted);">By the numbers</span>
+      <h2>Built for people who get things done.</h2>
+      <p>DailyNest started as a frustration with fragmented workflows. It's now used by thousands of people who think in systems.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item" data-reveal data-delay="1">
+        <div class="stat-value">12k+</div>
+        <div class="stat-label">Active users worldwide</div>
+      </div>
+      <div class="stat-item" data-reveal data-delay="2">
+        <div class="stat-value">98%</div>
+        <div class="stat-label">Uptime guaranteed</div>
+      </div>
+      <div class="stat-item" data-reveal data-delay="3">
+        <div class="stat-value">4.9★</div>
+        <div class="stat-label">Average user rating</div>
+      </div>
+      <div class="stat-item" data-reveal data-delay="4">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Third-party integrations needed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CTA ========== -->
+<section class="section cta-section">
+  <div class="section-inner">
+    <div data-reveal>
+      <h2>Ready to get started?</h2>
+      <p>Join thousands of people who've ditched the app chaos. Your workspace is waiting.</p>
+      <div class="cta-actions">
+        <a href="register.html" class="btn btn-white btn-pill" style="font-size:1rem; padding:12px 28px;">
+          Create free account &rarr;
+        </a>
+        <a href="login.html" class="btn-ghost-white">Sign in instead</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== FOOTER ========== -->
+<footer class="howto-footer">
+  <span class="footer-copy">&copy; 2025 DailyNest. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="index.html" class="footer-link">Home</a>
+    <a href="how-it-works.html" class="footer-link">How it works</a>
+    <a href="login.html" class="footer-link">Login</a>
+    <a href="register.html" class="footer-link">Sign up</a>
+  </div>
+</footer>
+
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+  /* Scroll-reveal with IntersectionObserver */
+  (function () {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('[data-reveal]').forEach(function (el) {
+      observer.observe(el);
+    });
+  }());
+</script>
+
+<script type="module">
+  import { animate } from 'https://esm.sh/framer-motion@11';
+
+  const springB = { type: 'spring', stiffness: 420, damping: 22 };
+
+  /* Button press feedback */
+  document.querySelectorAll('.btn, .btn-white, .btn-ghost-dark, .btn-ghost-white').forEach(function (btn) {
+    btn.addEventListener('mousedown',  function () { animate(btn, { scale: 0.94 }, { duration: 0.08 }); });
+    btn.addEventListener('mouseup',    function () { animate(btn, { scale: 1 },    springB); });
+    btn.addEventListener('mouseleave', function () { animate(btn, { scale: 1 },    { duration: 0.1 }); });
+  });
+
+  /* Workspace pill interactive demo */
+  var pills = document.querySelectorAll('.workspace-demo-card .workspace-pill');
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      animate(pill, { scale: [0.9, 1.05, 1] }, { duration: 0.35, ease: 'easeOut' });
+    });
+  });
+</script>
+
+</body>
+</html>
