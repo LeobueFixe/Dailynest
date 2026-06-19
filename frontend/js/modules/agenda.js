@@ -445,6 +445,7 @@ function submitEventForm(e) {
     EVENTS.push({ id: newId, title: title, description: desc, start_date: startDate, end_date: endDate });
   }
 
+  var wasEditing = _editingEventId != null;
   closeEventModal();
   rebuildViews();
   renderUpcomingPanel();
@@ -452,6 +453,7 @@ function submitEventForm(e) {
     var panel = document.getElementById('day-events-panel');
     if (panel && panel.style.display !== 'none') selectDay(selectedDay, new Date(selectedDay));
   }
+  toast.success(wasEditing ? 'Event updated.' : 'Event created.');
 
   // ── Sync to API in background ───────────────────────────
   var dateOnly = startDate ? startDate.slice(0, 10) : '';

@@ -241,9 +241,11 @@ function _persistPendingNew(note, title, body) {
       setSaveStatus('saved');
       persistLocal();
       renderNoteList();
+      toast.success('Note created.');
     })
     .catch(function () {
-      setSaveStatus('saved'); // saved locally
+      setSaveStatus('saved');
+      toast.success('Note saved locally.');
     });
 }
 
@@ -292,24 +294,23 @@ function saveNote() {
 
 function deleteNote() {
   if (!_selectedNoteId) return;
-  var note    = NOTES.find(function (n) { return n.id === _selectedNoteId; });
-  var name    = (note && note.title) ? '"' + note.title + '"' : 'this note';
-  if (!window.confirm('Delete ' + name + '? This cannot be undone.')) return;
+  var note = NOTES.find(function (n) { return n.id === _selectedNoteId; });
+  var name = (note && note.title) ? '"' + note.title + '"' : 'this note';
 
-  var idToDelete = _selectedNoteId; // capture before nulling
-  NOTES = NOTES.filter(function (n) { return n.id !== idToDelete; });
-  persistLocal();
-  _selectedNoteId = null;
-  _isDirty = false;
-
-  showEditor(false);
-  mobileBackToList();
-  renderNoteList();
-  var counter = npGet('notesCount');
-  if (counter) counter.textContent = NOTES.length;
-
-  apiDelete('/notepads/' + idToDelete)
-    .catch(function () {}); // best-effort
+  toast.confirm('Delete ' + name + '? This cannot be undone.', function () {
+    var idToDelete = _selectedNoteId;
+    NOTES = NOTES.filter(function (n) { return n.id !== idToDelete; });
+    persistLocal();
+    _selectedNoteId = null;
+    _isDirty = false;
+    showEditor(false);
+    mobileBackToList();
+    renderNoteList();
+    var counter = npGet('notesCount');
+    if (counter) counter.textContent = NOTES.length;
+    apiDelete('/notepads/' + idToDelete).catch(function () {});
+    toast.success('Note deleted.');
+  }, { title: 'Delete Note', confirmLabel: 'Delete' });
 }
 
 /* ── Init ────────────────────────────────────────────────── */

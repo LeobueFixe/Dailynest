@@ -235,16 +235,17 @@ function markComplete(cb) {
 function deleteTask(btn) {
   var row = btn.closest('tr');
   if (!row) return;
-  var id = row.getAttribute('data-id');
+  var id   = row.getAttribute('data-id');
+  var name = row.getAttribute('data-name') || 'this task';
 
-  if (!window.confirm('Delete this task?')) return;
-
-  if (id && !String(id).startsWith('local-')) {
-    apiDelete('/tasks/' + id).catch(function () { /* already removed locally */ });
-  }
-
-  row.remove();
-  updateStatCards();
+  toast.confirm('Delete "' + name + '"? This cannot be undone.', function () {
+    if (id && !String(id).startsWith('local-')) {
+      apiDelete('/tasks/' + id).catch(function () {});
+    }
+    row.remove();
+    updateStatCards();
+    toast.success('Task deleted.');
+  }, { title: 'Delete Task', confirmLabel: 'Delete' });
 }
 
 function submitCreateTask(e) {
@@ -301,6 +302,7 @@ function submitCreateTask(e) {
       + '<line x1="8" y1="2" x2="8" y2="6"/>'
       + '<line x1="3" y1="10" x2="21" y2="10"/></svg>' + escapeHtml(dateStr);
 
+    toast.success('Task updated.');
     _editingRow = null;
 
   } else {
@@ -313,6 +315,7 @@ function submitCreateTask(e) {
                      priority: priority, dueDate: dueDate,
                      description: created.description }));
         updateStatCards();
+        toast.success('Task created.');
       })
       .catch(function () {
         var tbody = document.getElementById('taskTableBody');
@@ -320,6 +323,7 @@ function submitCreateTask(e) {
           buildRow({ name: name, status: status, priority: priority,
                      dueDate: dueDate, description: description }));
         updateStatCards();
+        toast.success('Task created.');
       });
   }
 

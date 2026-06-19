@@ -52,8 +52,10 @@ function submitProfile(e) {
     setMsg('profileMsg', 'Profile updated successfully.', 'success');
     updateProfileHeader(user.name, user.email);
     updateSidebarMeta(user.name, user.email);
+    toast.success('Profile updated successfully.');
   }).catch(function () {
     setMsg('profileMsg', 'Failed to update profile. Please try again.', 'error');
+    toast.error('Failed to update profile. Please try again.');
   });
 }
 
@@ -74,8 +76,10 @@ function submitPassword(e) {
   apiPatch('/users/profile', { password: newPw }).then(function () {
     setMsg('passwordMsg', 'Password updated successfully.', 'success');
     document.getElementById('passwordForm').reset();
+    toast.success('Password updated successfully.');
   }).catch(function () {
     setMsg('passwordMsg', 'Failed to update password. Please try again.', 'error');
+    toast.error('Failed to update password. Please try again.');
   });
 }
 
@@ -84,6 +88,6 @@ function confirmDeleteAccount() {
     logout();
   }).catch(function () {
     closeModal('deleteAccount');
-    alert('Failed to delete account. Please try again.');
+    toast.error('Failed to delete account. Please try again.');
   });
 }

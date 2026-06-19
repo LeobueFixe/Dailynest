@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const validation = checkRegister();
     if (!validation.valid) {
-      alert(validation.error);
+      toast.error(validation.error);
       return;
     }
 
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = 'tasks.html';
       })
       .catch(function () {
-        alert("Registration failed. Email may already be in use.");
+        toast.error("Registration failed. Email may already be in use.");
       });
   };
 

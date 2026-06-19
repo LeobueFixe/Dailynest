@@ -171,6 +171,7 @@ function createItem() {
   document.querySelectorAll('.type-card').forEach(function (c) { c.classList.remove('selected'); });
   _selectedType = null;
   updateCreateBtn();
+  toast.success('"' + name + '" created.');
 }
 
 /* ── Row / file interaction ──────────────────────────────── */
@@ -218,11 +219,13 @@ function renameFile() {
   if (!f) return;
   var newName = window.prompt('Rename "' + f.name + '":', f.name);
   if (newName && newName.trim()) {
+    var oldName = f.name;
     f.name = newName.trim();
     renderFiles(applySearch());
     if (typeof id === 'number' && !f.example) {
       apiPatch('/files/' + id, { filename: f.name }).catch(function () {});
     }
+    toast.success('"' + oldName + '" renamed to "' + f.name + '".');
   }
 }
 
@@ -235,12 +238,15 @@ function deleteFile() {
   hideActionsMenu();
   var f = _files.find(function (x) { return x.id === id; });
   if (!f) return;
-  if (!window.confirm('Delete "' + f.name + '"?')) return;
-  _files = _files.filter(function (x) { return x.id !== f.id; });
-  renderFiles(applySearch());
-  if (typeof id === 'number' && !f.example) {
-    apiDelete('/files/' + id).catch(function () {});
-  }
+
+  toast.confirm('Delete "' + f.name + '"? This cannot be undone.', function () {
+    _files = _files.filter(function (x) { return x.id !== f.id; });
+    renderFiles(applySearch());
+    if (typeof id === 'number' && !f.example) {
+      apiDelete('/files/' + id).catch(function () {});
+    }
+    toast.success('"' + f.name + '" deleted.');
+  }, { title: 'Delete File', confirmLabel: 'Delete' });
 }
 
 /* ── Upload modal ────────────────────────────────────────── */
@@ -301,6 +307,7 @@ function uploadFile() {
   document.getElementById('dropzoneText').textContent = 'Click to upload';
   document.getElementById('fileInput').value = '';
   closeModal('upload');
+  toast.success('"' + name + '" uploaded.');
 }
 
 /* ── Breadcrumb ──────────────────────────────────────────── */
