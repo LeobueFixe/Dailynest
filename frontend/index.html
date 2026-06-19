@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/reset.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
 </head>
 <body>
 
@@ -47,7 +48,7 @@
         <a href="register.html" class="btn btn-primary btn-pill" style="font-size:1rem; padding:12px 28px;">
           Get started &rarr;
         </a>
-        <a href="#about" class="landing-link">See how it works</a>
+        <a href="how-it-works.html" class="landing-link">See how it works</a>
       </div>
 
       <hr class="landing-divider" />
@@ -92,25 +93,55 @@
       </div>
     </div>
 
-    <!-- Dark bottom panel -->
+    <!-- Dark bottom panel — rotating carousel -->
     <div class="landing-panel">
-      <div class="landing-panel-label">Tasks</div>
-      <h3>Stay ahead of everything.</h3>
-      <p>
-        Capture, prioritize, and tick off tasks as they come. Daily focus
-        lists and smart deadlines keep you moving without the mental overhead.
-      </p>
-      <div class="slider-controls">
-        <div class="slider-dots">
-          <div class="slider-dot active"></div>
-          <div class="slider-dot"></div>
-          <div class="slider-dot"></div>
-          <div class="slider-dot"></div>
-          <div class="slider-dot"></div>
+
+      <div class="slider-track" id="sliderTrack">
+
+        <div class="slide active">
+          <div class="landing-panel-label">Tasks</div>
+          <h3>Stay ahead of everything.</h3>
+          <p>Capture, prioritize, and tick off tasks as they come. Smart deadlines and status tracking keep you moving without the mental overhead.</p>
         </div>
-        <button class="slider-btn" aria-label="Previous slide">&#8249;</button>
-        <button class="slider-btn" aria-label="Next slide">&#8250;</button>
+
+        <div class="slide">
+          <div class="landing-panel-label">Agenda</div>
+          <h3>Never miss what matters.</h3>
+          <p>Visualize your week at a glance. Schedule events, switch between day, week, and month views, and always know what's coming next.</p>
+        </div>
+
+        <div class="slide">
+          <div class="landing-panel-label">Notepad</div>
+          <h3>Every idea, instantly saved.</h3>
+          <p>A distraction-free writing space that auto-saves as you type. No folders, no friction — just your thoughts, always within reach.</p>
+        </div>
+
+        <div class="slide">
+          <div class="landing-panel-label">Files</div>
+          <h3>Your cloud, always with you.</h3>
+          <p>Upload, rename, and download files from anywhere. Up to 10 GB of storage, living right alongside your tasks, events, and notes.</p>
+        </div>
+
+        <div class="slide">
+          <div class="landing-panel-label">Workspaces</div>
+          <h3>Work and life, in balance.</h3>
+          <p>One toggle separates your professional and personal world. Tasks, notes, and files stay neatly in their lane — automatically.</p>
+        </div>
+
+      </div><!-- /slider-track -->
+
+      <div class="slider-controls">
+        <div class="slider-dots" id="sliderDots">
+          <div class="slider-dot active" data-index="0"></div>
+          <div class="slider-dot" data-index="1"></div>
+          <div class="slider-dot" data-index="2"></div>
+          <div class="slider-dot" data-index="3"></div>
+          <div class="slider-dot" data-index="4"></div>
+        </div>
+        <button class="slider-btn" id="sliderPrev" aria-label="Previous slide">&#8249;</button>
+        <button class="slider-btn" id="sliderNext" aria-label="Next slide">&#8250;</button>
       </div>
+
     </div>
 
   </div>
@@ -118,5 +149,66 @@
 
 </div>
 
+<script>
+(function () {
+  var INTERVAL = 5000;
+  var slides   = document.querySelectorAll('.slide');
+  var dots     = document.querySelectorAll('.slider-dot');
+  var current  = 0;
+  var timer    = null;
+
+  function goTo(index) {
+    var prev = current;
+    current = (index + slides.length) % slides.length;
+    if (prev === current) return;
+
+    // Exit the old slide
+    slides[prev].classList.add('leaving');
+    slides[prev].classList.remove('active');
+    setTimeout(function () {
+      slides[prev].classList.remove('leaving');
+    }, 300);
+
+    // Enter the new slide
+    slides[current].classList.add('active');
+
+    // Update dots
+    dots[prev].classList.remove('active');
+    dots[current].classList.add('active');
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startTimer() {
+    timer = setInterval(next, INTERVAL);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    startTimer();
+  }
+
+  document.getElementById('sliderNext').addEventListener('click', function () { next(); resetTimer(); });
+  document.getElementById('sliderPrev').addEventListener('click', function () { prev(); resetTimer(); });
+
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      goTo(parseInt(dot.getAttribute('data-index'), 10));
+      resetTimer();
+    });
+  });
+
+  // Pause on hover
+  var panel = document.querySelector('.landing-panel');
+  if (panel) {
+    panel.addEventListener('mouseenter', function () { clearInterval(timer); });
+    panel.addEventListener('mouseleave', startTimer);
+  }
+
+  startTimer();
+}());
+</script>
+<script type="module" src="js/animations.js"></script>
 </body>
 </html>
