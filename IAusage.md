@@ -668,3 +668,114 @@ O toggle Work/Personal no sidebar apenas alterava o estilo visual dos pills (cla
 - [x] Painel "New" com type-cards completamente removido do HTML e CSS
 - [x] Modal simplificado: apenas dropzone + campo de nome (sem Category/Description)
 
+---
+
+## Task #17 — Animações: Sistema Global com Framer Motion
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/css/animations.css` | Ficheiro criado de raiz (~444 linhas): keyframes `dn-fade-up`, `dn-fade-down`, `dn-fade-left`, `dn-pop-in`, `dn-dot-pulse`, `dn-shimmer`; animações de entrada da landing page (topbar, eyebrow, h1, desc, actions, divider, right panel, stats card, panel); animações de entrada das páginas de auth (topbar, card); override de modal — `display:flex !important` + `visibility:hidden/opacity:0` + transitions para permitir animação de abertura E fecho sem tocar em JS; hover effects para todos os elementos interactivos (btns, nav links, stat cards, settings cards, action btns, workspace pills, avatar, pagination, nav arrows, view toggles, upload dropzone, storage bar, note items, week events, mini cal days, file action items, sidebar logout); estados iniciais ocultos para elementos staggered (`.stats-item`, `#about h2/p`); suporte a `prefers-reduced-motion` |
+| `frontend/js/animations.js` | Ficheiro criado de raiz (ES module): importa `animate`, `inView`, `stagger` de `https://esm.sh/framer-motion@11`; presets de easing (`ease`, `spring`, `springB`); bloco landing page: stagger das stats items, `inView('#about')` para scroll reveal dos parágrafos, press feedback nos botões; bloco auth: stagger dos campos do formulário com `startDelay: 0.3`, press feedback no botão de submit; bloco app pages: sidebar slide x, sidebar-footer y, nav links stagger x, workspace pills scale stagger, page-header y, stat cards stagger y+scale, task section y, agenda layout (toolbar+calendar+mini panels), notepad (list+editor), files (toolbar+content), settings cards stagger, press feedback em todos os `.btn`, workspace toggle bounce `scale:[0.9,1.06,1]`, action buttons spring |
+| `frontend/index.html` | Adicionados `<link>` e `<script type="module">` para `animations.css` e `animations.js` |
+| `frontend/login.html` | Idem |
+| `frontend/register.html` | Idem |
+| `frontend/tasks.html` | Idem |
+| `frontend/agenda.html` | Idem |
+| `frontend/notepad.html` | Idem |
+| `frontend/files.html` | Idem |
+| `frontend/profile.html` | Idem |
+
+### Critérios cumpridos (Task #17)
+
+- [x] Animações de entrada (fade-up/down/left, pop-in) em todas as 8 páginas
+- [x] Stagger em listas: nav links, stat cards, form fields, settings cards, workspace pills
+- [x] Scroll reveal com `inView` na secção "About" da landing page
+- [x] Micro-interacções de hover em todos os elementos interactivos (lift, slide, scale, spring)
+- [x] Press feedback nos botões com spring physics
+- [x] Modal com animação de abertura E fecho via CSS `visibility/opacity` (sem alterar JS)
+- [x] `<script type="module">` executa após scripts clássicos — sem conflito com app.js/auth.js
+- [x] `prefers-reduced-motion` anula todas as durações
+- [x] Framer Motion v11 via CDN ESM (sem npm, sem build step)
+
+---
+
+## Task #18 — Landing Page: Carrossel com 5 Slides e Auto-rotação
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/index.html` | `.landing-panel` reestruturado: conteúdo estático substituído por `<div class="slider-track" id="sliderTrack">` com 5 `<div class="slide">` (Tasks, Agenda, Notepad, Files, Workspaces), cada um com label, `<h3>` e `<p>` descritivos; dots actualizados com atributos `data-index="0"…"4"`; botões com `id="sliderPrev"` e `id="sliderNext"`; adicionada IIFE carousel script com auto-rotação de 5 s, navegação prev/next, click nos dots, pause ao hover |
+| `frontend/css/animations.css` | Adicionados estilos do carrossel: `.slider-track` com `position:relative; min-height:138px; overflow:hidden`; `.slide` absoluto com `opacity:0; pointer-events:none; transform:translateY(10px)`; `.slide.active` visível com transition cubic-bezier; `.slide.leaving` com exit rápido `translateY(-8px)`; `.slider-dot` com `cursor:pointer` e transition de largura/cor |
+
+### Critérios cumpridos (Task #18)
+
+- [x] 5 slides com conteúdo único por módulo da app (Tasks, Agenda, Notepad, Files, Workspaces)
+- [x] Auto-rotação a cada 5 segundos via `setInterval`
+- [x] Setas prev/next funcionais com reset do timer
+- [x] Dots clicáveis com navegação directa para qualquer slide
+- [x] Animação de entrada (fade-up) e saída (fade-up para cima) com CSS classes `.active`/`.leaving`
+- [x] Cleanup da classe `.leaving` após 300 ms via `setTimeout`
+- [x] Pausa automática ao hover no painel; retoma ao `mouseleave`
+- [x] Dot activo com animação de pulse contínua (`dn-dot-pulse`)
+
+---
+
+## Task #19 — Página "See how it works"
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6  
+**Sessão:** Agente autónomo
+
+### O que foi criado / alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/how-it-works.html` | Página criada de raiz (página de marketing standalone, sem sidebar): topbar sticky com blur backdrop + logo + nav links + CTA buttons; hero com badge "How it works" + H1 + subtítulo + CTAs; secção "3 steps" (criar conta, escolher workspace, começar a organizar) com cards numerados; 5 secções de feature (Tasks, Agenda, Notepad, Files, Workspaces) em layout duas colunas alternadas (`.feature-row` e `.feature-row.flip` com `direction:rtl`); mockups visuais para cada módulo — Tasks (tabela com rows, checkboxes, badges de status e prioridade), Agenda (grelha semanal com eventos coloridos), Notepad (dois painéis: lista + editor), Files (tabela com ícones por tipo + barra de storage), Workspaces (demo card interactivo com pills Work/Personal); secção de stats (12k+ utilizadores, 98% uptime, 4.9★, 0 integrações); secção CTA escura; footer; scroll reveal com IntersectionObserver em 28 elementos `[data-reveal]`; Framer Motion para press feedback nos botões e click animation nos pills do workspace demo; link "See how it works" na `index.html` alterado de `href="#about"` para `href="how-it-works.html"` |
+| `frontend/css/howto.css` | Ficheiro criado de raiz (~420 linhas) após extracção do bloco `<style>` inline: estilos base, scroll-reveal utility, topbar, secções comuns, hero, steps grid, feature rows, mockup windows (tasks, agenda, notepad, files), workspace section (dark), stats grid, CTA section, footer; breakpoints em 960 px e 540 px |
+
+### Critérios cumpridos (Task #19)
+
+- [x] Página standalone acessível em `how-it-works.html` (sem sidebar, sem auth guard)
+- [x] Link "See how it works" na landing page aponta para a nova página
+- [x] Topbar sticky com backdrop blur, logo e botões Login/Sign up
+- [x] 3 steps de onboarding com cards numerados e ícones coloridos
+- [x] 5 secções de feature com texto + mockup visual (layout alternado esquerda/direita)
+- [x] Mockups pixel-perfect para Tasks, Agenda, Notepad, Files e Workspaces
+- [x] Workspace demo card interactivo (pills clicáveis com animação Framer Motion)
+- [x] Scroll reveal suave (`[data-reveal]` + IntersectionObserver + delays por `data-delay`)
+- [x] Press feedback nos CTAs com Framer Motion
+- [x] Secção de stats, CTA escura e footer com links
+- [x] Responsivo a 960 px (colunas empilham) e 540 px (ajustes de fonte e layout)
+- [x] CSS extraído para ficheiro separado `css/howto.css`
+
+---
+
+## Fix #10 — how-it-works.html: extracção do CSS inline para ficheiro separado
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi alterado
+
+| Ficheiro | Alteração |
+|---|---|
+| `frontend/css/howto.css` | Ficheiro criado com todo o CSS que estava no bloco `<style>` inline de `how-it-works.html` (861 linhas → ficheiro dedicado na pasta `css/`) |
+| `frontend/how-it-works.html` | Bloco `<style>…</style>` (linhas 11–873) removido; substituído por `<link rel="stylesheet" href="css/howto.css" />` no `<head>` |
+
+### Comportamento após fix
+
+- [x] `how-it-works.html` deixou de ter CSS inline — toda a estilização está em `css/howto.css`
+- [x] Sem alterações visuais — o CSS é exactamente o mesmo, apenas movido de ficheiro
+- [x] Permissões do ficheiro corrigidas (o `sed -i` criara o ficheiro com 0400; recriado com 0644 via Python para o Nginx conseguir ler)
+
