@@ -577,3 +577,43 @@ O `components.css` é carregado depois do `layout.css` no HTML. Por isso a regra
 - [x] Mensagem escapada para prevenir XSS
 - [x] Responsivo: ocupa largura total do ecrã em mobile (≤ 480 px)
 
+---
+
+## Fix #08 — Workspace: perfis Work e Personal com dados separados
+
+**Data:** 19 de junho de 2026  
+**Modelo:** Claude Sonnet 4.6
+
+### O que foi corrigido
+
+| Ficheiro | Alteração |
+|---|---|
+| `backend/app/services/task_service.py` | `get_tasks()` aceita parâmetro opcional `category`; quando fornecido, a query filtra por `Task.category == category` |
+| `backend/app/services/agenda_service.py` | `get_agendas()` idem com `Agenda.category` |
+| `backend/app/services/notepad_service.py` | `get_notepads()` idem com `Notepad.category` |
+| `backend/app/services/file_service.py` | `get_files()` idem com `File.category` |
+| `backend/app/routers/task_router.py` | `GET /tasks/` aceita `?category=` como query param (`Query(None)`); passa-o para `get_tasks()` |
+| `backend/app/routers/agenda_router.py` | `GET /agendas/` idem |
+| `backend/app/routers/notepad_router.py` | `GET /notepads/` idem |
+| `backend/app/routers/file_router.py` | `GET /files/` idem |
+| `frontend/js/router.js` | Adicionada `getWorkspace()` que lê `localStorage.dn_workspace` (default `'Work'`); `toggleWorkspace()` passa a guardar a escolha em `dn_workspace` e a chamar `reloadWorkspace()` (se disponível na página); IIFE `restoreWorkspacePill()` restaura o pill activo a partir do `localStorage` ao carregar a página |
+| `frontend/js/modules/tasks.js` | `loadTasks()` refactorizado para usar `_fetchTasks()` que passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que limpa a tabela e re-carrega as tarefas do workspace activo; `submitCreateTask()` usa `getWorkspace()` como categoria ao criar tarefas (em vez de `'Personal'` hardcoded) |
+| `frontend/js/modules/agenda.js` | `loadEvents()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que chama `loadEvents()`; `submitEventForm()` usa `getWorkspace()` como categoria ao criar/editar eventos |
+| `frontend/js/modules/notepad.js` | `loadNotes()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que limpa o estado da nota seleccionada e re-carrega as notas; `_persistPendingNew()` usa `getWorkspace()` como categoria |
+| `frontend/js/modules/files.js` | `loadFiles()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que chama `loadFiles()`; `createItem()` usa `getWorkspace()` como categoria |
+
+### Bug corrigido
+
+O toggle Work/Personal no sidebar apenas alterava o estilo visual dos pills (classe `active`) mas não tinha qualquer efeito nos dados apresentados — todos os módulos carregavam e criavam itens sem distinção de workspace. A solução implementou um ciclo completo de separação por workspace:
+
+1. O workspace activo é guardado em `localStorage` (`dn_workspace`)
+2. Ao trocar de workspace, `reloadWorkspace()` é chamada, recarregando os dados filtrados do backend
+3. O backend filtra os resultados pelo campo `category` quando o query param é fornecido
+4. Ao criar itens, a categoria corresponde ao workspace activo
+
+- [x] Work e Personal mostram apenas os seus próprios dados (tasks, eventos, notas, ficheiros)
+- [x] Trocar de workspace recarrega imediatamente os dados filtrados sem reload de página
+- [x] Itens criados ficam associados ao workspace activo no momento da criação
+- [x] Estado do pill (Work/Personal) persiste entre navegações via `localStorage`
+- [x] Backend: todos os endpoints de listagem aceitam `?category=` como filtro opcional (retrocompatível — sem parâmetro retorna todos os itens do utilizador)
+
