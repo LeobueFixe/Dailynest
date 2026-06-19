@@ -2,20 +2,14 @@
    Files Module
    ============================================================ */
 
-var _files = [
-  { id: 1, name: 'Work Projects',       type: 'folder',      example: true, items: 12,   modified: 'Today',      size: null     },
-  { id: 2, name: 'Design Assets',       type: 'folder',      example: true, items: 34,   modified: 'Yesterday',  size: null     },
-  { id: 3, name: 'Meeting Notes.doc',   type: 'document',    example: true, items: null, modified: 'Today',      size: '24 KB'  },
-  { id: 4, name: 'Q2 Report.xlsx',      type: 'spreadsheet', example: true, items: null, modified: '2 days ago', size: '118 KB' },
-  { id: 5, name: 'Brand Guidelines.pdf',type: 'pdf',         example: true, items: null, modified: '3 days ago', size: '3.4 MB' },
-  { id: 6, name: 'index.tsx',           type: 'code',        example: true, items: null, modified: 'Today',      size: '8 KB'   },
-  { id: 7, name: 'Screenshots',         type: 'folder',      example: true, items: 7,    modified: 'Last week',  size: null     },
-  { id: 8, name: 'App Mockup.png',      type: 'image',       example: true, items: null, modified: 'Last week',  size: '2.1 MB' },
-];
-
+var _files = [];
 var _currentView = 'list';
-var _selectedType = null;
 var _activeMenuFileId = null;
+var _pendingFile = null;
+var _usedBytes = 0;
+
+var MAX_FILE_BYTES  = 1 * 1024 * 1024 * 1024;  // 1 GB
+var MAX_TOTAL_BYTES = 10 * 1024 * 1024 * 1024; // 10 GB
 
 /* ── Load files from API ─────────────────────────────────── */
 function reloadWorkspace() {
@@ -27,23 +21,28 @@ function loadFiles() {
   apiGet('/files/?category=' + encodeURIComponent(ws)).then(function (data) {
     if (!Array.isArray(data) || !data.length) return;
     _files = data.map(function (f) {
+      var sb = f.size_bytes || 0;
       return {
-        id:       f.id,
-        name:     f.filename,
-        type:     'default',
-        items:    null,
-        modified: 'Synced',
-        size:     null
+        id:        f.id,
+        name:      f.filename,
+        type:      guessType(f.filename),
+        items:     null,
+        modified:  'Synced',
+        size:      sb ? formatBytes(sb) : null,
+        sizeBytes: sb
       };
     });
+    _usedBytes = _files.reduce(function (a, f) { return a + (f.sizeBytes || 0); }, 0);
     renderFiles(_files);
-  }).catch(function () { /* backend unavailable — keep example data */ });
+    updateStorageBar();
+  }).catch(function () { /* backend unavailable */ });
 }
 
 /* ── Init ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', function () {
   renderFiles(_files);
   updateNavBadge();
+  updateStorageBar();
   loadFiles();
 
   document.addEventListener('click', function (e) {
@@ -76,7 +75,6 @@ function renderListView(list) {
           '<div class="file-icon ' + getIconClass(f.type) + '">' + getIconSvg(f.type) + '</div>' +
           '<div class="file-name-info">' +
             '<span class="file-name-text">' + escHtml(f.name) + '</span>' +
-            (f.items !== null ? '<span class="file-name-meta">' + f.items + ' items</span>' : '') +
           '</div>' +
         '</div>' +
       '</td>' +
@@ -101,7 +99,7 @@ function renderGridView(list) {
     return '<div class="grid-file-card" onclick="handleFileOpen(' + f.id + ')">' +
       '<div class="file-icon ' + getIconClass(f.type) + '">' + getIconSvg(f.type) + '</div>' +
       '<span class="grid-file-name">' + escHtml(f.name) + '</span>' +
-      '<span class="grid-file-meta">' + (f.size || (f.items !== null ? f.items + ' items' : '—')) + '</span>' +
+      '<span class="grid-file-meta">' + (f.size || '—') + '</span>' +
     '</div>';
   }).join('');
 }
@@ -124,62 +122,6 @@ function filterFiles() {
   renderFiles(filtered);
 }
 
-/* ── New item panel ──────────────────────────────────────── */
-function selectType(card) {
-  document.querySelectorAll('.type-card').forEach(function (c) { c.classList.remove('selected'); });
-  card.classList.add('selected');
-  _selectedType = card.dataset.type;
-  updateCreateBtn();
-}
-
-function onNewNameInput() {
-  updateCreateBtn();
-}
-
-function updateCreateBtn() {
-  var btn = document.getElementById('createBtn');
-  if (!btn) return;
-  var name = (document.getElementById('newItemName').value || '').trim();
-  btn.disabled = !(name && _selectedType);
-}
-
-function clearExamples() {
-  _files = _files.filter(function (f) { return !f.example; });
-}
-
-function createItem() {
-  var name = (document.getElementById('newItemName').value || '').trim();
-  if (!name || !_selectedType) return;
-
-  clearExamples();
-
-  var newFile = {
-    id: Date.now(),
-    name: name,
-    type: _selectedType,
-    items: _selectedType === 'folder' ? 0 : null,
-    modified: 'Just now',
-    size: null,
-  };
-
-  _files.unshift(newFile);
-  renderFiles(_files);
-
-  var userId = parseInt(localStorage.getItem('dn_user_id'), 10) || 0;
-  var ws = typeof getWorkspace === 'function' ? getWorkspace() : 'Work';
-  apiPost('/files/', { filename: name, filepath: name, category: ws, user_id: userId })
-    .then(function (created) {
-      if (created && created.id) newFile.id = created.id;
-    })
-    .catch(function () {});
-
-  document.getElementById('newItemName').value = '';
-  document.querySelectorAll('.type-card').forEach(function (c) { c.classList.remove('selected'); });
-  _selectedType = null;
-  updateCreateBtn();
-  toast.success('"' + name + '" created.');
-}
-
 /* ── Row / file interaction ──────────────────────────────── */
 function handleRowClick(e, id) {
   if (e.target.closest('.file-actions-btn')) return;
@@ -187,11 +129,7 @@ function handleRowClick(e, id) {
 }
 
 function handleFileOpen(id) {
-  var f = _files.find(function (x) { return x.id === id; });
-  if (!f) return;
-  if (f.type === 'folder') {
-    document.getElementById('breadcrumbCurrent').textContent = f.name;
-  }
+  // placeholder for folder navigation / file preview
 }
 
 /* ── Actions menu ────────────────────────────────────────── */
@@ -228,7 +166,7 @@ function renameFile() {
     var oldName = f.name;
     f.name = newName.trim();
     renderFiles(applySearch());
-    if (typeof id === 'number' && !f.example) {
+    if (typeof id === 'number') {
       apiPatch('/files/' + id, { filename: f.name }).catch(function () {});
     }
     toast.success('"' + oldName + '" renamed to "' + f.name + '".');
@@ -246,9 +184,11 @@ function deleteFile() {
   if (!f) return;
 
   toast.confirm('Delete "' + f.name + '"? This cannot be undone.', function () {
+    _usedBytes = Math.max(0, _usedBytes - (f.sizeBytes || 0));
     _files = _files.filter(function (x) { return x.id !== f.id; });
     renderFiles(applySearch());
-    if (typeof id === 'number' && !f.example) {
+    updateStorageBar();
+    if (typeof id === 'number') {
       apiDelete('/files/' + id).catch(function () {});
     }
     toast.success('"' + f.name + '" deleted.');
@@ -257,7 +197,18 @@ function deleteFile() {
 
 /* ── Upload modal ────────────────────────────────────────── */
 function openUploadModal() {
+  resetUploadModal();
   openModal('upload');
+}
+
+function resetUploadModal() {
+  _pendingFile = null;
+  var nameInput = document.getElementById('uploadFileName');
+  var fileInput = document.getElementById('fileInput');
+  var dropText  = document.getElementById('dropzoneText');
+  if (nameInput) nameInput.value = '';
+  if (fileInput) fileInput.value = '';
+  if (dropText)  dropText.textContent = 'Click to upload or drag & drop';
 }
 
 function onDragOver(e) {
@@ -282,36 +233,53 @@ function onFileSelected(e) {
 }
 
 function applyDroppedFile(file) {
-  document.getElementById('dropzoneText').textContent = file.name;
+  if (file.size > MAX_FILE_BYTES) {
+    toast.error('File exceeds the 1 GB limit per file.');
+    return;
+  }
+  _pendingFile = file;
+  document.getElementById('dropzoneText').textContent = file.name + ' (' + formatBytes(file.size) + ')';
   var nameInput = document.getElementById('uploadFileName');
-  if (!nameInput.value) nameInput.value = file.name;
+  if (nameInput && !nameInput.value) nameInput.value = file.name;
 }
 
 function uploadFile() {
-  var name = (document.getElementById('uploadFileName').value || '').trim();
-  if (!name) {
-    document.getElementById('uploadFileName').focus();
+  if (!_pendingFile) {
+    toast.error('Please select a file to upload.');
+    return;
+  }
+  if (_usedBytes + _pendingFile.size > MAX_TOTAL_BYTES) {
+    toast.error('Storage full. Maximum storage is 10 GB.');
     return;
   }
 
-  clearExamples();
+  var name = (document.getElementById('uploadFileName').value || '').trim() || _pendingFile.name;
+  var sizeBytes = _pendingFile.size;
+  _usedBytes += sizeBytes;
 
-  var ext = name.split('.').pop().toLowerCase();
-  var type = 'default';
-  if (['doc','docx','txt','md'].includes(ext))            type = 'document';
-  else if (['xls','xlsx','csv'].includes(ext))            type = 'spreadsheet';
-  else if (ext === 'pdf')                                  type = 'pdf';
-  else if (['js','ts','tsx','jsx','html','css'].includes(ext)) type = 'code';
-  else if (['png','jpg','jpeg','gif','svg','webp'].includes(ext)) type = 'image';
+  var newFile = {
+    id:        Date.now(),
+    name:      name,
+    type:      guessType(name),
+    items:     null,
+    modified:  'Just now',
+    size:      formatBytes(sizeBytes),
+    sizeBytes: sizeBytes
+  };
 
-  _files.unshift({ id: Date.now(), name: name, type: type, items: null, modified: 'Just now', size: null });
+  _files.unshift(newFile);
   renderFiles(applySearch());
+  updateStorageBar();
 
-  document.getElementById('uploadFileName').value  = '';
-  document.getElementById('uploadCategory').value  = '';
-  document.getElementById('uploadDescription').value = '';
-  document.getElementById('dropzoneText').textContent = 'Click to upload';
-  document.getElementById('fileInput').value = '';
+  var userId = parseInt(localStorage.getItem('dn_user_id'), 10) || 0;
+  var ws = typeof getWorkspace === 'function' ? getWorkspace() : 'Work';
+  apiPost('/files/', { filename: name, filepath: name, category: ws, user_id: userId })
+    .then(function (created) {
+      if (created && created.id) newFile.id = created.id;
+    })
+    .catch(function () {});
+
+  resetUploadModal();
   closeModal('upload');
   toast.success('"' + name + '" uploaded.');
 }
@@ -332,6 +300,32 @@ function applySearch() {
 function updateNavBadge() {
   var badge = document.getElementById('navBadge');
   if (badge) badge.textContent = _files.length;
+}
+
+function updateStorageBar() {
+  var pct   = Math.min((_usedBytes / MAX_TOTAL_BYTES) * 100, 100);
+  var fill  = document.getElementById('storageBarFill');
+  var label = document.getElementById('storageLabel');
+  if (fill)  fill.style.width = pct.toFixed(2) + '%';
+  if (label) label.textContent = formatBytes(_usedBytes) + ' used of 10 GB';
+}
+
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return '0 B';
+  var k = 1024;
+  var sizes = ['B', 'KB', 'MB', 'GB'];
+  var i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+function guessType(name) {
+  var ext = (name || '').split('.').pop().toLowerCase();
+  if (['doc','docx','txt','md'].includes(ext))               return 'document';
+  if (['xls','xlsx','csv'].includes(ext))                    return 'spreadsheet';
+  if (ext === 'pdf')                                          return 'pdf';
+  if (['js','ts','tsx','jsx','html','css'].includes(ext))    return 'code';
+  if (['png','jpg','jpeg','gif','svg','webp'].includes(ext)) return 'image';
+  return 'default';
 }
 
 function escHtml(str) {
