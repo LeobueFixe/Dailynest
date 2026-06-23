@@ -1,3 +1,53 @@
+var API_BASE = 'http://localhost:8000';
+
+function getAuthHeaders() {
+  var token = localStorage.getItem('dn_token'); 
+  var headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  return headers;
+}
+
+function apiGet(path) {
+  return fetch(API_BASE + path, {
+    headers: getAuthHeaders()
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function apiPost(path, body) {
+  return fetch(API_BASE + path, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function apiPatch(path, body) {
+  return fetch(API_BASE + path, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function apiDelete(path) {
+  return fetch(API_BASE + path, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+  });
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
   function count(str, regex) {
@@ -106,21 +156,12 @@ function handleLogin(e) {
 
   apiPost('/auth/login', { email, password })
     .then(data => {
-      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('dn_token', data.access_token);
 
-      return Promise.all([
-        apiGet('/users/profile'),
-        apiGet('/tasks'),
-        apiGet('/agendas'),
-        apiGet('/projects')
-      ]);
+      return apiGet('/users/profile');
     })
-    .then(([profile, tasks, agendas, projects]) => {
-      localStorage.setItem('user_id', profile.id);
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      localStorage.setItem('agendas', JSON.stringify(agendas));
-      localStorage.setItem('projects', JSON.stringify(projects));
-
+    .then(profile => {
+      localStorage.setItem('dn_user_id', profile.id);
       window.location.href = 'tasks.html';
     })
     .catch(() => {

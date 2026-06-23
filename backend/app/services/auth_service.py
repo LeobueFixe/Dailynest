@@ -112,4 +112,4 @@ def login_user(db: Session, email: str, password: str):
     access_token = create_access_token({"sub": str(user.id)})
 
     logger.info("User %s logged in successfully", user.id)
-    return Token(access_token=access_token)
+    return Token(access_token=access_token, token_type="bearer")
