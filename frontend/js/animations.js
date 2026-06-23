@@ -80,27 +80,32 @@ if (q('.auth-card')) {
 if (q('.app-layout')) {
 
   /* ── Sidebar ── */
-  animate('.sidebar',        { opacity: [0, 1], x: [-22, 0] }, { ...ease, delay: 0 });
-  animate('.sidebar-footer', { opacity: [0, 1], y: [8,   0] }, { ...ease, delay: 0.4 });
-
-  /* ── Nav links stagger ── */
-  const navLinks = qa('.nav-link');
-  if (navLinks.length) {
-    animate(
-      navLinks,
-      { opacity: [0, 1], x: [-10, 0] },
-      { ...ease, delay: stagger(0.055, { startDelay: 0.12 }) }
-    );
+  // Only animate on desktop — on mobile the sidebar is hidden via CSS transform
+  // and a Framer Motion inline transform would override it, making it always visible.
+  if (window.innerWidth > 768) {
+    animate('.sidebar',        { opacity: [0, 1], x: [-22, 0] }, { ...ease, delay: 0 });
+    animate('.sidebar-footer', { opacity: [0, 1], y: [8,   0] }, { ...ease, delay: 0.4 });
   }
 
-  /* ── Workspace toggle ── */
-  const pills = qa('.workspace-toggle .pill');
-  if (pills.length) {
-    animate(
-      pills,
-      { opacity: [0, 1], scale: [0.88, 1] },
-      { ...spring, delay: stagger(0.06, { startDelay: 0.22 }) }
-    );
+  /* ── Nav links stagger + workspace pills (desktop only) ── */
+  if (window.innerWidth > 768) {
+    const navLinks = qa('.nav-link');
+    if (navLinks.length) {
+      animate(
+        navLinks,
+        { opacity: [0, 1], x: [-10, 0] },
+        { ...ease, delay: stagger(0.055, { startDelay: 0.12 }) }
+      );
+    }
+
+    const pills = qa('.workspace-toggle .pill');
+    if (pills.length) {
+      animate(
+        pills,
+        { opacity: [0, 1], scale: [0.88, 1] },
+        { ...spring, delay: stagger(0.06, { startDelay: 0.22 }) }
+      );
+    }
   }
 
   /* ── Page header ── */
