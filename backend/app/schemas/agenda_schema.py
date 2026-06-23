@@ -6,6 +6,7 @@ class AgendaBase(SQLModel):
     date: str
     event: str
     category: str = "Personal"
+    start_time: Optional[str] = None
 
 class AgendaCreate(AgendaBase):
     user_id: int
@@ -14,6 +15,7 @@ class AgendaUpdate(SQLModel):
     date: Optional[str] = None
     event: Optional[str] = None
     category: Optional[str] = None
+    start_time: Optional[str] = None
 
 class AgendaPublic(AgendaBase):
     id: int

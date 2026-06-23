@@ -1,15 +1,21 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.database import create_tables
+from app.core.database import create_tables, engine
 from app.routers.task_router import router as task_router
 from app.routers.auth_router import router as auth_router
 from app.routers.user_router import router as user_router
 from app.routers.agenda_router import router as agenda_router
 from app.routers.notepad_router import router as notepad_router
 from app.routers.file_router import router as file_router
+from sqlmodel import text
 
 # Create tables on startup
 create_tables()
+
+# Add new agenda columns if they don't exist yet
+with engine.connect() as conn:
+    conn.execute(text("ALTER TABLE agendas ADD COLUMN IF NOT EXISTS start_time VARCHAR(5)"))
+    conn.commit()
 
 app = FastAPI()
 

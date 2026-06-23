@@ -201,6 +201,9 @@ function openNewTaskModal() {
   if (submitBtn)  submitBtn.textContent  = 'Create Task';
   var form = document.getElementById('createTaskForm');
   if (form) form.reset();
+  var today = new Date().toISOString().split('T')[0];
+  var dueDateEl = document.getElementById('taskDueDate');
+  if (dueDateEl) dueDateEl.min = today;
   openModal('createTask');
 }
 
@@ -213,6 +216,10 @@ function openEditModal(btn) {
   var submitBtn  = document.getElementById('taskSubmitBtn');
   if (modalTitle) modalTitle.textContent = 'Edit Task';
   if (submitBtn)  submitBtn.textContent  = 'Save Changes';
+
+  var today = new Date().toISOString().split('T')[0];
+  var dueDateEl = document.getElementById('taskDueDate');
+  if (dueDateEl) dueDateEl.min = today;
 
   document.getElementById('taskName').value        = row.getAttribute('data-name')    || '';
   document.getElementById('taskStatus').value      = row.getAttribute('data-status')  || 'not-started';
@@ -263,7 +270,7 @@ function deleteTask(btn) {
     }
     row.remove();
     updateStatCards();
-    toast.success('Task deleted.');
+    toast.error('Task deleted.');
   }, { title: 'Delete Task', confirmLabel: 'Delete' });
 }
 

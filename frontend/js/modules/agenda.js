@@ -221,7 +221,7 @@ function updateDateRangeLabel() {
 
 /* ── Build week view ─────────────────────────────────── */
 function buildWeekView() {
-  var HOURS    = [7,8,9,10,11,12,13,14,15,16,17];
+  var HOURS    = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22];
   var DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
 
   // Dates for each column
@@ -352,11 +352,16 @@ function rebuildViews() {
 
 /* ── Map backend agenda to frontend event format ─────────── */
 function agendaToEvent(a) {
+  var startTime = a.start_time || '00:00';
+  var startH    = parseInt(startTime.split(':')[0], 10);
+  var endTime   = String((startH + 1) % 24).padStart(2, '0') + ':' + startTime.split(':')[1];
   return {
     id:          a.id,
     title:       a.event,
-    start_date:  a.date + 'T00:00:00',
-    end_date:    a.date + 'T01:00:00',
+    start_date:  a.date + 'T' + startTime + ':00',
+    end_date:    a.date + 'T' + endTime   + ':00',
+    start_time:  startTime,
+    end_time:    endTime,
     description: ''
   };
 }
@@ -389,23 +394,29 @@ function openEventModal(mode, eventId) {
   var form     = document.getElementById('eventForm');
   if (form) form.reset();
 
+  var deleteBtn = document.getElementById('deleteEventBtn');
+
   if (mode === 'edit' && eventId != null) {
     var ev = EVENTS.filter(function (e) { return e.id === eventId; })[0];
     if (!ev) return;
     _editingEventId = eventId;
     if (titleEl)  titleEl.textContent  = 'Edit Event';
     if (submitEl) submitEl.textContent = 'Save Changes';
+    if (deleteBtn) deleteBtn.style.display = '';
     var titleInput = document.getElementById('eventTitle');
     var descInput  = document.getElementById('eventDescription');
     var startInput = document.getElementById('eventStartDate');
     var endInput   = document.getElementById('eventEndDate');
     if (titleInput) titleInput.value = ev.title        || '';
     if (descInput)  descInput.value  = ev.description  || '';
-    if (startInput) startInput.value = ev.start_date ? ev.start_date.slice(0, 16) : '';
-    if (endInput)   endInput.value   = ev.end_date   ? ev.end_date.slice(0, 16)   : '';
+    if (startInput) startInput.value = ev.start_date ? ev.start_date.slice(0, 10) : '';
+    if (endInput)   endInput.value   = ev.end_date   ? ev.end_date.slice(0, 10)   : '';
+    var startTimeEl = document.getElementById('eventStartTime');
+    if (startTimeEl) startTimeEl.value = ev.start_time || '';
   } else {
     if (titleEl)  titleEl.textContent  = 'New Event';
     if (submitEl) submitEl.textContent = 'Create Event';
+    if (deleteBtn) deleteBtn.style.display = 'none';
   }
   openModal('createEvent');
 }
@@ -414,15 +425,41 @@ function closeEventModal() {
   closeModal('createEvent');
 }
 
+/* ── Delete event ────────────────────────────────────────── */
+function deleteEvent() {
+  if (_editingEventId == null) return;
+  var ev = EVENTS.filter(function (e) { return e.id === _editingEventId; })[0];
+  var name = ev ? '"' + ev.title + '"' : 'this event';
+
+  toast.confirm('Delete ' + name + '? This cannot be undone.', function () {
+    var idToDelete = _editingEventId;
+    EVENTS = EVENTS.filter(function (e) { return e.id !== idToDelete; });
+    closeEventModal();
+    rebuildViews();
+    renderUpcomingPanel();
+    if (selectedDay) {
+      var panel = document.getElementById('day-events-panel');
+      if (panel && panel.style.display !== 'none') selectDay(selectedDay, new Date(selectedDay));
+    }
+    apiDelete('/agendas/' + idToDelete).catch(function () {});
+    toast.error('Event deleted.');
+  }, { title: 'Delete Event', confirmLabel: 'Delete' });
+}
+
 /* ── Submit event form (create or edit) ──────────────────── */
 function submitEventForm(e) {
   e.preventDefault();
   var title     = (document.getElementById('eventTitle')       || {}).value || '';
   var desc      = (document.getElementById('eventDescription') || {}).value || '';
   var startDate = (document.getElementById('eventStartDate')   || {}).value || '';
-  var endDate   = (document.getElementById('eventEndDate')     || {}).value || '';
+  var startTime = (document.getElementById('eventStartTime')   || {}).value || '00:00';
 
-  if (!title || !startDate || !endDate) return;
+  if (!title || !startDate) return;
+
+  var startH    = parseInt(startTime.split(':')[0], 10);
+  var endTime   = String((startH + 1) % 24).padStart(2, '0') + ':' + startTime.split(':')[1];
+  var startDateFull = startDate + 'T' + startTime + ':00';
+  var endDateFull   = startDate + 'T' + endTime   + ':00';
 
   // ── Apply locally first (synchronous) ──────────────────
   if (_editingEventId != null) {
@@ -430,14 +467,16 @@ function submitEventForm(e) {
       if (EVENTS[i].id === _editingEventId) {
         EVENTS[i].title       = title;
         EVENTS[i].description = desc;
-        EVENTS[i].start_date  = startDate;
-        EVENTS[i].end_date    = endDate;
+        EVENTS[i].start_date  = startDateFull;
+        EVENTS[i].end_date    = endDateFull;
+        EVENTS[i].start_time  = startTime;
+        EVENTS[i].end_time    = endTime;
         break;
       }
     }
   } else {
     var newId = EVENTS.reduce(function (max, ev) { return Math.max(max, ev.id || 0); }, 0) + 1;
-    EVENTS.push({ id: newId, title: title, description: desc, start_date: startDate, end_date: endDate });
+    EVENTS.push({ id: newId, title: title, description: desc, start_date: startDateFull, end_date: endDateFull, start_time: startTime, end_time: endTime });
   }
 
   var wasEditing = _editingEventId != null;
@@ -452,7 +491,7 @@ function submitEventForm(e) {
 
   // ── Sync to API in background ───────────────────────────
   var dateOnly = startDate ? startDate.slice(0, 10) : '';
-  var apiPayload = { event: title, date: dateOnly, category: typeof getWorkspace === 'function' ? getWorkspace() : 'Work' };
+  var apiPayload = { event: title, date: dateOnly, category: typeof getWorkspace === 'function' ? getWorkspace() : 'Work', start_time: startTime };
   if (_editingEventId != null) {
     apiPatch('/agendas/' + _editingEventId, apiPayload).catch(function () {});
   } else {
@@ -477,12 +516,12 @@ function renderUpcomingPanel() {
   var listEl = document.getElementById('upcoming-list');
   if (!listEl) return;
 
-  var now = new Date();
+  var todayStr = new Date().toISOString().slice(0, 10);
   var solid = { blue: '#3b82f6', yellow: '#f59e0b', green: '#22c55e', purple: '#a855f7' };
 
   var upcoming = EVENTS
-    .filter(function (e) { return e.start_date && new Date(e.start_date) >= now; })
-    .sort(function (a, b) { return new Date(a.start_date) - new Date(b.start_date); })
+    .filter(function (e) { return e.start_date && e.start_date.slice(0, 10) >= todayStr; })
+    .sort(function (a, b) { return a.start_date < b.start_date ? -1 : 1; })
     .slice(0, 5);
 
   if (upcoming.length === 0) {
@@ -492,14 +531,14 @@ function renderUpcomingPanel() {
 
   listEl.innerHTML = upcoming.map(function (e) {
     var color = evtColor(e.id);
-    var d     = new Date(e.start_date);
-    var label = d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' }) +
-                ' \u00b7 ' + evtTime(e.start_date);
+    var d     = new Date(e.start_date.slice(0, 10) + 'T12:00:00');
+    var dateLabel = d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+    var timeLabel = e.start_time ? ' \u00b7 ' + e.start_time : '';
     return '<div class="upcoming-event">' +
       '<div class="upcoming-event-dot" style="background:' + (solid[color] || '#999') + ';"></div>' +
       '<div>' +
         '<div class="upcoming-event-name">' + e.title + '</div>' +
-        '<div class="upcoming-event-time">' + label + '</div>' +
+        '<div class="upcoming-event-time">' + dateLabel + timeLabel + '</div>' +
       '</div>' +
     '</div>';
   }).join('');

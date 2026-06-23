@@ -25,6 +25,13 @@
 }
 .btn-ghost:hover { background: var(--color-surface-alt); }
 
+.btn-danger {
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+.btn-danger:hover { background: #fef2f2; border-color: #dc2626; }
+
 .btn-pill { border-radius: var(--radius-full); }
 
 /* ============================================================

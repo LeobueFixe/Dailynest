@@ -312,7 +312,7 @@ function deleteNote() {
     var counter = npGet('notesCount');
     if (counter) counter.textContent = NOTES.length;
     apiDelete('/notepads/' + idToDelete).catch(function () {});
-    toast.success('Note deleted.');
+    toast.error('Note deleted.');
   }, { title: 'Delete Note', confirmLabel: 'Delete' });
 }
 

@@ -11,6 +11,7 @@ def create_agenda(db: Session, data: AgendaCreate, current_user):
         date=data.date,
         event=data.event,
         category=data.category,
+        start_time=data.start_time,
         user_id=current_user.id
     )
 
@@ -58,6 +59,9 @@ def update_agenda(db: Session, agenda_id: int, data: AgendaUpdate, current_user)
 
     if data.category is not None:
         agenda.category = data.category
+
+    if data.start_time is not None:
+        agenda.start_time = data.start_time
 
     db.add(agenda)
     db.commit()

@@ -77,11 +77,19 @@
   overflow: hidden;
 }
 
+.week-scroll-container {
+  overflow-y: auto;
+  max-height: 520px;
+}
+
 .week-header {
   display: grid;
   grid-template-columns: 56px repeat(7, 1fr);
   border-bottom: 1px solid var(--color-border-light);
   background: var(--color-surface-alt);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .week-header .time-spacer { border-right: 1px solid var(--color-border-light); }
@@ -118,8 +126,6 @@
 .week-grid {
   display: grid;
   grid-template-columns: 56px repeat(7, 1fr);
-  overflow-y: auto;
-  max-height: 500px;
 }
 
 .time-label {
@@ -428,6 +434,7 @@
   }
 
   /* Give week columns a fixed minimum so the calendar stays usable when scrolled */
+  .week-scroll-container { min-width: 560px; }
   .week-header,
   .week-grid { min-width: 560px; }
 
