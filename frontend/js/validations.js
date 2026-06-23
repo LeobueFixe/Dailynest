@@ -1,3 +1,53 @@
+var API_BASE = 'http://localhost:8000';
+
+function getAuthHeaders() {
+  var token = localStorage.getItem('dn_token'); 
+  var headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  return headers;
+}
+
+function apiGet(path) {
+  return fetch(API_BASE + path, {
+    headers: getAuthHeaders()
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function apiPost(path, body) {
+  return fetch(API_BASE + path, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function apiPatch(path, body) {
+  return fetch(API_BASE + path, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function apiDelete(path) {
+  return fetch(API_BASE + path, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+  });
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
   function count(str, regex) {
@@ -7,21 +57,21 @@ document.addEventListener("DOMContentLoaded", function () {
   function checkName(name) {
     const conditions = {
       min: name.length >= 3,
-      max: name.length <= 15,
+      max: name.length <= 100,
       number: count(name, /[0-9]/g) === 0,
       special: count(name, /[!@#$%^&*(),.?":{}|<>]/g) === 0
     };
 
     return {
       valid: Object.values(conditions).every(Boolean),
-      message: "Invalid name: 3–15 chars, no numbers or special symbols."
+      message: "Invalid name: 3–100 chars, no numbers or special symbols."
     };
   }
 
   function checkEmail(email) {
     const valid = /\S+@\S+\.\S+/;
-    const ok = email.length >= 5 && email.length <= 100 && valid.test(email);
-
+    const ok = email.length >= 7 && email.length <= 100 && valid.test(email);
+    
     return {
       valid: ok,
       message: "Invalid email format or too short."
@@ -90,3 +140,31 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
 });
+
+function handleLogin(e) {
+  e.preventDefault();
+
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const remember = document.querySelector('input[name="remember"]').checked;
+
+  if (remember) {
+    localStorage.setItem('remember_email', email);
+  } else {
+    localStorage.removeItem('remember_email');
+  }
+
+  apiPost('/auth/login', { email, password })
+    .then(data => {
+      localStorage.setItem('dn_token', data.access_token);
+
+      return apiGet('/users/profile');
+    })
+    .then(profile => {
+      localStorage.setItem('dn_user_id', profile.id);
+      window.location.href = 'tasks.html';
+    })
+    .catch(() => {
+      toast.error('Login failed. Check your credentials and try again.');
+    });
+}
