@@ -1,9 +1,6 @@
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from sqlmodel import Field, SQLModel, Relationship
-
-if TYPE_CHECKING:
-    from app.models.user_models import User
 
 
 class Agenda(SQLModel, table=True):

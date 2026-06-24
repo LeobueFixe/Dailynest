@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from sqlmodel import Field, SQLModel, Relationship
 from app.models.user_models import User
 
