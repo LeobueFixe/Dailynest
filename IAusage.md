@@ -1,789 +1,789 @@
 # IAusage — DailyNest
 
-Registo de uso de IA no desenvolvimento do projecto DailyNest.
+Record of AI usage in the development of the DailyNest project.
 
 ---
-## Frontend — Uso de IA
+## Frontend — AI Usage
 ---
 
 ## Task #01 — Frontend UI: Layout & All Pages
 
-**Data:** 29 de maio de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 29 May 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi gerado com IA
+### What was generated with AI
 
-| Ficheiro | Descrição |
+| File | Description |
 |---|---|
-| `frontend/style.css` | Design system completo: CSS variables, reset, sidebar, layout, botões, stat cards, tabela de tasks, modal, auth pages, landing page, notepad, agenda, responsividade |
-| `frontend/app.js` | Interactividade: modal open/close, sidebar toggle (mobile), workspace toggle, password visibility, task CRUD, filtro/pesquisa de tasks, stats automáticos, notepad word count / save / clear |
-| `frontend/index.html` | Landing page split-screen (esquerda: hero + about, direita: foto real Unsplash de laptop/secretária com stats card glassmorphism + painel escuro com slider de 5 dots) |
-| `frontend/login.html` | Página de login com topbar azul, card centrado, campos com ícones, toggle de password, remember me |
-| `frontend/register.html` | Página de registo com 4 campos, checkbox privacy policy, validação de passwords |
-| `frontend/tasks.html` | Página principal: sidebar, stat cards (4), tabela com search + filtros + paginação, modal Create New Task |
-| `frontend/notepad.html` | Editor de notas com título, body, stats (words/chars/read time), save/clear com localStorage |
-| `frontend/agenda.html` | Agenda semanal (20–26 maio 2026) com grelha de horas, 4 eventos coloridos, mini calendário, lista upcoming |
+| `frontend/style.css` | Complete design system: CSS variables, reset, sidebar, layout, buttons, stat cards, task table, modal, auth pages, landing page, notepad, agenda, responsiveness |
+| `frontend/app.js` | Interactivity: modal open/close, sidebar toggle (mobile), workspace toggle, password visibility, task CRUD, task filter/search, automatic stats, notepad word count / save / clear |
+| `frontend/index.html` | Split-screen landing page (left: hero + about, right: real Unsplash photo of laptop/desk with glassmorphism stats card + dark panel with 5-dot slider) |
+| `frontend/login.html` | Login page with blue topbar, centred card, fields with icons, password toggle, remember me |
+| `frontend/register.html` | Registration page with 4 fields, privacy policy checkbox, password validation |
+| `frontend/tasks.html` | Main page: sidebar, stat cards (4), table with search + filters + pagination, Create New Task modal |
+| `frontend/notepad.html` | Note editor with title, body, stats (words/chars/read time), save/clear with localStorage |
+| `frontend/agenda.html` | Weekly agenda (20–26 May 2026) with hour grid, 4 coloured events, mini calendar, upcoming list |
 
 
-### Critérios cumpridos (Task #01)
+### Criteria met (Task #01)
 
-- [x] Sidebar com logo DailyNest (ícone casinha + texto)
+- [x] Sidebar with DailyNest logo (house icon + text)
 - [x] Workspace toggle: Work / Personal (pills)
-- [x] 4 nav links com ícones: Tasks (activo), Agenda, Notepad, Files
-- [x] Avatar utilizador em baixo: "RD" circular preto + nome + email
-- [x] 4 stat cards com ícones coloridos (azul, cinza, laranja, verde)
-- [x] Search bar + dropdowns na tabela
-- [x] Tabela com headers uppercase: TASK NAME, STATUS, DUE DATE, CREATED
-- [x] Task rows com ponto de status colorido + ícone calendário + timestamp
-- [x] Paginação `< 1 >` em baixo
-- [x] Modal "Create New Task" funcional (abrir/fechar, Escape, click fora)
-- [x] Modal com campos: Task Name, Status, Priority, Due Date, Description
-- [x] Design fiel: fundo #f5f5f5, sidebar branca, botões pretos
-- [x] Font Inter carregada (Google Fonts)
-- [x] Responsivo (mobile: sidebar colapsa com toggle)
+- [x] 4 nav links with icons: Tasks (active), Agenda, Notepad, Files
+- [x] User avatar at the bottom: circular black "RD" + name + email
+- [x] 4 stat cards with coloured icons (blue, grey, orange, green)
+- [x] Search bar + dropdowns in the table
+- [x] Table with uppercase headers: TASK NAME, STATUS, DUE DATE, CREATED
+- [x] Task rows with coloured status dot + calendar icon + timestamp
+- [x] Pagination `< 1 >` at the bottom
+- [x] "Create New Task" modal functional (open/close, Escape, click outside)
+- [x] Modal with fields: Task Name, Status, Priority, Due Date, Description
+- [x] Faithful design: background #f5f5f5, white sidebar, black buttons
+- [x] Inter font loaded (Google Fonts)
+- [x] Responsive (mobile: sidebar collapses with toggle)
 
 ---
 
-## Fix #01 — Landing Page: correcção visual para corresponder ao Figma
+## Fix #01 — Landing Page: visual correction to match the Figma
 
-**Data:** 29 de maio de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)
+**Date:** 29 May 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)
 
-### O que foi corrigido
+### What was fixed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/index.html` | Stats restruturados de pills individuais para um card glassmorphism único com 3 colunas (12k+ / 98% / 4.9★) e separadores; slider actualizado para 5 dots; secção "About us" com título correcto e 6 parágrafos do Figma; painel inferior com texto correcto |
-| `frontend/style.css` | `.landing-right` convertido de `position:relative` para `flex-column`; adicionado `.landing-photo` com foto real (Unsplash) + `background-size:cover`; adicionados `.stats-card`, `.stats-item`, `.stats-number`, `.stats-label`, `.stats-sep`; `.landing-panel` actualizado para `background:#111` sólido sem blur |
+| `frontend/index.html` | Stats restructured from individual pills to a single glassmorphism card with 3 columns (12k+ / 98% / 4.9★) and separators; slider updated to 5 dots; "About us" section with correct title and 6 paragraphs from Figma; bottom panel with correct text |
+| `frontend/style.css` | `.landing-right` converted from `position:relative` to `flex-column`; `.landing-photo` added with real photo (Unsplash) + `background-size:cover`; added `.stats-card`, `.stats-item`, `.stats-number`, `.stats-label`, `.stats-sep`; `.landing-panel` updated to solid `background:#111` without blur |
 
 ---
 
-## Fix #02 — Landing Page: responsividade sem scroll
+## Fix #02 — Landing Page: responsiveness without scroll
 
-**Data:** 29 de maio de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)
+**Date:** 29 May 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/style.css` | `.landing-page` e `.landing-left` passaram a `height: 100vh; overflow: hidden` — página bloqueada ao viewport sem scroll externo; `.landing-content` com `scrollbar-width: none` e `::-webkit-scrollbar { display: none }` para scroll interno invisível; espaçamentos reduzidos: `landing-content` padding `56px→32px`, `landing-h1` `3.5rem→3rem`, `landing-desc` margin `32px→20px`, `landing-actions` margin `40px→20px`, `landing-divider` margin `28px→16px`, `about-section p` padding `14px→9px`, `landing-eyebrow` margin `18px→12px`; breakpoint 768px actualizado para repor `height: auto` e `overflow: visible` em mobile |
+| `frontend/style.css` | `.landing-page` and `.landing-left` changed to `height: 100vh; overflow: hidden` — page locked to viewport without external scroll; `.landing-content` with `scrollbar-width: none` and `::-webkit-scrollbar { display: none }` for invisible internal scroll; reduced spacing: `landing-content` padding `56px→32px`, `landing-h1` `3.5rem→3rem`, `landing-desc` margin `32px→20px`, `landing-actions` margin `40px→20px`, `landing-divider` margin `28px→16px`, `about-section p` padding `14px→9px`, `landing-eyebrow` margin `18px→12px`; 768px breakpoint updated to restore `height: auto` and `overflow: visible` on mobile |
 
 ---
 
 ## Task #02 — Tasks Page: Edit Modal + POST/PUT API Wiring
 
-**Data:** 29 de maio de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)
+**Date:** 29 May 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/app.js` | Adicionadas funções `apiPost`, `apiPut`, `apiDelete` com `fetch` para `http://localhost:8000`; `buildRow()` actualizado para incluir `data-id`, `data-name`, `data-due`, `data-desc` no `<tr>` e coluna de acções com botões Edit/Delete (SVG icons); adicionado estado `_editingRow` e variável `_taskIdCounter`; nova função `openNewTaskModal()` limpa estado e abre modal em modo criação; nova função `openEditModal(btn)` pré-preenche o formulário com dados da linha e abre modal em modo edição; nova função `deleteTask(btn)` com confirmação + chamada `DELETE /tasks/{id}` + remoção local; `submitCreateTask()` refactorizado para suportar os dois modos: em edição faz `PUT /tasks/{id}` e actualiza a linha localmente; em criação faz `POST /tasks` com fallback local se a API não estiver disponível |
-| `frontend/tasks.html` | Adicionado `<th>Actions</th>` na tabela; linha de exemplo actualizada com `data-id`, `data-name`, `data-due`, `data-desc` e célula de acções com botões Edit/Delete; botão "New Task" alterado para `openNewTaskModal()`; botão de submissão do modal com `id="taskSubmitBtn"` para o JS alterar o texto dinamicamente (Create Task / Save Changes) |
-| `frontend/style.css` | Adicionados estilos `td.task-actions`, `.task-actions`, `.action-btn`, `.action-btn.edit-btn:hover` (azul), `.action-btn.delete-btn:hover` (vermelho) |
+| `frontend/app.js` | Added `apiPost`, `apiPut`, `apiDelete` functions with `fetch` to `http://localhost:8000`; `buildRow()` updated to include `data-id`, `data-name`, `data-due`, `data-desc` on the `<tr>` and an actions column with Edit/Delete buttons (SVG icons); added `_editingRow` state and `_taskIdCounter` variable; new `openNewTaskModal()` function clears state and opens modal in create mode; new `openEditModal(btn)` function pre-fills the form with row data and opens modal in edit mode; new `deleteTask(btn)` function with confirm + `DELETE /tasks/{id}` call + local removal; `submitCreateTask()` refactored to support both modes: in edit mode does `PUT /tasks/{id}` and updates the row locally; in create mode does `POST /tasks` with local fallback if API is unavailable |
+| `frontend/tasks.html` | Added `<th>Actions</th>` to the table; example row updated with `data-id`, `data-name`, `data-due`, `data-desc` and an actions cell with Edit/Delete buttons; "New Task" button changed to `openNewTaskModal()`; modal submit button with `id="taskSubmitBtn"` for JS to dynamically change the text (Create Task / Save Changes) |
+| `frontend/style.css` | Added styles `td.task-actions`, `.task-actions`, `.action-btn`, `.action-btn.edit-btn:hover` (blue), `.action-btn.delete-btn:hover` (red) |
 
 ---
 
 ## Task #03 — Task Filters & Search
 
-**Data:** 1 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 1 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/tasks.html` | Select `#statusFilter` actualizado para três opções: **All / Pending / Done**; evento do search input alterado de `oninput="filterTasks()"` para `oninput="onSearchInput(this.value)"`; evento do status select alterado para `onchange="onStatusFilterChange(this.value)"` |
-| `frontend/js/modules/tasks.js` | Adicionadas variáveis de estado `filterSearch` e `filterStatus` que guardam o valor actual de cada controlo; adicionadas funções handler `onSearchInput(value)` e `onStatusFilterChange(value)` que actualizam o estado e chamam `filterTasks()`; `filterTasks()` refactorizado para ler os valores dos JS state variables em vez do DOM, e para mapear `pending` → `not-started \| in-progress` e `done` → `completed` |
+| `frontend/tasks.html` | Select `#statusFilter` updated to three options: **All / Pending / Done**; search input event changed from `oninput="filterTasks()"` to `oninput="onSearchInput(this.value)"`; status select event changed to `onchange="onStatusFilterChange(this.value)"` |
+| `frontend/js/modules/tasks.js` | Added state variables `filterSearch` and `filterStatus` that store the current value of each control; added handler functions `onSearchInput(value)` and `onStatusFilterChange(value)` that update state and call `filterTasks()`; `filterTasks()` refactored to read values from JS state variables instead of the DOM, and to map `pending` → `not-started \| in-progress` and `done` → `completed` |
 
-### Critérios cumpridos (Task #03)
+### Criteria met (Task #03)
 
-- [x] Filtro de status com opções: All / Pending / Done
-- [x] "Pending" filtra tarefas `not-started` e `in-progress`; "Done" filtra `completed`
-- [x] Campo de pesquisa filtra por título em tempo real (via `oninput`)
-- [x] Estado mantido em variáveis JS (`filterSearch`, `filterStatus`)
-- [x] Lógica client-side pura — sem chamadas ao servidor
+- [x] Status filter with options: All / Pending / Done
+- [x] "Pending" filters `not-started` and `in-progress` tasks; "Done" filters `completed`
+- [x] Search field filters by title in real time (via `oninput`)
+- [x] State maintained in JS variables (`filterSearch`, `filterStatus`)
+- [x] Pure client-side logic — no server calls
 
 ---
 
 ## Task #04 — Task Mark Complete & Delete
 
-**Data:** 1 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 1 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/api.js` | Adicionada função `apiPatch(path, body)` que faz `PATCH` com JSON body, para suportar o endpoint `PATCH /tasks/{id}` |
-| `frontend/js/modules/tasks.js` | `buildRow()` actualizado: adicionada coluna de checkbox (`<td class="task-check-cell">`) como primeira célula de cada linha, com `checked` se o status for `completed` e atributo `onchange="markComplete(this)"`; nome da tarefa com `text-decoration:line-through` quando concluída; adicionada função `markComplete(cb)` que lê o estado do checkbox, calcula o novo status (`completed` ou `not-started`), chama `apiPatch('/tasks/{id}', {status})` (com fallback local), actualiza `data-status`, o badge de status e o estilo do nome da tarefa na linha, e chama `updateStatCards()` |
-| `frontend/tasks.html` | Adicionado `<th></th>` vazio como primeiro cabeçalho da tabela (coluna do checkbox); linha de exemplo estática actualizada com `<td class="task-check-cell"><input type="checkbox" ...></td>` como primeira célula |
-| `frontend/css/modules/tasks.css` | Adicionados estilos `td.task-check-cell` (largura 40px, centrado) e `.task-check` (16×16px, cursor pointer, `accent-color: #111`) |
+| `frontend/js/api.js` | Added `apiPatch(path, body)` function that does a `PATCH` with JSON body, to support the `PATCH /tasks/{id}` endpoint |
+| `frontend/js/modules/tasks.js` | `buildRow()` updated: added checkbox column (`<td class="task-check-cell">`) as the first cell of each row, with `checked` if status is `completed` and `onchange="markComplete(this)"` attribute; task name with `text-decoration:line-through` when completed; added `markComplete(cb)` function that reads the checkbox state, calculates the new status (`completed` or `not-started`), calls `apiPatch('/tasks/{id}', {status})` (with local fallback), updates `data-status`, the status badge and the task name style in the row, and calls `updateStatCards()` |
+| `frontend/tasks.html` | Added empty `<th></th>` as the first table header (checkbox column); static example row updated with `<td class="task-check-cell"><input type="checkbox" ...></td>` as the first cell |
+| `frontend/css/modules/tasks.css` | Added styles `td.task-check-cell` (40px width, centred) and `.task-check` (16×16px, cursor pointer, `accent-color: #111`) |
 
-### Critérios cumpridos (Task #04)
+### Criteria met (Task #04)
 
-- [x] Checkbox na primeira coluna de cada linha da tabela
-- [x] Checkbox pré-marcado se a tarefa já tiver status `completed`
-- [x] Click no checkbox chama `PATCH /tasks/{id}` com `{status: "completed" | "not-started"}`
-- [x] Fallback local se o backend não estiver disponível
-- [x] Badge de status actualizado instantaneamente (sem reload)
-- [x] Nome da tarefa com strikethrough + cor muted quando concluída
-- [x] Botão Delete com `confirm()` nativo e chamada `DELETE /tasks/{id}` (já existia, mantido)
-- [x] `updateStatCards()` chamado após ambas as acções para reflectir os contadores
+- [x] Checkbox in the first column of each table row
+- [x] Checkbox pre-checked if the task already has status `completed`
+- [x] Clicking the checkbox calls `PATCH /tasks/{id}` with `{status: "completed" | "not-started"}`
+- [x] Local fallback if the backend is unavailable
+- [x] Status badge updated instantly (without reload)
+- [x] Task name with strikethrough + muted colour when completed
+- [x] Delete button with native `confirm()` and `DELETE /tasks/{id}` call (already existed, maintained)
+- [x] `updateStatCards()` called after both actions to reflect the counters
 
 ---
 
 ## Task #05 — Agenda Calendar: Month View
 
-**Data:** 1 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 1 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/modules/agenda.js` | Ficheiro criado de raiz; array `EVENTS` com 8 eventos de exemplo para junho 2026; função `buildMonthGrid()` que gera dinamicamente a grelha do mês actual (offset Monday-based, células de outros meses, marcação do dia de hoje, dots coloridos por evento); função `selectDay(dateStr, date)` que selecciona um dia, re-renderiza a grelha com highlight e popula o painel lateral com os eventos do dia; funções `prevMonth()` / `nextMonth()` para navegação entre meses (com reset da selecção); `resetDayPanel()` para limpar o painel; `setView(btn)` redefinida para gerir a troca entre Week View e Month View (mostra/esconde `#week-view`, `#month-view`, `#mini-cal-card`, `#upcoming-panel`, `#day-events-panel`) |
-| `frontend/agenda.html` | Week header + week grid envolvidos em `<div id="week-view">`; adicionado `<div id="month-view">` com nav interna (prev/next + título `#month-nav-title`), row de nomes dos dias e `<div id="month-grid-body">`; adicionado `<div id="day-events-panel">` no sidebar com `.day-events-title` e `.day-events-list`; IDs `mini-cal-card` e `upcoming-panel` adicionados aos painéis existentes do sidebar; bloco `<script>` inline com `setView` removido (função movida para `agenda.js`) |
-| `frontend/css/modules/agenda.css` | Adicionadas classes: `.month-nav`, `.month-nav-title`, `.month-weekdays`, `.month-grid-body`, `.month-day-cell`, `.month-day-cell.other-month`, `.month-day-cell.is-today`, `.month-day-cell.is-selected`, `.month-day-num`, `.month-day-dots`, `.event-dot` (`.blue`, `.yellow`, `.green`, `.purple`), `.day-events-title`, `.no-events-msg`, `.day-event-item` |
+| `frontend/js/modules/agenda.js` | File created from scratch; `EVENTS` array with 8 example events for June 2026; `buildMonthGrid()` function that dynamically generates the current month's grid (Monday-based offset, cells for other months' days, today's marking, coloured dots by event); `selectDay(dateStr, date)` function that selects a day, re-renders the grid with highlight and populates the sidebar panel with the day's events; `prevMonth()` / `nextMonth()` functions for navigation between months (with selection reset); `resetDayPanel()` to clear the panel; `setView(btn)` redefined to manage the switch between Week View and Month View (shows/hides `#week-view`, `#month-view`, `#mini-cal-card`, `#upcoming-panel`, `#day-events-panel`) |
+| `frontend/agenda.html` | Week header + week grid wrapped in `<div id="week-view">`; added `<div id="month-view">` with internal nav (prev/next + `#month-nav-title` title), row of day names and `<div id="month-grid-body">`; added `<div id="day-events-panel">` in the sidebar with `.day-events-title` and `.day-events-list`; IDs `mini-cal-card` and `upcoming-panel` added to existing sidebar panels; inline `<script>` block with `setView` removed (function moved to `agenda.js`) |
+| `frontend/css/modules/agenda.css` | Added classes: `.month-nav`, `.month-nav-title`, `.month-weekdays`, `.month-grid-body`, `.month-day-cell`, `.month-day-cell.other-month`, `.month-day-cell.is-today`, `.month-day-cell.is-selected`, `.month-day-num`, `.month-day-dots`, `.event-dot` (`.blue`, `.yellow`, `.green`, `.purple`), `.day-events-title`, `.no-events-msg`, `.day-event-item` |
 
-### Critérios cumpridos (Task #05)
+### Criteria met (Task #05)
 
-- [x] Grelha de calendário mensal gerada dinamicamente em vanilla JS a partir do mês actual
-- [x] Offset Monday-based correcto (primeiros dias do mês alinhados ao dia da semana certo)
-- [x] Dias de outros meses renderizados com cor muted
-- [x] Dia de hoje marcado com círculo preto
-- [x] Dots coloridos em dias com eventos (máx. 3 dots por dia)
-- [x] Click num dia destaca-o (`.is-selected`) e popula o painel lateral com os eventos desse dia
-- [x] Painel lateral mostra título do dia seleccionado + lista de eventos com dot colorido e hora
-- [x] Mensagem "No events for this day." quando o dia não tem eventos
-- [x] Navegação prev/next mês com reset da selecção e reconstrução da grelha
-- [x] Botão "Month" no view-toggle activa a Month View; "Week"/"Day" retorna à Week View
-- [x] Week View e Month View mutuamente exclusivos (show/hide via JS)
-- [x] Mini calendário e painel Upcoming ocultados na Month View
+- [x] Monthly calendar grid dynamically generated in vanilla JS from the current month
+- [x] Correct Monday-based offset (first days of the month aligned to the right weekday)
+- [x] Days from other months rendered with muted colour
+- [x] Today marked with a black circle
+- [x] Coloured dots on days with events (max 3 dots per day)
+- [x] Clicking a day highlights it (`.is-selected`) and populates the sidebar panel with that day's events
+- [x] Sidebar panel shows selected day title + event list with coloured dot and time
+- [x] "No events for this day." message when the day has no events
+- [x] Prev/next month navigation with selection reset and grid rebuild
+- [x] "Month" button in view-toggle activates Month View; "Week"/"Day" returns to Week View
+- [x] Week View and Month View mutually exclusive (show/hide via JS)
+- [x] Mini calendar and Upcoming panel hidden in Month View
 
 ---
 
 ## Task #06 — Agenda: Day & Week Views + Navigation
 
-**Data:** 1 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 1 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/modules/agenda.js` | Adicionadas variáveis de estado `weekViewDate` e `dayViewDate`; `setView()` refactorizado para gerir três vistas (day/week/month) com show/hide correcto dos painéis; adicionada `buildWeekView()` que gera dinamicamente o header da semana (Mon–Sun com hoje marcado) e a grelha de horas (7h–17h) com eventos filtrados por data e hora a partir do array `EVENTS`; adicionada `buildDayView()` que renderiza a lista de eventos do dia seleccionado ordenados por hora, com mensagem "No events" quando vazio; adicionada `updateDateRangeLabel()` que actualiza o texto do toolbar consoante a vista activa (range semanal, data única ou mês); adicionadas `prevPeriod()` e `nextPeriod()` que despacham navegação para a função correcta consoante `currentView` (-7/+7 dias na week view, -1/+1 dia na day view, prevMonth/nextMonth na month view); `prevMonth()` e `nextMonth()` actualizados para chamar `updateDateRangeLabel()`; bloco `init()` adicionado no fim do ficheiro que calcula a segunda-feira da semana actual, inicializa `weekViewDate` e `dayViewDate`, e chama `buildWeekView()` + `updateDateRangeLabel()` para renderizar o estado inicial |
-| `frontend/agenda.html` | Botões de navegação do toolbar alterados de estáticos para `onclick="prevPeriod()"` / `onclick="nextPeriod()"`; texto estático da data range substituído por `<span id="agenda-date-range-text"></span>` (populado dinamicamente pelo JS); conteúdo estático do week header (7 colunas de dias fixos) removido e substituído por `<div class="week-header" id="week-header"></div>`; conteúdo estático do week grid (11 linhas horárias hardcoded) removido e substituído por `<div class="week-grid" id="week-grid"></div>`; adicionado `<div id="day-view">` com `#day-view-title` e `#day-view-list` como contentor da Day View |
-| `frontend/css/modules/agenda.css` | Adicionadas classes: `.day-view-header`, `.day-view-title`, `.day-view-list`, `.day-view-event`, `.day-view-event-time`, `.day-view-event-body`, `.day-view-event-title` |
+| `frontend/js/modules/agenda.js` | Added state variables `weekViewDate` and `dayViewDate`; `setView()` refactored to manage three views (day/week/month) with correct show/hide of panels; added `buildWeekView()` that dynamically generates the week header (Mon–Sun with today marked) and the hour grid (7h–17h) with events filtered by date and time from the `EVENTS` array; added `buildDayView()` that renders the selected day's event list sorted by time, with "No events" message when empty; added `updateDateRangeLabel()` that updates the toolbar text according to the active view (weekly range, single date, or month); added `prevPeriod()` and `nextPeriod()` that dispatch navigation to the correct function depending on `currentView` (-7/+7 days in week view, -1/+1 day in day view, prevMonth/nextMonth in month view); `prevMonth()` and `nextMonth()` updated to call `updateDateRangeLabel()`; `init()` block added at the end of the file that calculates the Monday of the current week, initializes `weekViewDate` and `dayViewDate`, and calls `buildWeekView()` + `updateDateRangeLabel()` to render the initial state |
+| `frontend/agenda.html` | Toolbar navigation buttons changed from static to `onclick="prevPeriod()"` / `onclick="nextPeriod()"`; static date range text replaced by `<span id="agenda-date-range-text"></span>` (dynamically populated by JS); static week header content (7 fixed day columns) removed and replaced by `<div class="week-header" id="week-header"></div>`; static week grid content (11 hardcoded hourly rows) removed and replaced by `<div class="week-grid" id="week-grid"></div>`; added `<div id="day-view">` with `#day-view-title` and `#day-view-list` as the Day View container |
+| `frontend/css/modules/agenda.css` | Added classes: `.day-view-header`, `.day-view-title`, `.day-view-list`, `.day-view-event`, `.day-view-event-time`, `.day-view-event-body`, `.day-view-event-title` |
 
-### Critérios cumpridos (Task #06)
+### Criteria met (Task #06)
 
-- [x] Botão "Day" no view-toggle activa a Day View; "Week" activa a Week View; "Month" activa a Month View
-- [x] Day View mostra lista de eventos do dia seleccionado, ordenados por hora, com badge colorido
-- [x] Day View mostra mensagem "No events for this day." quando não há eventos
-- [x] Week View renderizada dinamicamente (7 colunas Mon–Sun) a partir do `weekViewDate`
-- [x] Week View marca o dia de hoje com círculo da brand color no header
-- [x] Week View coloca eventos na célula da hora certa (parse do `time` do evento)
-- [x] Setas `‹` / `›` do toolbar chamam `prevPeriod()` / `nextPeriod()`
-- [x] Na Week View, as setas deslocam o período em ±7 dias e re-renderizam
-- [x] Na Day View, as setas deslocam o período em ±1 dia e re-renderizam
-- [x] Na Month View, as setas delegam em `prevMonth()` / `nextMonth()` (comportamento anterior mantido)
-- [x] Label da data range no toolbar actualizada dinamicamente para cada vista e período
-- [x] Inicialização automática no carregamento da página (semana actual com Monday-offset)
+- [x] "Day" button in view-toggle activates Day View; "Week" activates Week View; "Month" activates Month View
+- [x] Day View shows the selected day's event list, sorted by time, with coloured badge
+- [x] Day View shows "No events for this day." message when there are no events
+- [x] Week View dynamically rendered (7 Mon–Sun columns) from `weekViewDate`
+- [x] Week View marks today with a brand colour circle in the header
+- [x] Week View places events in the correct hour cell (parsing the event's `time`)
+- [x] Toolbar `‹` / `›` arrows call `prevPeriod()` / `nextPeriod()`
+- [x] In Week View, arrows shift the period by ±7 days and re-render
+- [x] In Day View, arrows shift the period by ±1 day and re-render
+- [x] In Month View, arrows delegate to `prevMonth()` / `nextMonth()` (previous behaviour maintained)
+- [x] Date range label in the toolbar dynamically updated for each view and period
+- [x] Automatic initialisation on page load (current week with Monday-offset)
 
 ---
 
 ## Task #07 — Agenda Event Form: Create & Edit
 
-**Data:** 2 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 2 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/api.js` | Adicionada função `apiGet(path)` que faz `GET` e retorna JSON, usada para carregar eventos do backend |
-| `frontend/agenda.html` | Modal do evento substituído: campos `eventName`/`eventDate`/`eventTime`/`eventColor` removidos; novos campos `eventTitle` (text), `eventDescription` (textarea), `eventStartDate` (datetime-local), `eventEndDate` (datetime-local) e hidden `editingEventId`; `onsubmit` do form aponta para `submitEventForm(event)`; botão de submissão com `id="eventSubmitBtn"` (texto dinâmico: *Create Event* / *Save Changes*); botão "New Event" alterado para `openEventModal('create')`; painel `#upcoming-panel` simplificado para conter apenas `<div id="upcoming-list">` (populado dinamicamente pelo JS) |
-| `frontend/js/modules/agenda.js` | Array `EVENTS` convertido de `const` estático para `var` dinâmico (inicialmente vazio); adicionados helpers `evtColor(id)`, `evtDate(isoStr)`, `evtTime(isoStr)` para converter eventos do formato API; adicionada variável de estado `_editingEventId`; adicionada `loadEvents()` que chama `GET /events` e em caso de falha usa dados de exemplo com `start_date`/`end_date` no formato ISO; adicionada `rebuildViews()` que despacha para a view activa; adicionadas `openEventModal(mode, eventId)` e `closeEventModal()` que gerem o estado create/edit do modal (título, botão de submissão, pré-preenchimento dos campos); adicionada `submitEventForm(e)` que faz `POST /events` (create) ou `PUT /events/{id}` (edit) com fallback local em ambos os casos; adicionada `renderUpcomingPanel()` que filtra eventos futuros, ordena por `start_date` crescente, e renderiza os primeiros 5 no `#upcoming-list`; `buildMonthGrid()`, `selectDay()`, `buildWeekView()` e `buildDayView()` actualizados para usar `evtDate(e.start_date)`, `evtTime(e.start_date)` e `evtColor(e.id)` em vez dos campos `date`, `time`, `color` do modelo antigo; eventos na Week View e Day View recebem `onclick="openEventModal('edit', id)"` para edição directa; eventos no painel lateral da Month View recebem um botão de edição `event-edit-btn`; `init()` actualizado para chamar `loadEvents()` no arranque |
-| `frontend/css/modules/agenda.css` | Adicionadas classes: `.form-textarea` (resize vertical, min-height 72px, font-family inherit); `.event-edit-btn` (botão de edição inline nos event items do painel lateral, com hover na brand color) |
+| `frontend/js/api.js` | Added `apiGet(path)` function that does a `GET` and returns JSON, used to load events from the backend |
+| `frontend/agenda.html` | Event modal replaced: `eventName`/`eventDate`/`eventTime`/`eventColor` fields removed; new fields `eventTitle` (text), `eventDescription` (textarea), `eventStartDate` (datetime-local), `eventEndDate` (datetime-local) and hidden `editingEventId`; form `onsubmit` points to `submitEventForm(event)`; submit button with `id="eventSubmitBtn"` (dynamic text: *Create Event* / *Save Changes*); "New Event" button changed to `openEventModal('create')`; `#upcoming-panel` simplified to contain only `<div id="upcoming-list">` (dynamically populated by JS) |
+| `frontend/js/modules/agenda.js` | `EVENTS` array converted from static `const` to dynamic `var` (initially empty); added helpers `evtColor(id)`, `evtDate(isoStr)`, `evtTime(isoStr)` to convert events from API format; added state variable `_editingEventId`; added `loadEvents()` that calls `GET /events` and on failure uses example data with `start_date`/`end_date` in ISO format; added `rebuildViews()` that dispatches to the active view; added `openEventModal(mode, eventId)` and `closeEventModal()` that manage the create/edit state of the modal (title, submit button, field pre-filling); added `submitEventForm(e)` that does `POST /events` (create) or `PUT /events/{id}` (edit) with local fallback in both cases; added `renderUpcomingPanel()` that filters future events, sorts by ascending `start_date`, and renders the first 5 in `#upcoming-list`; `buildMonthGrid()`, `selectDay()`, `buildWeekView()` and `buildDayView()` updated to use `evtDate(e.start_date)`, `evtTime(e.start_date)` and `evtColor(e.id)` instead of the old model's `date`, `time`, `color` fields; events in the Week View and Day View get `onclick="openEventModal('edit', id)"` for direct editing; events in the Month View sidebar panel get an `event-edit-btn` edit button; `init()` updated to call `loadEvents()` on startup |
+| `frontend/css/modules/agenda.css` | Added classes: `.form-textarea` (vertical resize, min-height 72px, font-family inherit); `.event-edit-btn` (inline edit button on sidebar panel event items, with hover in brand colour) |
 
-### Critérios cumpridos (Task #07)
+### Criteria met (Task #07)
 
-- [x] Modal com campos: Title (text), Description (textarea), Start (datetime-local), End (datetime-local)
-- [x] Botão "New Event" abre modal em modo criação (título "New Event", botão "Create Event")
-- [x] Click num evento na Week View / Day View / painel lateral abre modal em modo edição pré-preenchido
-- [x] Modo edição mostra título "Edit Event" e botão "Save Changes"
-- [x] `submitEventForm()` faz `POST /events` no modo criação; `PUT /events/{id}` no modo edição
-- [x] Fallback local se o backend não estiver disponível (cria/actualiza `EVENTS` em memória)
-- [x] `renderUpcomingPanel()` filtra eventos com `start_date >= now`, ordena por `start_date` ascendente, mostra os primeiros 5 no painel "Upcoming"
-- [x] Painel "Upcoming" renderizado dinamicamente (substituiu HTML estático)
-- [x] `loadEvents()` chamado no arranque: tenta `GET /events`; em falha usa dados de exemplo no novo formato
-- [x] Todas as vistas (Week, Day, Month) actualizadas para usar o novo modelo de dados com `start_date`/`end_date`
+- [x] Modal with fields: Title (text), Description (textarea), Start (datetime-local), End (datetime-local)
+- [x] "New Event" button opens modal in create mode (title "New Event", button "Create Event")
+- [x] Clicking an event in Week View / Day View / sidebar panel opens pre-filled modal in edit mode
+- [x] Edit mode shows title "Edit Event" and button "Save Changes"
+- [x] `submitEventForm()` does `POST /events` in create mode; `PUT /events/{id}` in edit mode
+- [x] Local fallback if the backend is unavailable (creates/updates `EVENTS` in memory)
+- [x] `renderUpcomingPanel()` filters events with `start_date >= now`, sorts by ascending `start_date`, shows the first 5 in the "Upcoming" panel
+- [x] "Upcoming" panel rendered dynamically (replaced static HTML)
+- [x] `loadEvents()` called on startup: tries `GET /events`; on failure uses example data in the new format
+- [x] All views (Week, Day, Month) updated to use the new data model with `start_date`/`end_date`
 
 ---
 
-## Fix #03 — Agenda: api.js em falta + criação de evento + Day View
+## Fix #03 — Agenda: missing api.js + event creation + Day View
 
-**Data:** 2 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)
+**Date:** 2 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)
 
-### O que foi corrigido
+### What was fixed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/agenda.html` | Adicionado `<script src="js/api.js"></script>` antes dos outros scripts — estava em falta, tornando `apiPost`/`apiGet` indefinidos e impedindo qualquer operação de eventos |
-| `frontend/js/modules/agenda.js` | `submitEventForm()` reescrito com lógica **síncrona-primeiro**: o evento é adicionado/editado em `EVENTS` imediatamente, o modal fecha e as vistas reconstroem-se antes de qualquer chamada à API; a chamada à API corre em background (fire-and-forget) sem bloquear a UI |
-| `frontend/js/modules/agenda.js` | `setView()` corrigido: o ramo `else` tratava "day" e "week" de forma idêntica, mostrando sempre `#week-view` e nunca chamando `buildDayView()`; substituído por três ramos explícitos (`month` / `day` / `week`) cada um com o seu show/hide correcto e chamada à função de build correspondente |
+| `frontend/agenda.html` | Added `<script src="js/api.js"></script>` before the other scripts — it was missing, making `apiPost`/`apiGet` undefined and blocking all event operations |
+| `frontend/js/modules/agenda.js` | `submitEventForm()` rewritten with **synchronous-first** logic: the event is added/edited in `EVENTS` immediately, the modal closes and views rebuild before any API call; the API call runs in the background (fire-and-forget) without blocking the UI |
+| `frontend/js/modules/agenda.js` | `setView()` fixed: the `else` branch was treating "day" and "week" identically, always showing `#week-view` and never calling `buildDayView()`; replaced with three explicit branches (`month` / `day` / `week`) each with its own correct show/hide and call to the corresponding build function |
 
-### Bugs corrigidos
+### Bugs fixed
 
-- [x] Criação de evento não funcionava — `api.js` não estava carregado em `agenda.html`
-- [x] Fallback local também não corria — o erro era síncrono, antes do `.catch()`
-- [x] `submitEventForm()` agora aplica a mudança localmente de forma imediata (sem depender de callbacks assíncronos)
-- [x] Day View mostrava o mesmo conteúdo que a Week View — `setView()` nunca activava `#day-view` nem chamava `buildDayView()`
+- [x] Event creation was not working — `api.js` was not loaded in `agenda.html`
+- [x] Local fallback also was not running — the error was synchronous, before the `.catch()`
+- [x] `submitEventForm()` now applies the change locally immediately (without depending on async callbacks)
+- [x] Day View was showing the same content as Week View — `setView()` never activated `#day-view` or called `buildDayView()`
 
 ---
 
 ## Task #08 — Notepad: Note List & Editor
 
-**Data:** 2 de junho de 2026  
-**Modelo:** GitHub Copilot (Claude Sonnet 4.6)  
-**Sessão:** Agente autónomo
+**Date:** 2 June 2026  
+**Model:** GitHub Copilot (Claude Sonnet 4.6)  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/notepad.html` | Página reestruturada com layout de dois painéis: painel esquerdo (lista de notas com título + preview truncado) e painel direito (editor com toolbar); removidos o bloco de estatísticas (words/chars/read time) e os botões Save/Clear anteriores; adicionado bloco `.notepad-layout` com `aside.notes-list-panel` (header com contador de notas + lista `#notesList`) e `section.notes-editor-panel` (estado vazio `#editorEmptyState` + conteúdo `#editorContent` com toolbar e editor); toolbar do editor contém: indicador de status (`#saveStatus`), contador de palavras (`#wordCount`), botão Delete e botão Save; adicionado `<script src="js/api.js"></script>` antes dos outros scripts |
-| `frontend/js/modules/notepad.js` | Ficheiro reescrito de raiz; variáveis de estado globais: `NOTES` (array), `_selectedNoteId`, `_localIdCounter`, `_isDirty`; `loadNotes()` tenta `GET /notes` e em caso de falha carrega do `localStorage` (com 2 notas de exemplo se estiver vazio); `renderNoteList()` renderiza os items da lista esquerda com título e preview truncado (80 chars), destacando a nota activa; `selectNote(id)` popula o editor e mostra o painel direito; `newNote()` cria nota em branco localmente (com `POST /notes` em background), adiciona-a ao topo da lista e abre-a no editor; `saveNote()` actualiza `NOTES` e `localStorage` imediatamente, depois faz `PUT /notes/{id}` em background; `deleteNote()` com `confirm()` nativo — captura o `id` antes de o nulificar, remove da lista, actualiza `localStorage` e chama `DELETE /notes/{id}` em background; `onEditorInput()` marca `_isDirty = true` e actualiza o contador de palavras em tempo real; `setSaveStatus()` actualiza o indicador com ícone ✓ (saved), "Saving…" ou dot laranja (unsaved); `persistLocal()` e `loadFromLocal()` gerem a persistência em `localStorage` como fallback |
-| `frontend/css/modules/notepad.css` | Ficheiro reescrito: adicionadas classes `.notepad-main` (flex column, min-height calc), `.notepad-layout` (flex row, min-height 560px, border + radius + shadow), `.notes-list-panel` (width 280px, border-right, background surface-alt), `.notes-list-header`, `.notes-list-count`, `.notes-list-items` (overflow-y auto), `.note-list-item` (hover + active state com border-left brand), `.note-item-title`, `.note-item-preview`, `.notes-empty-msg`, `.notes-editor-panel` (flex: 1), `.editor-empty-state` (centered SVG + text), `.editor-content` (flex column), `.editor-toolbar` (space-between), `.editor-status`, `.editor-actions`, `.editor-wordcount`, `.btn-sm`, `.unsaved-dot`; estilos do editor interno mantidos e adaptados para flex |
+| `frontend/notepad.html` | Page restructured with two-panel layout: left panel (note list with title + truncated preview) and right panel (editor with toolbar); removed the stats block (words/chars/read time) and the previous Save/Clear buttons; added `.notepad-layout` block with `aside.notes-list-panel` (header with note count + `#notesList` list) and `section.notes-editor-panel` (empty state `#editorEmptyState` + content `#editorContent` with toolbar and editor); editor toolbar contains: status indicator (`#saveStatus`), word counter (`#wordCount`), Delete button and Save button; added `<script src="js/api.js"></script>` before the other scripts |
+| `frontend/js/modules/notepad.js` | File rewritten from scratch; global state variables: `NOTES` (array), `_selectedNoteId`, `_localIdCounter`, `_isDirty`; `loadNotes()` tries `GET /notes` and on failure loads from `localStorage` (with 2 example notes if empty); `renderNoteList()` renders the left list items with title and truncated preview (80 chars), highlighting the active note; `selectNote(id)` populates the editor and shows the right panel; `newNote()` creates a blank note locally (with `POST /notes` in background), adds it to the top of the list and opens it in the editor; `saveNote()` updates `NOTES` and `localStorage` immediately, then does `PUT /notes/{id}` in background; `deleteNote()` with native `confirm()` — captures the `id` before nullifying it, removes from list, updates `localStorage` and calls `DELETE /notes/{id}` in background; `onEditorInput()` marks `_isDirty = true` and updates the word counter in real time; `setSaveStatus()` updates the indicator with ✓ icon (saved), "Saving…" or orange dot (unsaved); `persistLocal()` and `loadFromLocal()` manage `localStorage` persistence as fallback |
+| `frontend/css/modules/notepad.css` | File rewritten: added classes `.notepad-main` (flex column, min-height calc), `.notepad-layout` (flex row, min-height 560px, border + radius + shadow), `.notes-list-panel` (width 280px, border-right, background surface-alt), `.notes-list-header`, `.notes-list-count`, `.notes-list-items` (overflow-y auto), `.note-list-item` (hover + active state with brand border-left), `.note-item-title`, `.note-item-preview`, `.notes-empty-msg`, `.notes-editor-panel` (flex: 1), `.editor-empty-state` (centred SVG + text), `.editor-content` (flex column), `.editor-toolbar` (space-between), `.editor-status`, `.editor-actions`, `.editor-wordcount`, `.btn-sm`, `.unsaved-dot`; internal editor styles maintained and adapted to flex |
 
-### Critérios cumpridos (Task #08)
+### Criteria met (Task #08)
 
-- [x] Layout de dois painéis: lista de notas à esquerda, editor à direita
-- [x] Lista mostra título + preview truncado de cada nota
-- [x] Nota activa destacada com border-left preta + fundo branco
-- [x] Estado vazio (SVG + mensagem) quando nenhuma nota está seleccionada
-- [x] Botão "New Note" no page header cria nota em branco, abre-a no editor e foca o título
-- [x] `POST /notes` chamado na criação (com fallback local)
-- [x] `PUT /notes/{id}` chamado ao guardar (com fallback local)
-- [x] `DELETE /notes/{id}` chamado ao eliminar (com confirm + fallback local)
-- [x] Contador de palavras actualizado em tempo real (`oninput`)
-- [x] Indicador de estado: "Unsaved changes" (dot laranja) → "Saving…" → ✓ Saved
-- [x] Persistência em `localStorage` como fallback quando backend indisponível
-- [x] Responsivo: em mobile os dois painéis empilham verticalmente
+- [x] Two-panel layout: note list on the left, editor on the right
+- [x] List shows title + truncated preview of each note
+- [x] Active note highlighted with black border-left + white background
+- [x] Empty state (SVG + message) when no note is selected
+- [x] "New Note" button in the page header creates a blank note, opens it in the editor and focuses the title
+- [x] `POST /notes` called on creation (with local fallback)
+- [x] `PUT /notes/{id}` called on save (with local fallback)
+- [x] `DELETE /notes/{id}` called on delete (with confirm + local fallback)
+- [x] Word counter updated in real time (`oninput`)
+- [x] Status indicator: "Unsaved changes" (orange dot) → "Saving…" → ✓ Saved
+- [x] `localStorage` persistence as fallback when backend is unavailable
+- [x] Responsive: on mobile the two panels stack vertically
 
 ---
 
-## Task #09 — Responsividade Mobile
+## Task #09 — Mobile Responsiveness
 
-**Data:** 8 de junho de 2026
-**Modelo:** Claude Sonnet 4.6
-**Sessão:** Agente autónomo
+**Date:** 8 June 2026
+**Model:** Claude Sonnet 4.6
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/css/reset.css` | Adicionado `overflow-x: hidden` em `html` e `body` para impedir scroll horizontal a nível da página |
-| `frontend/css/layout.css` | Adicionado `overflow-x: hidden` em `.app-layout` e `min-width: 0` em `.main-content` (evita que filho flex expanda o contentor); substituído `.sidebar-toggle` flutuante por `.mobile-topbar` (barra fixa no topo, 54 px de altura, com logo + botão hambúrguer integrado); adicionado `.sidebar-backdrop` (overlay escuro semi-transparente atrás do sidebar aberto); `padding-top` do `.main-content` em mobile ajustado para `calc(54px + 20px)` para compensar a topbar; modal redesenhado como bottom sheet em mobile (`align-items: flex-end`, `border-radius` só nos cantos superiores, `max-height: 90vh` com scroll interno); reduzido `padding` do `.auth-topbar` em mobile; adicionadas regras para landing page em 480 px (foto menor, stats card mais compacto) |
-| `frontend/js/router.js` | `toggleSidebar()` refactorizado para gerir o `.sidebar-backdrop`: cria o elemento via JS no arranque, mostra-o ao abrir o sidebar e esconde-o ao fechar; handler de click fora do sidebar actualizado para também esconder o backdrop |
-| `frontend/css/modules/tasks.css` | Em `≤640 px`: tabela convertida em cards com CSS Grid (`grid-template-columns: auto minmax(0,1fr) auto`, 3 linhas); checkbox e acções atravessam as 3 linhas; nome da task com `overflow-wrap: break-word`; status badge na linha 2; data de entrega visível na linha 3; coluna "Created" ocultada; botões de acção com 36×36 px para conforto táctil; barra de pesquisa ocupa 100% na primeira linha; footer empilha verticalmente |
-| `frontend/css/modules/agenda.css` | Em `≤768 px`: `.agenda-layout` usa `minmax(0,1fr)` em vez de `1fr` para impedir expansão do grid além do viewport; `.calendar-wrap` com `overflow-x: auto` e `min-width: 0` (scroll horizontal contido dentro do card); week header e week grid com `min-width: 560 px`; células do mês menores; mini-calendário em linha quando há espaço |
-| `frontend/css/modules/notepad.css` | Em `≤700 px`: layout muda para single-panel; por defeito só o painel de lista é visível; ao seleccionar uma nota, a classe `.mobile-editor-open` no `.notepad-layout` oculta a lista e mostra apenas o editor; adicionado `.mobile-back-btn` (oculto em desktop, visível em mobile) |
-| `frontend/notepad.html` | Adicionado botão "← Notes" (classe `mobile-back-btn`) na toolbar do editor, antes do indicador de estado; substitui o `<button class="sidebar-toggle">` standalone pelo novo `<header class="mobile-topbar">` com logo integrado |
-| `frontend/js/modules/notepad.js` | Adicionadas `mobileBackToList()` (remove `.mobile-editor-open` do layout) e `_mobileOpenEditor()` (adiciona a classe quando `window.innerWidth ≤ 700`); `selectNote()` e `newNote()` chamam `_mobileOpenEditor()` ao abrir o editor; `deleteNote()` chama `mobileBackToList()` após eliminar |
-| `frontend/tasks.html` | `<button class="sidebar-toggle">` substituído por `<header class="mobile-topbar">` com botão hambúrguer + logo |
-| `frontend/agenda.html` | Idem |
+| `frontend/css/reset.css` | Added `overflow-x: hidden` on `html` and `body` to prevent horizontal scroll at the page level |
+| `frontend/css/layout.css` | Added `overflow-x: hidden` on `.app-layout` and `min-width: 0` on `.main-content` (prevents flex child from expanding the container); replaced floating `.sidebar-toggle` with `.mobile-topbar` (fixed top bar, 54 px height, with integrated logo + hamburger button); added `.sidebar-backdrop` (semi-transparent dark overlay behind the open sidebar); `padding-top` of `.main-content` on mobile adjusted to `calc(54px + 20px)` to compensate for the topbar; modal redesigned as a bottom sheet on mobile (`align-items: flex-end`, `border-radius` only on top corners, `max-height: 90vh` with internal scroll); reduced `.auth-topbar` padding on mobile; added rules for landing page at 480 px (smaller photo, more compact stats card) |
+| `frontend/js/router.js` | `toggleSidebar()` refactored to manage `.sidebar-backdrop`: creates the element via JS on startup, shows it when opening the sidebar and hides it when closing; click outside sidebar handler updated to also hide the backdrop |
+| `frontend/css/modules/tasks.css` | At `≤640 px`: table converted to cards with CSS Grid (`grid-template-columns: auto minmax(0,1fr) auto`, 3 rows); checkbox and actions span all 3 rows; task name with `overflow-wrap: break-word`; status badge on row 2; due date visible on row 3; "Created" column hidden; action buttons with 36×36 px for touch comfort; search bar takes 100% on the first row; footer stacks vertically |
+| `frontend/css/modules/agenda.css` | At `≤768 px`: `.agenda-layout` uses `minmax(0,1fr)` instead of `1fr` to prevent grid expansion beyond the viewport; `.calendar-wrap` with `overflow-x: auto` and `min-width: 0` (horizontal scroll contained within the card); week header and week grid with `min-width: 560 px`; smaller month cells; mini calendar in a row when there is space |
+| `frontend/css/modules/notepad.css` | At `≤700 px`: layout changes to single-panel; by default only the list panel is visible; when selecting a note, the `.mobile-editor-open` class on `.notepad-layout` hides the list and shows only the editor; added `.mobile-back-btn` (hidden on desktop, visible on mobile) |
+| `frontend/notepad.html` | Added "← Notes" button (class `mobile-back-btn`) in the editor toolbar, before the status indicator; replaced the standalone `<button class="sidebar-toggle">` with the new `<header class="mobile-topbar">` with integrated logo |
+| `frontend/js/modules/notepad.js` | Added `mobileBackToList()` (removes `.mobile-editor-open` from layout) and `_mobileOpenEditor()` (adds the class when `window.innerWidth ≤ 700`); `selectNote()` and `newNote()` call `_mobileOpenEditor()` when opening the editor; `deleteNote()` calls `mobileBackToList()` after deletion |
+| `frontend/tasks.html` | `<button class="sidebar-toggle">` replaced by `<header class="mobile-topbar">` with hamburger button + logo |
+| `frontend/agenda.html` | Same |
 
-### Critérios cumpridos (Task #09)
+### Criteria met (Task #09)
 
-- [x] Sidebar abre sobre um backdrop escuro em mobile; fechar no backdrop ou fora do painel funciona
-- [x] Topbar móvel fixa (54 px) com hambúrguer e logo em todas as páginas de app
-- [x] Tabela de tasks converte-se em cards legíveis em ecrãs ≤ 640 px (nome + status + data)
-- [x] Calendário semanal faz scroll horizontal dentro do seu card sem causar scroll na página
-- [x] Notepad alterna entre painel de lista e painel de editor em mobile (botão "← Notes")
-- [x] Modal aparece como bottom sheet em mobile (desliza do fundo do ecrã)
-- [x] Nenhum elemento causa scroll horizontal na página (`overflow-x: hidden` em html/body/app-layout)
+- [x] Sidebar opens over a dark backdrop on mobile; closing on the backdrop or outside the panel works
+- [x] Fixed mobile topbar (54 px) with hamburger and logo on all app pages
+- [x] Task table converts to readable cards on screens ≤ 640 px (name + status + date)
+- [x] Weekly calendar scrolls horizontally within its card without causing page scroll
+- [x] Notepad switches between list panel and editor panel on mobile ("← Notes" button)
+- [x] Modal appears as bottom sheet on mobile (slides from the bottom of the screen)
+- [x] No element causes horizontal page scroll (`overflow-x: hidden` on html/body/app-layout)
 
 ---
 
-## Fix #04 — Stat Cards: bug de cascata CSS
+## Fix #04 — Stat Cards: CSS cascade bug
 
-**Data:** 8 de junho de 2026
-**Modelo:** Claude Sonnet 4.6
+**Date:** 8 June 2026
+**Model:** Claude Sonnet 4.6
 
-### O que foi corrigido
+### What was fixed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/css/components.css` | Adicionadas media queries responsive dos stat cards **dentro** do `components.css`, logo após a definição base: `≤1024 px → repeat(2,1fr)` e `≤480 px → 1fr`; padding e tamanho do ícone reduzidos em `≤480 px` para melhor leitura; em mobile os cards ocupam 1 coluna (largura total) |
-| `frontend/css/layout.css` | Removidas as regras `stat-cards` do `layout.css` (estavam a ser sobrescritas pelo `components.css` que carrega depois) |
+| `frontend/css/components.css` | Added responsive media queries for stat cards **inside** `components.css`, immediately after the base definition: `≤1024 px → repeat(2,1fr)` and `≤480 px → 1fr`; padding and icon size reduced at `≤480 px` for better readability; on mobile the cards take 1 column (full width) |
+| `frontend/css/layout.css` | Removed `stat-cards` rules from `layout.css` (they were being overridden by `components.css` which loads afterwards) |
 
-### Bug corrigido
+### Bug fixed
 
-O `components.css` é carregado depois do `layout.css` no HTML. Por isso a regra base `.stat-cards { grid-template-columns: repeat(4,1fr) }` no `components.css` sobrescrevia as media queries do `layout.css` em qualquer largura de ecrã, mesmo em 430 px. A solução foi mover as media queries para o `components.css`, depois da definição base, garantindo que têm prioridade na cascata.
+`components.css` is loaded after `layout.css` in the HTML. Therefore the base rule `.stat-cards { grid-template-columns: repeat(4,1fr) }` in `components.css` was overriding the `layout.css` media queries at any screen width, even at 430 px. The solution was to move the media queries to `components.css`, after the base definition, ensuring they take priority in the cascade.
 
-- [x] Stat cards mostram 2 colunas em tablet (≤1024 px) e 1 coluna em mobile (≤480 px)
-- [x] Cards não ficam cortados em ecrãs iPhone (430 px)
+- [x] Stat cards show 2 columns on tablet (≤1024 px) and 1 column on mobile (≤480 px)
+- [x] Cards are not cut off on iPhone screens (430 px)
 
 ---
 
 ## Task #10 — Files Page: Layout, New Panel & Upload Modal
 
-**Data:** 8 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 8 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/files.html` | Página criada de raiz: sidebar padrão com Files marcado como activo + badge de contagem; main content com header ("Files" + subtítulo + botão "+ New"); body dividido em dois painéis — `files-content` (toolbar + breadcrumb + tabela + grid view) e `files-new-panel` (campo de nome + 4 type cards + botão Create); modal "Upload File" com dropzone drag-and-drop, campos File Name / Category / Description e botões Cancel / Upload File; menu floating de acções por ficheiro (Rename / Download / Delete) |
-| `frontend/css/modules/files.css` | Ficheiro criado de raiz (~280 linhas): estilos para `.files-body` (flex row), `.files-content` (card com border + shadow), `.files-toolbar` (search + view toggle), `.files-breadcrumb`, `.files-table` (list view com hover), `.file-icon` com variantes de cor por tipo (`fi-folder` laranja, `fi-doc` azul, `fi-sheet` verde, `fi-pdf` vermelho, `fi-code` verde escuro, `fi-image` roxo), `.files-grid` (grid view auto-fill), `.files-new-panel` (painel direito fixo), `.type-card` (seleccionável com borda dupla quando activo), `.upload-dropzone` (dashed border + drag-over state), `.file-actions-menu` (menu floating), `.nav-badge` (badge circular no nav link); breakpoints em 1024 px, 860 px e 600 px |
-| `frontend/js/modules/files.js` | Ficheiro criado de raiz: array `_files` com 8 entradas de exemplo marcadas com `example: true`; `renderFiles()` despacha para `renderListView()` e `renderGridView()`; `setView()` alterna entre list e grid com toggle de botões activos; `filterFiles()` filtra em tempo real por nome; `selectType()` e `onNewNameInput()` gerem o estado do painel New (botão Create desactivado até nome + tipo preenchidos); `createItem()` chama `clearExamples()` na primeira criação e adiciona o novo item ao topo; `uploadFile()` idem, detecta o tipo pelo extension do nome; `openActionsMenu()` posiciona o menu floating junto ao botão "..."; `renameFile()` e `deleteFile()` guardam o `id` antes de chamar `hideActionsMenu()` (evita race com `_activeMenuFileId = null`); dropzone com handlers `onDragOver`, `onDragLeave`, `onDrop`; `updateNavBadge()` actualiza o badge com o total de ficheiros |
-| `frontend/tasks.html` | Link de Files no nav actualizado de `href="#"` para `href="files.html"` |
-| `frontend/agenda.html` | Idem |
-| `frontend/notepad.html` | Idem |
+| `frontend/files.html` | Page created from scratch: standard sidebar with Files marked as active + count badge; main content with header ("Files" + subtitle + "+ New" button); body split into two panels — `files-content` (toolbar + breadcrumb + table + grid view) and `files-new-panel` (name field + 4 type cards + Create button); "Upload File" modal with drag-and-drop dropzone, File Name / Category / Description fields and Cancel / Upload File buttons; floating action menu per file (Rename / Download / Delete) |
+| `frontend/css/modules/files.css` | File created from scratch (~280 lines): styles for `.files-body` (flex row), `.files-content` (card with border + shadow), `.files-toolbar` (search + view toggle), `.files-breadcrumb`, `.files-table` (list view with hover), `.file-icon` with colour variants by type (`fi-folder` orange, `fi-doc` blue, `fi-sheet` green, `fi-pdf` red, `fi-code` dark green, `fi-image` purple), `.files-grid` (auto-fill grid view), `.files-new-panel` (fixed right panel), `.type-card` (selectable with double border when active), `.upload-dropzone` (dashed border + drag-over state), `.file-actions-menu` (floating menu), `.nav-badge` (circular badge on nav link); breakpoints at 1024 px, 860 px and 600 px |
+| `frontend/js/modules/files.js` | File created from scratch: `_files` array with 8 example entries marked with `example: true`; `renderFiles()` dispatches to `renderListView()` and `renderGridView()`; `setView()` toggles between list and grid with active button toggle; `filterFiles()` filters in real time by name; `selectType()` and `onNewNameInput()` manage the New panel state (Create button disabled until name + type are filled); `createItem()` calls `clearExamples()` on first creation and adds the new item to the top; `uploadFile()` same, detects type by file name extension; `openActionsMenu()` positions the floating menu next to the "..." button; `renameFile()` and `deleteFile()` store the `id` before calling `hideActionsMenu()` (avoids race with `_activeMenuFileId = null`); dropzone with `onDragOver`, `onDragLeave`, `onDrop` handlers; `updateNavBadge()` updates the badge with the total file count |
+| `frontend/tasks.html` | Files nav link updated from `href="#"` to `href="files.html"` |
+| `frontend/agenda.html` | Same |
+| `frontend/notepad.html` | Same |
 
-### Critérios cumpridos (Task #10)
+### Criteria met (Task #10)
 
-- [x] Sidebar com Files activo e badge com contagem de ficheiros
-- [x] List view com colunas Name / Modified / Size e botão "..." por linha
-- [x] Grid view com cards de ficheiro (icon + nome + meta)
-- [x] Toggle list/grid funcional com botão activo destacado
-- [x] Search em tempo real por nome de ficheiro
-- [x] Breadcrumb "All Files › My Files" (clicável para reset)
-- [x] Ícones coloridos por tipo de ficheiro (folder, doc, spreadsheet, pdf, code, image)
-- [x] Painel "New" sempre visível: campo de nome + 4 type cards seleccionáveis + botão Create
-- [x] Botão Create desactivado até nome e tipo estarem preenchidos
-- [x] Modal "Upload File" com dropzone (click + drag-and-drop), campos e botão Upload
-- [x] Upload detecta o tipo do ficheiro pela extensão
-- [x] Menu "..." com Rename (prompt nativo), Download (stub) e Delete (confirm nativo)
-- [x] Responsivo: painel New passa para baixo em ≤860 px; colunas Modified/Size ocultadas em ≤600 px
-- [x] Nav links de Files corrigidos em todas as páginas
+- [x] Sidebar with Files active and badge with file count
+- [x] List view with Name / Modified / Size columns and "..." button per row
+- [x] Grid view with file cards (icon + name + meta)
+- [x] List/grid toggle functional with active button highlighted
+- [x] Real-time search by file name
+- [x] Breadcrumb "All Files › My Files" (clickable to reset)
+- [x] Coloured icons by file type (folder, doc, spreadsheet, pdf, code, image)
+- [x] "New" panel always visible: name field + 4 selectable type cards + Create button
+- [x] Create button disabled until name and type are filled
+- [x] "Upload File" modal with dropzone (click + drag-and-drop), fields and Upload button
+- [x] Upload detects file type by extension
+- [x] "..." menu with Rename (native prompt), Download (stub) and Delete (native confirm)
+- [x] Responsive: New panel moves below at ≤860 px; Modified/Size columns hidden at ≤600 px
+- [x] Files nav links fixed on all pages
 
 ---
 
-## Fix #05 — Files: delete e rename não funcionavam
+## Fix #05 — Files: delete and rename were not working
 
-**Data:** 8 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6
+**Date:** 8 June 2026  
+**Model:** Claude Sonnet 4.6
 
-### O que foi corrigido
+### What was fixed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/modules/files.js` | `deleteFile()` e `renameFile()` agora guardam `_activeMenuFileId` numa variável local `id` **antes** de chamar `hideActionsMenu()`, que zerava a variável global; sem esta correcção, `_files.find(...)` recebia `null` e retornava imediatamente sem executar a acção |
+| `frontend/js/modules/files.js` | `deleteFile()` and `renameFile()` now store `_activeMenuFileId` in a local variable `id` **before** calling `hideActionsMenu()`, which was zeroing the global variable; without this fix, `_files.find(...)` received `null` and returned immediately without executing the action |
 
-### Bug corrigido
+### Bug fixed
 
-- [x] Delete e Rename no menu "..." passaram a funcionar correctamente após preservar o `id` antes de fechar o menu
+- [x] Delete and Rename in the "..." menu started working correctly after preserving the `id` before closing the menu
 
 ---
 
-## Fix #06 — Files: limpar exemplos ao criar o primeiro item real
+## Fix #06 — Files: clear examples when creating the first real item
 
-**Data:** 8 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6
+**Date:** 8 June 2026  
+**Model:** Claude Sonnet 4.6
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/modules/files.js` | Todos os ficheiros de exemplo passaram a ter `example: true` no array `_files`; adicionada função `clearExamples()` que filtra `_files` removendo todas as entradas com `example: true`; `createItem()` e `uploadFile()` chamam `clearExamples()` antes de inserir o novo item, garantindo que os exemplos desaparecem no primeiro uso real |
+| `frontend/js/modules/files.js` | All example files now have `example: true` in the `_files` array; added `clearExamples()` function that filters `_files` removing all entries with `example: true`; `createItem()` and `uploadFile()` call `clearExamples()` before inserting the new item, ensuring examples disappear on first real use |
 
-### Comportamento corrigido
+### Behaviour fixed
 
-- [x] Os ficheiros de exemplo são removidos automaticamente quando o utilizador cria ou faz upload do primeiro ficheiro real
+- [x] Example files are automatically removed when the user creates or uploads the first real file
 
 ---
 
-## Task #11 — Autenticação: Guard & "Remember Me"
+## Task #11 — Authentication: Guard & "Remember Me"
 
-**Data:** 18 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 18 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/auth.js` | Ficheiro reescrito de raiz (estava vazio): `checkAuth()` redireciona para `login.html` se não houver token em `localStorage`; `logout()` limpa `dn_token` e `dn_user_id` e redireciona para login; `getInitials(name)` gera as iniciais a partir do nome; `loadSidebarUser()` faz `GET /users/profile`, preenche `#sidebarAvatar`, `#sidebarName`, `#sidebarEmail` com os dados reais do utilizador e chama `logout()` em caso de erro (token inválido/expirado); `checkAuth()` e `loadSidebarUser()` correm automaticamente ao carregar qualquer página de app |
-| `frontend/login.html` | Adicionado redirect para `tasks.html` se já existir token (evita duplo login); adicionada IIFE `loadRemembered()` que preenche email + password e activa o checkbox "Remember me" se houver dados guardados; `handleLogin()` actualizado para guardar/limpar `dn_remember_email` e `dn_remember_pwd` no `localStorage` consoante o estado do checkbox |
-| `frontend/register.html` | Adicionado redirect para `tasks.html` se já existir token |
-| `frontend/tasks.html` | Sidebar footer substituído: avatar `RD` hardcoded → `<a href="profile.html">` com `#sidebarAvatar / #sidebarName / #sidebarEmail` dinâmicos; adicionado botão de logout com ícone SVG e `onclick="logout()"`; adicionado `<script src="js/auth.js"></script>` |
-| `frontend/agenda.html` | Idem |
-| `frontend/files.html` | Idem |
-| `frontend/notepad.html` | Idem |
-| `frontend/css/layout.css` | `.sidebar-footer` com `gap: 6px` e `padding: 12px 16px`; adicionados `.sidebar-user-link` (flex, hover, link sem underline para profile), `.sidebar-user-meta` (min-width 0 para truncar texto longo), `.sidebar-logout-btn` (32×32 px, ghost, hover vermelho) |
+| `frontend/js/auth.js` | File rewritten from scratch (was empty): `checkAuth()` redirects to `login.html` if there is no token in `localStorage`; `logout()` clears `dn_token` and `dn_user_id` and redirects to login; `getInitials(name)` generates initials from the name; `loadSidebarUser()` does `GET /users/profile`, fills `#sidebarAvatar`, `#sidebarName`, `#sidebarEmail` with the real user data and calls `logout()` on error (invalid/expired token); `checkAuth()` and `loadSidebarUser()` run automatically on loading any app page |
+| `frontend/login.html` | Added redirect to `tasks.html` if a token already exists (prevents double login); added IIFE `loadRemembered()` that fills email + password and activates the "Remember me" checkbox if there is saved data; `handleLogin()` updated to save/clear `dn_remember_email` and `dn_remember_pwd` in `localStorage` according to the checkbox state |
+| `frontend/register.html` | Added redirect to `tasks.html` if a token already exists |
+| `frontend/tasks.html` | Sidebar footer replaced: hardcoded `RD` avatar → `<a href="profile.html">` with dynamic `#sidebarAvatar / #sidebarName / #sidebarEmail`; added logout button with SVG icon and `onclick="logout()"`; added `<script src="js/auth.js"></script>` |
+| `frontend/agenda.html` | Same |
+| `frontend/files.html` | Same |
+| `frontend/notepad.html` | Same |
+| `frontend/css/layout.css` | `.sidebar-footer` with `gap: 6px` and `padding: 12px 16px`; added `.sidebar-user-link` (flex, hover, link without underline for profile), `.sidebar-user-meta` (min-width 0 to truncate long text), `.sidebar-logout-btn` (32×32 px, ghost, red hover) |
 
-### Critérios cumpridos (Task #11)
+### Criteria met (Task #11)
 
-- [x] Todas as páginas de app verificam token no arranque — sem token redireccionam para login
-- [x] Login e Register redirecionam para tasks.html se já houver sessão activa
-- [x] "Remember me" guarda email + password e pré-preenche o formulário na próxima visita
-- [x] Sidebar mostra nome, email e iniciais reais carregados da API
-- [x] Token inválido/expirado → `loadSidebarUser()` chama `logout()` automaticamente
-- [x] Botão de logout no footer do sidebar em todas as páginas de app
+- [x] All app pages check for token on startup — without token they redirect to login
+- [x] Login and Register redirect to tasks.html if there is already an active session
+- [x] "Remember me" saves email + password and pre-fills the form on the next visit
+- [x] Sidebar shows real name, email and initials loaded from the API
+- [x] Invalid/expired token → `loadSidebarUser()` calls `logout()` automatically
+- [x] Logout button in the sidebar footer on all app pages
 
 ---
 
-## Fix #07 — Tasks: sincronização de status entre frontend e backend
+## Fix #07 — Tasks: status synchronisation between frontend and backend
 
-**Data:** 18 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6
+**Date:** 18 June 2026  
+**Model:** Claude Sonnet 4.6
 
-### O que foi corrigido
+### What was fixed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `backend/app/services/task_service.py` | `create_task()` passou a incluir `status=data.status` ao criar o modelo — o campo era ignorado e a tarefa era sempre criada sem status; `update_task()` passou a aplicar `task.status = data.status` se `data.status is not None` — actualizações de status via `PUT` não tinham efeito |
-| `frontend/js/modules/tasks.js` | `statusMap` movido para o topo do ficheiro; adicionadas `dbToFrontend(s)` (converte `'Not-Started'` → `'not-started'`, etc.) e `frontendToDb(s)` (conversão inversa); `loadTasks()` usa `dbToFrontend(t.status)` ao construir cada linha — as tarefas carregadas da API mostravam sempre `not-started`; `markComplete()` passa `frontendToDb(newStatus)` ao `apiPatch` — o backend recebia `'completed'` em vez de `'Completed'` e rejeitava; `submitCreateTask()` inclui `status: frontendToDb(status)` no payload do `POST` e do `PATCH` de edição |
+| `backend/app/services/task_service.py` | `create_task()` now includes `status=data.status` when creating the model — the field was being ignored and the task was always created without status; `update_task()` now applies `task.status = data.status` if `data.status is not None` — status updates via `PUT` had no effect |
+| `frontend/js/modules/tasks.js` | `statusMap` moved to the top of the file; added `dbToFrontend(s)` (converts `'Not-Started'` → `'not-started'`, etc.) and `frontendToDb(s)` (reverse conversion); `loadTasks()` uses `dbToFrontend(t.status)` when building each row — tasks loaded from the API always showed `not-started`; `markComplete()` passes `frontendToDb(newStatus)` to `apiPatch` — the backend was receiving `'completed'` instead of `'Completed'` and rejecting it; `submitCreateTask()` includes `status: frontendToDb(status)` in the `POST` and edit `PATCH` payload |
 
-### Bugs corrigidos
+### Bugs fixed
 
-- [x] Tarefas criadas com status específico ficavam sempre como `not-started` no backend
-- [x] Marcar tarefa como concluída enviava `'completed'` (formato frontend) em vez de `'Completed'` (formato backend)
-- [x] Editar tarefa não persistia alterações de status
-- [x] Ao recarregar a página, todas as tarefas apareciam como `not-started` independentemente do status guardado
+- [x] Tasks created with a specific status always remained as `not-started` in the backend
+- [x] Marking a task as complete was sending `'completed'` (frontend format) instead of `'Completed'` (backend format)
+- [x] Editing a task did not persist status changes
+- [x] On page reload, all tasks appeared as `not-started` regardless of the saved status
 
 ---
 
-## Task #12 — Agenda: Mini Calendário Dinâmico
+## Task #12 — Agenda: Dynamic Mini Calendar
 
-**Data:** 18 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 18 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/modules/agenda.js` | Adicionada variável de estado `miniCalDate` (inicializada ao dia 1 do mês actual); adicionada `buildMiniCal()` que gera dinamicamente o mini calendário no sidebar: título do mês/ano, 7 colunas de nomes de dias (M–S), grelha com offset Monday-based, marcação de dias de outros meses (`.other-month`), hoje (`.today`), dias com eventos (`.has-event`) e dias seleccionados/na semana activa (`.selected`); click num dia chama `miniCalSelectDay(date)` que navega a week/day view para o período correspondente e recstrói o calendário; adicionadas `miniCalPrev()` e `miniCalNext()` para navegar o mini calendário de forma independente das vistas principais; `buildMiniCal()` chamado em `rebuildViews()`, `loadEvents()` (após load e fallback) e `init()` |
-| `frontend/agenda.html` | `<span class="mini-cal-title">May 2026</span>` substituído por `<span id="mini-cal-title"></span>` (populado pelo JS); botões prev/next do mini calendário com `onclick="miniCalPrev()"` e `onclick="miniCalNext()"`; bloco estático de 35 `<div class="day-num">` removido e substituído por `<div class="mini-cal-grid" id="mini-cal-grid"></div>` |
+| `frontend/js/modules/agenda.js` | Added state variable `miniCalDate` (initialised to day 1 of the current month); added `buildMiniCal()` that dynamically generates the sidebar mini calendar: month/year title, 7 day name columns (M–S), grid with Monday-based offset, marking of days from other months (`.other-month`), today (`.today`), days with events (`.has-event`) and selected/active-week days (`.selected`); clicking a day calls `miniCalSelectDay(date)` which navigates the week/day view to the corresponding period and rebuilds the calendar; added `miniCalPrev()` and `miniCalNext()` to navigate the mini calendar independently from the main views; `buildMiniCal()` called in `rebuildViews()`, `loadEvents()` (after load and fallback) and `init()` |
+| `frontend/agenda.html` | `<span class="mini-cal-title">May 2026</span>` replaced by `<span id="mini-cal-title"></span>` (populated by JS); mini calendar prev/next buttons with `onclick="miniCalPrev()"` and `onclick="miniCalNext()"`; static block of 35 `<div class="day-num">` removed and replaced by `<div class="mini-cal-grid" id="mini-cal-grid"></div>` |
 
-### Critérios cumpridos (Task #12)
+### Criteria met (Task #12)
 
-- [x] Mini calendário gerado dinamicamente a partir do mês actual (não hardcoded para maio 2026)
-- [x] Título do mês/ano actualizado automaticamente
-- [x] Dias com eventos marcados com `.has-event`
-- [x] Dia de hoje marcado com `.today`
-- [x] Semana activa (week view) / dia activo (day view) marcado com `.selected`
-- [x] Click num dia do mini calendário navega a vista principal para esse dia/semana
-- [x] Setas do mini calendário navegam o seu mês de forma independente das vistas principais
-- [x] Mini calendário reconstruído sempre que os eventos são carregados ou as vistas são alteradas
+- [x] Mini calendar dynamically generated from the current month (not hardcoded for May 2026)
+- [x] Month/year title automatically updated
+- [x] Days with events marked with `.has-event`
+- [x] Today marked with `.today`
+- [x] Active week (week view) / active day (day view) marked with `.selected`
+- [x] Clicking a day in the mini calendar navigates the main view to that day/week
+- [x] Mini calendar arrows navigate its month independently from the main views
+- [x] Mini calendar rebuilt whenever events are loaded or views are changed
 
 ---
 
-## Task #13 — Página de Perfil / Account Settings
+## Task #13 — Profile Page / Account Settings
 
-**Data:** 18 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 18 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/profile.html` | Página criada de raiz: sidebar padrão com link de perfil e logout; main content com três cards — **Profile** (avatar com iniciais + form nome/email), **Change Password** (form nova password + confirmação com toggle de visibilidade), **Danger Zone** (botão delete account); modal de confirmação de eliminação de conta; carrega `auth.js` e `profile.js` |
-| `frontend/js/modules/profile.js` | Ficheiro criado de raiz: IIFE `init()` faz `GET /users/profile` e preenche o form + header + sidebar, chamando `logout()` em caso de falha; `getInitials(name)` para o avatar; `updateProfileHeader()` e `updateSidebarMeta()` actualizam os elementos visuais; `submitProfile(e)` faz `PATCH /users/profile` com `{name, email}` e mostra mensagem de sucesso/erro; `submitPassword(e)` valida comprimento mínimo (6 chars) e correspondência antes de fazer `PATCH /users/profile` com `{password}`; `confirmDeleteAccount()` faz `DELETE /users/profile` e chama `logout()` em caso de sucesso |
-| `frontend/css/components.css` | Adicionados estilos da página de perfil: `.settings-content` (max-width 640px), `.settings-card` (card com border + shadow), `.settings-danger` (border e título vermelhos), `.profile-avatar-row` (flex com gap), `.avatar-lg` (56×56 px), `.profile-avatar-name`, `.profile-avatar-email`, `.btn-danger` (vermelho), `.form-msg` com variantes `.success` (verde) e `.error` (vermelho) |
+| `frontend/profile.html` | Page created from scratch: standard sidebar with profile link and logout; main content with three cards — **Profile** (avatar with initials + name/email form), **Change Password** (new password + confirmation form with visibility toggle), **Danger Zone** (delete account button); account deletion confirmation modal; loads `auth.js` and `profile.js` |
+| `frontend/js/modules/profile.js` | File created from scratch: IIFE `init()` does `GET /users/profile` and fills the form + header + sidebar, calling `logout()` on failure; `getInitials(name)` for the avatar; `updateProfileHeader()` and `updateSidebarMeta()` update the visual elements; `submitProfile(e)` does `PATCH /users/profile` with `{name, email}` and shows success/error message; `submitPassword(e)` validates minimum length (6 chars) and match before doing `PATCH /users/profile` with `{password}`; `confirmDeleteAccount()` does `DELETE /users/profile` and calls `logout()` on success |
+| `frontend/css/components.css` | Added profile page styles: `.settings-content` (max-width 640px), `.settings-card` (card with border + shadow), `.settings-danger` (red border and title), `.profile-avatar-row` (flex with gap), `.avatar-lg` (56×56 px), `.profile-avatar-name`, `.profile-avatar-email`, `.btn-danger` (red), `.form-msg` with variants `.success` (green) and `.error` (red) |
 
-### Critérios cumpridos (Task #13)
+### Criteria met (Task #13)
 
-- [x] Página `profile.html` acessível a partir do avatar no sidebar footer (link em todas as páginas)
-- [x] Avatar, nome e email carregados da API (`GET /users/profile`) no arranque
-- [x] Form de perfil pré-preenchido com dados actuais; `PATCH /users/profile` ao submeter
-- [x] Mensagem de sucesso/erro inline em cada formulário
-- [x] Alteração de password com validação (mínimo 6 chars, confirmação igual)
-- [x] Danger Zone com modal de confirmação antes de eliminar a conta
-- [x] Eliminação de conta chama `DELETE /users/profile` e faz logout automático
-- [x] Sidebar mostra dados reais do utilizador em vez de `RD` / `Rodrigo Dias` hardcoded
+- [x] `profile.html` page accessible from the avatar in the sidebar footer (link on all pages)
+- [x] Avatar, name and email loaded from the API (`GET /users/profile`) on startup
+- [x] Profile form pre-filled with current data; `PATCH /users/profile` on submit
+- [x] Inline success/error message on each form
+- [x] Password change with validation (minimum 6 chars, matching confirmation)
+- [x] Danger Zone with confirmation modal before deleting the account
+- [x] Account deletion calls `DELETE /users/profile` and auto-logs out
+- [x] Sidebar shows real user data instead of hardcoded `RD` / `Rodrigo Dias`
 
 ---
 
-## Task #14 — Tasks: Campo de Prioridade
+## Task #14 — Tasks: Priority Field
 
-**Data:** 18 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 18 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `backend/app/models/task_models.py` | Adicionado campo `priority: str = Field(default="medium", max_length=20)` ao modelo `Task` |
-| `backend/app/schemas/task_schema.py` | Campo `priority: str = "medium"` adicionado a `TaskBase`; campo `priority: Optional[str] = None` adicionado a `TaskUpdate`; `TaskPublic` herda automaticamente de `TaskBase` |
-| `backend/app/services/task_service.py` | `create_task()` passa `priority=data.priority` ao construir o modelo; `update_task()` aplica `task.priority = data.priority` se `data.priority is not None` |
-| Base de dados (PostgreSQL) | Coluna `priority VARCHAR(20) NOT NULL DEFAULT 'medium'` adicionada à tabela `tasks` via `ALTER TABLE` |
-| `frontend/tasks.html` | Cabeçalho `<th>Priority</th>` adicionado à tabela (entre Status e Due Date); linha de exemplo estática actualizada com `<td><span class="priority-badge medium">Medium</span></td>` |
-| `frontend/js/modules/tasks.js` | Adicionado `var priorityLabel` com mapeamento `{high, medium, low}`; `buildRow()` gera `<span class="priority-badge {priority}">` na coluna de prioridade; `loadTasks()` passa `priority: t.priority || 'medium'` ao construir cada linha (em vez de hardcoded `'medium'`); `submitCreateTask()` inclui `priority` no payload de `POST` e de `PATCH`; modo edição actualiza a célula `.priority-badge` da linha após guardar |
-| `frontend/css/modules/tasks.css` | Adicionadas classes `.priority-badge` com variantes de cor: `.high` (fundo vermelho claro / texto vermelho), `.medium` (fundo amarelo claro / texto âmbar), `.low` (fundo verde claro / texto verde); layout mobile actualizado — prioridade ocupa a linha 3 do card; "Due Date" ocultada em mobile para manter o layout compacto |
+| `backend/app/models/task_models.py` | Added field `priority: str = Field(default="medium", max_length=20)` to the `Task` model |
+| `backend/app/schemas/task_schema.py` | Field `priority: str = "medium"` added to `TaskBase`; field `priority: Optional[str] = None` added to `TaskUpdate`; `TaskPublic` inherits automatically from `TaskBase` |
+| `backend/app/services/task_service.py` | `create_task()` passes `priority=data.priority` when building the model; `update_task()` applies `task.priority = data.priority` if `data.priority is not None` |
+| Database (PostgreSQL) | Column `priority VARCHAR(20) NOT NULL DEFAULT 'medium'` added to the `tasks` table via `ALTER TABLE` |
+| `frontend/tasks.html` | `<th>Priority</th>` header added to the table (between Status and Due Date); static example row updated with `<td><span class="priority-badge medium">Medium</span></td>` |
+| `frontend/js/modules/tasks.js` | Added `var priorityLabel` with mapping `{high, medium, low}`; `buildRow()` generates `<span class="priority-badge {priority}">` in the priority column; `loadTasks()` passes `priority: t.priority || 'medium'` when building each row (instead of hardcoded `'medium'`); `submitCreateTask()` includes `priority` in the `POST` and `PATCH` payload; edit mode updates the `.priority-badge` cell of the row after saving |
+| `frontend/css/modules/tasks.css` | Added `.priority-badge` classes with colour variants: `.high` (light red background / red text), `.medium` (light yellow background / amber text), `.low` (light green background / green text); mobile layout updated — priority occupies row 3 of the card; "Due Date" hidden on mobile to keep the layout compact |
 
-### Critérios cumpridos (Task #14)
+### Criteria met (Task #14)
 
-- [x] Campo `priority` persistido na base de dados com default `"medium"`
-- [x] API aceita `priority` na criação (`POST /tasks/`) e na edição (`PATCH /tasks/{id}`)
-- [x] Coluna "Priority" visível na tabela entre Status e Due Date
-- [x] Badge colorido por nível: vermelho (High), âmbar (Medium), verde (Low)
-- [x] Modal de criação e edição enviava já o campo; agora é efectivamente guardado no backend
-- [x] Filtro "All priorities / High / Medium / Low" no toolbar já existia e funciona com os dados reais
-- [x] Ao editar uma tarefa, o badge na linha é actualizado imediatamente sem reload
-- [x] Responsivo: em mobile o badge de prioridade aparece na linha 3 do card
+- [x] `priority` field persisted in the database with default `"medium"`
+- [x] API accepts `priority` on creation (`POST /tasks/`) and on edit (`PATCH /tasks/{id}`)
+- [x] "Priority" column visible in the table between Status and Due Date
+- [x] Coloured badge by level: red (High), amber (Medium), green (Low)
+- [x] Create and edit modal was already sending the field; it is now effectively saved in the backend
+- [x] "All priorities / High / Medium / Low" toolbar filter already existed and works with real data
+- [x] When editing a task, the badge in the row is updated immediately without reload
+- [x] Responsive: on mobile the priority badge appears in row 3 of the card
 
 ---
 
-## Task #15 — Toast Notifications: Sistema Global de Popups
+## Task #15 — Toast Notifications: Global Popup System
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/toast.js` | Ficheiro criado de raiz: módulo `toast` (IIFE) com quatro métodos públicos — `toast.success()`, `toast.error()`, `toast.warning()`, `toast.info()`; o contentor `#dn-toast-container` é criado dinamicamente no `<body>` na primeira chamada; cada toast é um `<div>` com ícone SVG, mensagem e botão ✕; barra de progresso animada (`@keyframes dn-progress`) com duração configurável (default 4 s); hover pausa o timer e a animação; `transitionend` remove o elemento do DOM após a animação de saída; mensagem escapada via `createTextNode` para evitar XSS |
-| `frontend/css/components.css` | Adicionada secção "Toast Notifications": `#dn-toast-container` fixo no canto inferior direito com `z-index: 9999`, empilhamento vertical com `gap: 10px` e `pointer-events: none` (passa cliques ao fundo); `.dn-toast` com slide-in via `transform: translateX(calc(100% + 24px))` → `translateX(0)` + `opacity` (cubic-bezier com overshoot); `.dn-toast-hide` inverte a animação; borda esquerda colorida + cor do ícone + cor da barra de progresso por tipo (`success` verde, `error` vermelho, `warning` laranja, `info` azul); breakpoint 480 px — toast ocupa a largura total do ecrã |
-| `frontend/login.html` | Adicionado `<script src="js/toast.js"></script>` (primeiro script); `alert('Login failed…')` substituído por `toast.error(…)` |
-| `frontend/register.html` | Adicionado `<script src="js/toast.js"></script>` |
-| `frontend/tasks.html` | Adicionado `<script src="js/toast.js"></script>` |
-| `frontend/agenda.html` | Adicionado `<script src="js/toast.js"></script>` |
-| `frontend/notepad.html` | Adicionado `<script src="js/toast.js"></script>` |
-| `frontend/files.html` | Adicionado `<script src="js/toast.js"></script>` |
-| `frontend/profile.html` | Adicionado `<script src="js/toast.js"></script>` |
-| `frontend/js/modules/validations.js` | Dois `alert()` substituídos por `toast.error()`: erro de validação do formulário de registo e falha de registo via API |
-| `frontend/js/modules/profile.js` | `alert('Failed to delete account…')` substituído por `toast.error(…)`; adicionados `toast.success()` em `submitProfile()` (update de perfil bem-sucedido) e `submitPassword()` (password actualizada); adicionados `toast.error()` nos respectivos `.catch()` |
-| `frontend/js/modules/tasks.js` | Adicionados `toast.success('Task created.')` após criação com sucesso e após fallback local; adicionado `toast.success('Task updated.')` após edição no modo edit |
+| `frontend/js/toast.js` | File created from scratch: `toast` module (IIFE) with four public methods — `toast.success()`, `toast.error()`, `toast.warning()`, `toast.info()`; the `#dn-toast-container` is dynamically created in `<body>` on the first call; each toast is a `<div>` with SVG icon, message and ✕ button; animated progress bar (`@keyframes dn-progress`) with configurable duration (default 4 s); hover pauses the timer and animation; `transitionend` removes the element from the DOM after the exit animation; message escaped via `createTextNode` to prevent XSS |
+| `frontend/css/components.css` | Added "Toast Notifications" section: `#dn-toast-container` fixed in the bottom-right corner with `z-index: 9999`, vertical stacking with `gap: 10px` and `pointer-events: none` (passes clicks to the background); `.dn-toast` with slide-in via `transform: translateX(calc(100% + 24px))` → `translateX(0)` + `opacity` (cubic-bezier with overshoot); `.dn-toast-hide` reverses the animation; coloured left border + icon colour + progress bar colour by type (`success` green, `error` red, `warning` orange, `info` blue); 480 px breakpoint — toast takes full screen width |
+| `frontend/login.html` | Added `<script src="js/toast.js"></script>` (first script); `alert('Login failed…')` replaced by `toast.error(…)` |
+| `frontend/register.html` | Added `<script src="js/toast.js"></script>` |
+| `frontend/tasks.html` | Added `<script src="js/toast.js"></script>` |
+| `frontend/agenda.html` | Added `<script src="js/toast.js"></script>` |
+| `frontend/notepad.html` | Added `<script src="js/toast.js"></script>` |
+| `frontend/files.html` | Added `<script src="js/toast.js"></script>` |
+| `frontend/profile.html` | Added `<script src="js/toast.js"></script>` |
+| `frontend/js/modules/validations.js` | Two `alert()` calls replaced by `toast.error()`: registration form validation error and registration failure via API |
+| `frontend/js/modules/profile.js` | `alert('Failed to delete account…')` replaced by `toast.error(…)`; added `toast.success()` in `submitProfile()` (successful profile update) and `submitPassword()` (password updated); added `toast.error()` in the respective `.catch()` |
+| `frontend/js/modules/tasks.js` | Added `toast.success('Task created.')` after successful creation and after local fallback; added `toast.success('Task updated.')` after editing in edit mode |
 
-### Critérios cumpridos (Task #15)
+### Criteria met (Task #15)
 
-- [x] Sistema global disponível em todas as páginas da app via `window.toast`
-- [x] Quatro tipos: `success` (verde), `error` (vermelho), `warning` (laranja), `info` (azul)
-- [x] Ícone SVG por tipo, borda esquerda colorida e barra de progresso animada
-- [x] Auto-dismiss após 4 s (configurável por chamada)
-- [x] Hover pausa o timer e a animação de progresso; ao sair retoma o tempo restante
-- [x] Botão ✕ fecha o toast imediatamente
-- [x] Vários toasts empilhados verticalmente, sem bloquear a UI (`pointer-events: none` no contentor)
-- [x] Animação de entrada com overshoot suave (cubic-bezier); saída rápida (ease-in)
-- [x] Nenhum `alert()` restante em todo o frontend
-- [x] Mensagem escapada para prevenir XSS
-- [x] Responsivo: ocupa largura total do ecrã em mobile (≤ 480 px)
+- [x] Global system available on all app pages via `window.toast`
+- [x] Four types: `success` (green), `error` (red), `warning` (orange), `info` (blue)
+- [x] SVG icon per type, coloured left border and animated progress bar
+- [x] Auto-dismiss after 4 s (configurable per call)
+- [x] Hover pauses the timer and progress animation; on mouse leave resumes the remaining time
+- [x] ✕ button closes the toast immediately
+- [x] Multiple toasts stacked vertically, without blocking the UI (`pointer-events: none` on container)
+- [x] Entry animation with smooth overshoot (cubic-bezier); fast exit (ease-in)
+- [x] No `alert()` remaining anywhere in the frontend
+- [x] Message escaped to prevent XSS
+- [x] Responsive: takes full screen width on mobile (≤ 480 px)
 
 ---
 
-## Fix #08 — Workspace: perfis Work e Personal com dados separados
+## Fix #08 — Workspace: Work and Personal profiles with separate data
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6
 
-### O que foi corrigido
+### What was fixed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `backend/app/services/task_service.py` | `get_tasks()` aceita parâmetro opcional `category`; quando fornecido, a query filtra por `Task.category == category` |
-| `backend/app/services/agenda_service.py` | `get_agendas()` idem com `Agenda.category` |
-| `backend/app/services/notepad_service.py` | `get_notepads()` idem com `Notepad.category` |
-| `backend/app/services/file_service.py` | `get_files()` idem com `File.category` |
-| `backend/app/routers/task_router.py` | `GET /tasks/` aceita `?category=` como query param (`Query(None)`); passa-o para `get_tasks()` |
-| `backend/app/routers/agenda_router.py` | `GET /agendas/` idem |
-| `backend/app/routers/notepad_router.py` | `GET /notepads/` idem |
-| `backend/app/routers/file_router.py` | `GET /files/` idem |
-| `frontend/js/router.js` | Adicionada `getWorkspace()` que lê `localStorage.dn_workspace` (default `'Work'`); `toggleWorkspace()` passa a guardar a escolha em `dn_workspace` e a chamar `reloadWorkspace()` (se disponível na página); IIFE `restoreWorkspacePill()` restaura o pill activo a partir do `localStorage` ao carregar a página |
-| `frontend/js/modules/tasks.js` | `loadTasks()` refactorizado para usar `_fetchTasks()` que passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que limpa a tabela e re-carrega as tarefas do workspace activo; `submitCreateTask()` usa `getWorkspace()` como categoria ao criar tarefas (em vez de `'Personal'` hardcoded) |
-| `frontend/js/modules/agenda.js` | `loadEvents()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que chama `loadEvents()`; `submitEventForm()` usa `getWorkspace()` como categoria ao criar/editar eventos |
-| `frontend/js/modules/notepad.js` | `loadNotes()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que limpa o estado da nota seleccionada e re-carrega as notas; `_persistPendingNew()` usa `getWorkspace()` como categoria |
-| `frontend/js/modules/files.js` | `loadFiles()` passa `?category=<workspace>` ao endpoint; adicionada `reloadWorkspace()` que chama `loadFiles()`; `createItem()` usa `getWorkspace()` como categoria |
+| `backend/app/services/task_service.py` | `get_tasks()` accepts optional `category` parameter; when provided, the query filters by `Task.category == category` |
+| `backend/app/services/agenda_service.py` | `get_agendas()` same with `Agenda.category` |
+| `backend/app/services/notepad_service.py` | `get_notepads()` same with `Notepad.category` |
+| `backend/app/services/file_service.py` | `get_files()` same with `File.category` |
+| `backend/app/routers/task_router.py` | `GET /tasks/` accepts `?category=` as query param (`Query(None)`); passes it to `get_tasks()` |
+| `backend/app/routers/agenda_router.py` | `GET /agendas/` same |
+| `backend/app/routers/notepad_router.py` | `GET /notepads/` same |
+| `backend/app/routers/file_router.py` | `GET /files/` same |
+| `frontend/js/router.js` | Added `getWorkspace()` that reads `localStorage.dn_workspace` (default `'Work'`); `toggleWorkspace()` now saves the choice in `dn_workspace` and calls `reloadWorkspace()` (if available on the page); IIFE `restoreWorkspacePill()` restores the active pill from `localStorage` on page load |
+| `frontend/js/modules/tasks.js` | `loadTasks()` refactored to use `_fetchTasks()` that passes `?category=<workspace>` to the endpoint; added `reloadWorkspace()` that clears the table and re-loads the tasks of the active workspace; `submitCreateTask()` uses `getWorkspace()` as category when creating tasks (instead of hardcoded `'Personal'`) |
+| `frontend/js/modules/agenda.js` | `loadEvents()` passes `?category=<workspace>` to the endpoint; added `reloadWorkspace()` that calls `loadEvents()`; `submitEventForm()` uses `getWorkspace()` as category when creating/editing events |
+| `frontend/js/modules/notepad.js` | `loadNotes()` passes `?category=<workspace>` to the endpoint; added `reloadWorkspace()` that clears the selected note state and re-loads the notes; `_persistPendingNew()` uses `getWorkspace()` as category |
+| `frontend/js/modules/files.js` | `loadFiles()` passes `?category=<workspace>` to the endpoint; added `reloadWorkspace()` that calls `loadFiles()`; `createItem()` uses `getWorkspace()` as category |
 
-### Bug corrigido
+### Bug fixed
 
-O toggle Work/Personal no sidebar apenas alterava o estilo visual dos pills (classe `active`) mas não tinha qualquer efeito nos dados apresentados — todos os módulos carregavam e criavam itens sem distinção de workspace. A solução implementou um ciclo completo de separação por workspace:
+The Work/Personal toggle in the sidebar only changed the visual style of the pills (`.active` class) but had no effect on the data displayed — all modules loaded and created items without workspace distinction. The solution implemented a complete workspace separation cycle:
 
-1. O workspace activo é guardado em `localStorage` (`dn_workspace`)
-2. Ao trocar de workspace, `reloadWorkspace()` é chamada, recarregando os dados filtrados do backend
-3. O backend filtra os resultados pelo campo `category` quando o query param é fornecido
-4. Ao criar itens, a categoria corresponde ao workspace activo
+1. The active workspace is saved in `localStorage` (`dn_workspace`)
+2. When switching workspace, `reloadWorkspace()` is called, reloading the filtered data from the backend
+3. The backend filters results by the `category` field when the query param is provided
+4. When creating items, the category matches the workspace active at the time of creation
 
-- [x] Work e Personal mostram apenas os seus próprios dados (tasks, eventos, notas, ficheiros)
-- [x] Trocar de workspace recarrega imediatamente os dados filtrados sem reload de página
-- [x] Itens criados ficam associados ao workspace activo no momento da criação
-- [x] Estado do pill (Work/Personal) persiste entre navegações via `localStorage`
-- [x] Backend: todos os endpoints de listagem aceitam `?category=` como filtro opcional (retrocompatível — sem parâmetro retorna todos os itens do utilizador)
+- [x] Work and Personal show only their own data (tasks, events, notes, files)
+- [x] Switching workspace immediately reloads the filtered data without page reload
+- [x] Created items are associated with the active workspace at the time of creation
+- [x] Pill state (Work/Personal) persists between navigations via `localStorage`
+- [x] Backend: all listing endpoints accept `?category=` as an optional filter (backwards-compatible — without parameter returns all user items)
 
 ---
 
-## Fix #09 — Remover dados de exemplo para novos utilizadores
+## Fix #09 — Remove example data for new users
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/js/modules/agenda.js` | Fallback do `.catch()` da `loadEvents()` alterado: array de 8 eventos de exemplo (Team Meeting, Project Review, Lunch Break, etc.) substituído por `EVENTS = []`; a agenda arranca agora vazia quando o backend está indisponível |
-| `frontend/js/modules/files.js` | Array `_files` com 8 entradas de exemplo hardcoded (Work Projects, Design Assets, Meeting Notes.doc, Q2 Report.xlsx, Brand Guidelines.pdf, index.tsx, Screenshots, App Mockup.png) substituído por `var _files = []`; comentário no `.catch()` de `loadFiles()` actualizado para remover menção de "keep example data" |
-| `frontend/js/modules/notepad.js` | Bloco no fallback do `.catch()` de `loadNotes()` que criava 2 notas de exemplo ("Welcome to Notepad" e "Meeting notes") quando `NOTES` estava vazio foi removido; o notepad arranca agora com lista vazia |
+| `frontend/js/modules/agenda.js` | `loadEvents()` `.catch()` fallback changed: array of 8 example events (Team Meeting, Project Review, Lunch Break, etc.) replaced by `EVENTS = []`; the agenda now starts empty when the backend is unavailable |
+| `frontend/js/modules/files.js` | `_files` array with 8 hardcoded example entries (Work Projects, Design Assets, Meeting Notes.doc, Q2 Report.xlsx, Brand Guidelines.pdf, index.tsx, Screenshots, App Mockup.png) replaced by `var _files = []`; comment in `loadFiles()` `.catch()` updated to remove mention of "keep example data" |
+| `frontend/js/modules/notepad.js` | Block in the `loadNotes()` `.catch()` fallback that created 2 example notes ("Welcome to Notepad" and "Meeting notes") when `NOTES` was empty was removed; the notepad now starts with an empty list |
 
-### Comportamento corrigido
+### Behaviour fixed
 
-- [x] Utilizadores novos vêem todos os módulos completamente vazios (sem dados pré-preenchidos)
-- [x] Agenda não mostra eventos fictícios quando o backend está offline
-- [x] Files não mostra ficheiros e pastas fictícias ao abrir a página
-- [x] Notepad não cria notas de boas-vindas automaticamente
+- [x] New users see all modules completely empty (no pre-filled data)
+- [x] Agenda does not show fictional events when the backend is offline
+- [x] Files does not show fictional files and folders when opening the page
+- [x] Notepad does not automatically create welcome notes
 
 ---
 
-## Task #16 — Files: Cloud Storage com limites de tamanho
+## Task #16 — Files: Cloud Storage with size limits
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/files.html` | Botão "New" (chamava `openUploadModal`) renomeado para "Upload" com ícone de cloud upload (SVG); subtítulo alterado de "Manage your documents and folders" para "Your cloud storage"; adicionada barra de armazenamento no page header (`storage-bar-wrap` com track + fill + label "X used of 10 GB"); painel lateral direito `aside.files-new-panel` completamente removido (continha campo de nome, 4 type-cards e botão Create); modal de upload simplificado — campos Category e Description removidos, hint da dropzone alterado para "Max 1 GB per file" |
-| `frontend/js/modules/files.js` | Ficheiro reescrito: adicionadas constantes `MAX_FILE_BYTES = 1 GB` e `MAX_TOTAL_BYTES = 10 GB`; adicionadas variáveis `_pendingFile` (referência ao File object seleccionado) e `_usedBytes` (total de bytes usados em sessão); `applyDroppedFile(file)` valida `file.size > MAX_FILE_BYTES` antes de aceitar — mostra `toast.error` e cancela se exceder; `uploadFile()` valida `_usedBytes + file.size > MAX_TOTAL_BYTES` antes de guardar; ao confirmar, soma `file.size` a `_usedBytes` e chama `updateStorageBar()`; `deleteFile()` subtrai `f.sizeBytes` de `_usedBytes` e actualiza a barra; `openUploadModal()` chama `resetUploadModal()` para limpar estado pendente; adicionadas funções `formatBytes(bytes)` (formata B/KB/MB/GB com 1 casa decimal), `guessType(name)` (detecta tipo pelo extension), `updateStorageBar()` (calcula percentagem e actualiza o DOM), `resetUploadModal()` (limpa `_pendingFile`, input e dropzone text); removidas todas as funções do fluxo "New" anterior (`selectType`, `onNewNameInput`, `updateCreateBtn`, `clearExamples`, `createItem`); `loadFiles()` actualizado para ler `f.size_bytes` da API, converter com `formatBytes()` e recalcular `_usedBytes` após carregar |
-| `frontend/css/modules/files.css` | Removidos todos os estilos do painel New (`.files-new-panel`, `.new-panel-header`, `.new-panel-title`, `.new-panel-subtitle`, `.new-panel-body`, `.new-panel-field`, `.new-panel-label`, `.type-cards`, `.type-card`, `.type-card-icon`, `.icon-doc`, `.icon-sheet`, `.icon-folder`, `.icon-code`, `.type-card-text`, `.type-card-name`, `.type-card-desc`, `.new-panel-footer`, `.new-create-btn`); adicionados estilos da barra de armazenamento: `.storage-bar-wrap` (flex row + gap), `.storage-bar-track` (200 px, 6 px de altura, border-radius), `.storage-bar-fill` (background brand color, transição suave de largura), `.storage-label` (texto muted, nowrap); breakpoints responsive actualizados — removidas referências ao painel New; `.storage-bar-track` reduzida para 120 px em `≤600 px` |
+| `frontend/files.html` | "New" button (called `openUploadModal`) renamed to "Upload" with cloud upload icon (SVG); subtitle changed from "Manage your documents and folders" to "Your cloud storage"; storage bar added in the page header (`storage-bar-wrap` with track + fill + label "X used of 10 GB"); right sidebar panel `aside.files-new-panel` completely removed (contained name field, 4 type-cards and Create button); upload modal simplified — Category and Description fields removed, dropzone hint changed to "Max 1 GB per file" |
+| `frontend/js/modules/files.js` | File rewritten: added constants `MAX_FILE_BYTES = 1 GB` and `MAX_TOTAL_BYTES = 10 GB`; added variables `_pendingFile` (reference to the selected File object) and `_usedBytes` (total bytes used in session); `applyDroppedFile(file)` validates `file.size > MAX_FILE_BYTES` before accepting — shows `toast.error` and cancels if exceeded; `uploadFile()` validates `_usedBytes + file.size > MAX_TOTAL_BYTES` before saving; on confirmation, adds `file.size` to `_usedBytes` and calls `updateStorageBar()`; `deleteFile()` subtracts `f.sizeBytes` from `_usedBytes` and updates the bar; `openUploadModal()` calls `resetUploadModal()` to clear pending state; added functions `formatBytes(bytes)` (formats B/KB/MB/GB with 1 decimal place), `guessType(name)` (detects type by extension), `updateStorageBar()` (calculates percentage and updates the DOM), `resetUploadModal()` (clears `_pendingFile`, input and dropzone text); removed all functions from the previous "New" flow (`selectType`, `onNewNameInput`, `updateCreateBtn`, `clearExamples`, `createItem`); `loadFiles()` updated to read `f.size_bytes` from the API, convert with `formatBytes()` and recalculate `_usedBytes` after loading |
+| `frontend/css/modules/files.css` | Removed all New panel styles (`.files-new-panel`, `.new-panel-header`, `.new-panel-title`, `.new-panel-subtitle`, `.new-panel-body`, `.new-panel-field`, `.new-panel-label`, `.type-cards`, `.type-card`, `.type-card-icon`, `.icon-doc`, `.icon-sheet`, `.icon-folder`, `.icon-code`, `.type-card-text`, `.type-card-name`, `.type-card-desc`, `.new-panel-footer`, `.new-create-btn`); added storage bar styles: `.storage-bar-wrap` (flex row + gap), `.storage-bar-track` (200 px, 6 px height, border-radius), `.storage-bar-fill` (brand colour background, smooth width transition), `.storage-label` (muted text, nowrap); responsive breakpoints updated — removed references to the New panel; `.storage-bar-track` reduced to 120 px at `≤600 px` |
 
-### Critérios cumpridos (Task #16)
+### Criteria met (Task #16)
 
-- [x] Botão "Upload" no header abre modal de upload (sem painel "New" lateral)
-- [x] Barra de armazenamento visível no cabeçalho: "X used of 10 GB"
-- [x] Validação de ficheiro individual: rejeita ficheiros > 1 GB com `toast.error`
-- [x] Validação de armazenamento total: rejeita upload se total ultrapassar 10 GB
-- [x] `_usedBytes` actualizado ao fazer upload e ao eliminar ficheiros
-- [x] `formatBytes()` formata o tamanho em B, KB, MB ou GB com 1 casa decimal
-- [x] Tamanho do ficheiro exibido no dropzone após selecção ("nome.ext (X.X MB)")
-- [x] Coluna "Size" na tabela preenchida com tamanho real do ficheiro após upload
-- [x] Painel "New" com type-cards completamente removido do HTML e CSS
-- [x] Modal simplificado: apenas dropzone + campo de nome (sem Category/Description)
+- [x] "Upload" button in the header opens the upload modal (without "New" side panel)
+- [x] Storage bar visible in the header: "X used of 10 GB"
+- [x] Individual file validation: rejects files > 1 GB with `toast.error`
+- [x] Total storage validation: rejects upload if total exceeds 10 GB
+- [x] `_usedBytes` updated on upload and on file deletion
+- [x] `formatBytes()` formats the size in B, KB, MB or GB with 1 decimal place
+- [x] File size displayed in the dropzone after selection ("name.ext (X.X MB)")
+- [x] "Size" column in the table filled with the real file size after upload
+- [x] "New" panel with type-cards completely removed from HTML and CSS
+- [x] Simplified modal: dropzone + name field only (no Category/Description)
 
 ---
 
-## Task #17 — Animações: Sistema Global com Framer Motion
+## Task #17 — Animations: Global System with Framer Motion
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/css/animations.css` | Ficheiro criado de raiz (~444 linhas): keyframes `dn-fade-up`, `dn-fade-down`, `dn-fade-left`, `dn-pop-in`, `dn-dot-pulse`, `dn-shimmer`; animações de entrada da landing page (topbar, eyebrow, h1, desc, actions, divider, right panel, stats card, panel); animações de entrada das páginas de auth (topbar, card); override de modal — `display:flex !important` + `visibility:hidden/opacity:0` + transitions para permitir animação de abertura E fecho sem tocar em JS; hover effects para todos os elementos interactivos (btns, nav links, stat cards, settings cards, action btns, workspace pills, avatar, pagination, nav arrows, view toggles, upload dropzone, storage bar, note items, week events, mini cal days, file action items, sidebar logout); estados iniciais ocultos para elementos staggered (`.stats-item`, `#about h2/p`); suporte a `prefers-reduced-motion` |
-| `frontend/js/animations.js` | Ficheiro criado de raiz (ES module): importa `animate`, `inView`, `stagger` de `https://esm.sh/framer-motion@11`; presets de easing (`ease`, `spring`, `springB`); bloco landing page: stagger das stats items, `inView('#about')` para scroll reveal dos parágrafos, press feedback nos botões; bloco auth: stagger dos campos do formulário com `startDelay: 0.3`, press feedback no botão de submit; bloco app pages: sidebar slide x, sidebar-footer y, nav links stagger x, workspace pills scale stagger, page-header y, stat cards stagger y+scale, task section y, agenda layout (toolbar+calendar+mini panels), notepad (list+editor), files (toolbar+content), settings cards stagger, press feedback em todos os `.btn`, workspace toggle bounce `scale:[0.9,1.06,1]`, action buttons spring |
-| `frontend/index.html` | Adicionados `<link>` e `<script type="module">` para `animations.css` e `animations.js` |
-| `frontend/login.html` | Idem |
-| `frontend/register.html` | Idem |
-| `frontend/tasks.html` | Idem |
-| `frontend/agenda.html` | Idem |
-| `frontend/notepad.html` | Idem |
-| `frontend/files.html` | Idem |
-| `frontend/profile.html` | Idem |
+| `frontend/css/animations.css` | File created from scratch (~444 lines): keyframes `dn-fade-up`, `dn-fade-down`, `dn-fade-left`, `dn-pop-in`, `dn-dot-pulse`, `dn-shimmer`; landing page entry animations (topbar, eyebrow, h1, desc, actions, divider, right panel, stats card, panel); auth page entry animations (topbar, card); modal override — `display:flex !important` + `visibility:hidden/opacity:0` + transitions to allow open AND close animation without touching JS; hover effects for all interactive elements (btns, nav links, stat cards, settings cards, action btns, workspace pills, avatar, pagination, nav arrows, view toggles, upload dropzone, storage bar, note items, week events, mini cal days, file action items, sidebar logout); initial hidden states for staggered elements (`.stats-item`, `#about h2/p`); `prefers-reduced-motion` support |
+| `frontend/js/animations.js` | File created from scratch (ES module): imports `animate`, `inView`, `stagger` from `https://esm.sh/framer-motion@11`; easing presets (`ease`, `spring`, `springB`); landing page block: stagger of stats items, `inView('#about')` for scroll reveal of paragraphs, press feedback on buttons; auth block: stagger of form fields with `startDelay: 0.3`, press feedback on submit button; app pages block: sidebar slide x, sidebar-footer y, nav links stagger x, workspace pills scale stagger, page-header y, stat cards stagger y+scale, task section y, agenda layout (toolbar+calendar+mini panels), notepad (list+editor), files (toolbar+content), settings cards stagger, press feedback on all `.btn`, workspace toggle bounce `scale:[0.9,1.06,1]`, action buttons spring |
+| `frontend/index.html` | Added `<link>` and `<script type="module">` for `animations.css` and `animations.js` |
+| `frontend/login.html` | Same |
+| `frontend/register.html` | Same |
+| `frontend/tasks.html` | Same |
+| `frontend/agenda.html` | Same |
+| `frontend/notepad.html` | Same |
+| `frontend/files.html` | Same |
+| `frontend/profile.html` | Same |
 
-### Critérios cumpridos (Task #17)
+### Criteria met (Task #17)
 
-- [x] Animações de entrada (fade-up/down/left, pop-in) em todas as 8 páginas
-- [x] Stagger em listas: nav links, stat cards, form fields, settings cards, workspace pills
-- [x] Scroll reveal com `inView` na secção "About" da landing page
-- [x] Micro-interacções de hover em todos os elementos interactivos (lift, slide, scale, spring)
-- [x] Press feedback nos botões com spring physics
-- [x] Modal com animação de abertura E fecho via CSS `visibility/opacity` (sem alterar JS)
-- [x] `<script type="module">` executa após scripts clássicos — sem conflito com app.js/auth.js
-- [x] `prefers-reduced-motion` anula todas as durações
-- [x] Framer Motion v11 via CDN ESM (sem npm, sem build step)
+- [x] Entry animations (fade-up/down/left, pop-in) on all 8 pages
+- [x] Stagger on lists: nav links, stat cards, form fields, settings cards, workspace pills
+- [x] Scroll reveal with `inView` on the "About" section of the landing page
+- [x] Hover micro-interactions on all interactive elements (lift, slide, scale, spring)
+- [x] Press feedback on buttons with spring physics
+- [x] Modal with open AND close animation via CSS `visibility/opacity` (without changing JS)
+- [x] `<script type="module">` executes after classic scripts — no conflict with app.js/auth.js
+- [x] `prefers-reduced-motion` cancels all durations
+- [x] Framer Motion v11 via CDN ESM (no npm, no build step)
 
 ---
 
-## Task #18 — Landing Page: Carrossel com 5 Slides e Auto-rotação
+## Task #18 — Landing Page: Carousel with 5 Slides and Auto-rotation
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/index.html` | `.landing-panel` reestruturado: conteúdo estático substituído por `<div class="slider-track" id="sliderTrack">` com 5 `<div class="slide">` (Tasks, Agenda, Notepad, Files, Workspaces), cada um com label, `<h3>` e `<p>` descritivos; dots actualizados com atributos `data-index="0"…"4"`; botões com `id="sliderPrev"` e `id="sliderNext"`; adicionada IIFE carousel script com auto-rotação de 5 s, navegação prev/next, click nos dots, pause ao hover |
-| `frontend/css/animations.css` | Adicionados estilos do carrossel: `.slider-track` com `position:relative; min-height:138px; overflow:hidden`; `.slide` absoluto com `opacity:0; pointer-events:none; transform:translateY(10px)`; `.slide.active` visível com transition cubic-bezier; `.slide.leaving` com exit rápido `translateY(-8px)`; `.slider-dot` com `cursor:pointer` e transition de largura/cor |
+| `frontend/index.html` | `.landing-panel` restructured: static content replaced by `<div class="slider-track" id="sliderTrack">` with 5 `<div class="slide">` (Tasks, Agenda, Notepad, Files, Workspaces), each with label, `<h3>` and descriptive `<p>`; dots updated with `data-index="0"…"4"` attributes; buttons with `id="sliderPrev"` and `id="sliderNext"`; added IIFE carousel script with 5 s auto-rotation, prev/next navigation, dot click, pause on hover |
+| `frontend/css/animations.css` | Added carousel styles: `.slider-track` with `position:relative; min-height:138px; overflow:hidden`; `.slide` absolute with `opacity:0; pointer-events:none; transform:translateY(10px)`; `.slide.active` visible with cubic-bezier transition; `.slide.leaving` with fast exit `translateY(-8px)`; `.slider-dot` with `cursor:pointer` and width/colour transition |
 
-### Critérios cumpridos (Task #18)
+### Criteria met (Task #18)
 
-- [x] 5 slides com conteúdo único por módulo da app (Tasks, Agenda, Notepad, Files, Workspaces)
-- [x] Auto-rotação a cada 5 segundos via `setInterval`
-- [x] Setas prev/next funcionais com reset do timer
-- [x] Dots clicáveis com navegação directa para qualquer slide
-- [x] Animação de entrada (fade-up) e saída (fade-up para cima) com CSS classes `.active`/`.leaving`
-- [x] Cleanup da classe `.leaving` após 300 ms via `setTimeout`
-- [x] Pausa automática ao hover no painel; retoma ao `mouseleave`
-- [x] Dot activo com animação de pulse contínua (`dn-dot-pulse`)
+- [x] 5 slides with unique content per app module (Tasks, Agenda, Notepad, Files, Workspaces)
+- [x] Auto-rotation every 5 seconds via `setInterval`
+- [x] Functional prev/next arrows with timer reset
+- [x] Clickable dots with direct navigation to any slide
+- [x] Entry animation (fade-up) and exit animation (fade-up upwards) with CSS classes `.active`/`.leaving`
+- [x] `.leaving` class cleanup after 300 ms via `setTimeout`
+- [x] Automatic pause on hover over the panel; resumes on `mouseleave`
+- [x] Active dot with continuous pulse animation (`dn-dot-pulse`)
 
 ---
 
-## Task #19 — Página "See how it works"
+## Task #19 — "See how it works" Page
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6  
-**Sessão:** Agente autónomo
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6  
+**Session:** Autonomous agent
 
-### O que foi criado / alterado
+### What was created / changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/how-it-works.html` | Página criada de raiz (página de marketing standalone, sem sidebar): topbar sticky com blur backdrop + logo + nav links + CTA buttons; hero com badge "How it works" + H1 + subtítulo + CTAs; secção "3 steps" (criar conta, escolher workspace, começar a organizar) com cards numerados; 5 secções de feature (Tasks, Agenda, Notepad, Files, Workspaces) em layout duas colunas alternadas (`.feature-row` e `.feature-row.flip` com `direction:rtl`); mockups visuais para cada módulo — Tasks (tabela com rows, checkboxes, badges de status e prioridade), Agenda (grelha semanal com eventos coloridos), Notepad (dois painéis: lista + editor), Files (tabela com ícones por tipo + barra de storage), Workspaces (demo card interactivo com pills Work/Personal); secção de stats (12k+ utilizadores, 98% uptime, 4.9★, 0 integrações); secção CTA escura; footer; scroll reveal com IntersectionObserver em 28 elementos `[data-reveal]`; Framer Motion para press feedback nos botões e click animation nos pills do workspace demo; link "See how it works" na `index.html` alterado de `href="#about"` para `href="how-it-works.html"` |
-| `frontend/css/howto.css` | Ficheiro criado de raiz (~420 linhas) após extracção do bloco `<style>` inline: estilos base, scroll-reveal utility, topbar, secções comuns, hero, steps grid, feature rows, mockup windows (tasks, agenda, notepad, files), workspace section (dark), stats grid, CTA section, footer; breakpoints em 960 px e 540 px |
+| `frontend/how-it-works.html` | Page created from scratch (standalone marketing page, without sidebar): sticky topbar with blur backdrop + logo + nav links + CTA buttons; hero with "How it works" badge + H1 + subtitle + CTAs; "3 steps" section (create account, choose workspace, start organising) with numbered cards; 5 feature sections (Tasks, Agenda, Notepad, Files, Workspaces) in two-column alternating layout (`.feature-row` and `.feature-row.flip` with `direction:rtl`); visual mockups for each module — Tasks (table with rows, checkboxes, status and priority badges), Agenda (weekly grid with coloured events), Notepad (two panels: list + editor), Files (table with type icons + storage bar), Workspaces (interactive demo card with Work/Personal pills); stats section (12k+ users, 98% uptime, 4.9★, 0 integrations); dark CTA section; footer; scroll reveal with IntersectionObserver on 28 `[data-reveal]` elements; Framer Motion for press feedback on buttons and click animation on workspace demo pills; "See how it works" link in `index.html` changed from `href="#about"` to `href="how-it-works.html"` |
+| `frontend/css/howto.css` | File created from scratch (~420 lines) after extraction from inline `<style>` block: base styles, scroll-reveal utility, topbar, common sections, hero, steps grid, feature rows, mockup windows (tasks, agenda, notepad, files), workspace section (dark), stats grid, CTA section, footer; breakpoints at 960 px and 540 px |
 
-### Critérios cumpridos (Task #19)
+### Criteria met (Task #19)
 
-- [x] Página standalone acessível em `how-it-works.html` (sem sidebar, sem auth guard)
-- [x] Link "See how it works" na landing page aponta para a nova página
-- [x] Topbar sticky com backdrop blur, logo e botões Login/Sign up
-- [x] 3 steps de onboarding com cards numerados e ícones coloridos
-- [x] 5 secções de feature com texto + mockup visual (layout alternado esquerda/direita)
-- [x] Mockups pixel-perfect para Tasks, Agenda, Notepad, Files e Workspaces
-- [x] Workspace demo card interactivo (pills clicáveis com animação Framer Motion)
-- [x] Scroll reveal suave (`[data-reveal]` + IntersectionObserver + delays por `data-delay`)
-- [x] Press feedback nos CTAs com Framer Motion
-- [x] Secção de stats, CTA escura e footer com links
-- [x] Responsivo a 960 px (colunas empilham) e 540 px (ajustes de fonte e layout)
-- [x] CSS extraído para ficheiro separado `css/howto.css`
+- [x] Standalone page accessible at `how-it-works.html` (without sidebar, without auth guard)
+- [x] "See how it works" link on the landing page points to the new page
+- [x] Sticky topbar with backdrop blur, logo and Login/Sign up buttons
+- [x] 3 onboarding steps with numbered cards and coloured icons
+- [x] 5 feature sections with text + visual mockup (alternating left/right layout)
+- [x] Pixel-perfect mockups for Tasks, Agenda, Notepad, Files and Workspaces
+- [x] Interactive Workspaces demo card (clickable pills with Framer Motion animation)
+- [x] Smooth scroll reveal (`[data-reveal]` + IntersectionObserver + delays via `data-delay`)
+- [x] Press feedback on CTAs with Framer Motion
+- [x] Stats section, dark CTA and footer with links
+- [x] Responsive at 960 px (columns stack) and 540 px (font and layout adjustments)
+- [x] CSS extracted to separate file `css/howto.css`
 
 ---
 
-## Fix #10 — how-it-works.html: extracção do CSS inline para ficheiro separado
+## Fix #10 — how-it-works.html: extraction of inline CSS to separate file
 
-**Data:** 19 de junho de 2026  
-**Modelo:** Claude Sonnet 4.6
+**Date:** 19 June 2026  
+**Model:** Claude Sonnet 4.6
 
-### O que foi alterado
+### What was changed
 
-| Ficheiro | Alteração |
+| File | Change |
 |---|---|
-| `frontend/css/howto.css` | Ficheiro criado com todo o CSS que estava no bloco `<style>` inline de `how-it-works.html` (861 linhas → ficheiro dedicado na pasta `css/`) |
-| `frontend/how-it-works.html` | Bloco `<style>…</style>` (linhas 11–873) removido; substituído por `<link rel="stylesheet" href="css/howto.css" />` no `<head>` |
+| `frontend/css/howto.css` | File created with all the CSS that was in the inline `<style>` block of `how-it-works.html` (861 lines → dedicated file in the `css/` folder) |
+| `frontend/how-it-works.html` | `<style>…</style>` block (lines 11–873) removed; replaced by `<link rel="stylesheet" href="css/howto.css" />` in the `<head>` |
 
-### Comportamento após fix
+### Behaviour after fix
 
-- [x] `how-it-works.html` deixou de ter CSS inline — toda a estilização está em `css/howto.css`
-- [x] Sem alterações visuais — o CSS é exactamente o mesmo, apenas movido de ficheiro
-- [x] Permissões do ficheiro corrigidas (o `sed -i` criara o ficheiro com 0400; recriado com 0644 via Python para o Nginx conseguir ler)
+- [x] `how-it-works.html` no longer has inline CSS — all styling is in `css/howto.css`
+- [x] No visual changes — the CSS is exactly the same, just moved to a different file
+- [x] File permissions fixed (the `sed -i` had created the file with 0400; recreated with 0644 via Python for Nginx to be able to read)
 
 ---
 
-## Backend — Uso de IA
+## Backend — AI Usage
 
 ### Project Overview and AI Integration
 
