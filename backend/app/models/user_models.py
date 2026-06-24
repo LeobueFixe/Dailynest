@@ -1,11 +1,5 @@
-from typing import Optional, List, TYPE_CHECKING
+from typing import Optional, List
 from sqlmodel import Field, SQLModel, Relationship
-
-if TYPE_CHECKING:
-    from app.models.task_models import Task
-    from app.models.agenda_models import Agenda
-    from app.models.notepad_models import Notepad
-    from app.models.file_models import File
 
 
 class User(SQLModel, table=True):
